@@ -51,7 +51,7 @@ namespace RCC.Steam
                     result = get_steam_id_data[i];
             }
 
-            if (result == String.Empty)
+            if (result == string.Empty)
                 result = get_steam_id_data[0];
 
             return result;
