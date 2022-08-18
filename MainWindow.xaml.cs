@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RCC.Steam;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace RCC
     {
         public MainWindow()
         {
+            LocalInfo.get_steam_all_steam_account().ForEach(delegate (string id) { MessageBox.Show(id); });
+            MessageBox.Show($"steam id to last active account {LocalInfo.get_steam_id()}");
             InitializeComponent();
         }
     }
