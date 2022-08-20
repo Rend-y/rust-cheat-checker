@@ -51,9 +51,11 @@
                             <DataTemplate>
                                 <StackPanel Background="Transparent" Orientation="Horizontal">
                                     <Grid Background="Transparent" Height="62" Width="625">
-                                        <Border BorderBrush="#FF000000" BorderThickness="1" CornerRadius="10,10,10,10" Width="50" Height="50" Margin="20,6,555,6">
-                                            <ContentControl Content="{Binding get_account_avatar}"  Width="50" Height="50"/>
-                                        </Border>
+                                        <Ellipse Margin="20,6,555,6">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding get_account_avatar}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
                                         <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
                                         <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
                                         <Rectangle Fill="#3F717790" Margin="0,61,0,0" />

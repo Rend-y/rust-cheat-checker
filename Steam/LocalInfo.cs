@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace RCC.Steam
@@ -30,15 +31,17 @@ namespace RCC.Steam
                 this.account_level = accoung_level;
                 System.Windows.Controls.Image image = new System.Windows.Controls.Image();
                 WebClient client = new WebClient();
-                Stream stream = client.OpenRead(avatar_url);
                 Bitmap bitmap;
+                if (avatar_url == string.Empty)
+                    avatar_url = "https://avatars.cloudflare.steamstatic.com/a8c5d92192f114f5ed05a03a86e53facc7d22a27_full.jpg";
+                Stream stream = client.OpenRead(avatar_url);
                 bitmap = new Bitmap(stream);
                 stream.Close();
                 image.Source = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 this.avatar = image;
             }
 
-            public System.Windows.Controls.Image get_account_avatar => this.avatar;
+            public ImageSource get_account_avatar => this.avatar.Source;
             public string get_account_level => $"Accoung level : {this.account_level}";
             public string get_username => $"Username : {this.username}";
             public string get_steam_id => $"Steam Id : {this.steam_id}";
@@ -67,40 +70,45 @@ namespace RCC.Steam
         public static SteamData parse_from_steam(long steam_id)
         {
             string url = $"https://steamcommunity.com/profiles/{steam_id}";
-            using (WebClient client = new WebClient())
+            string username = "", avatar_url = "";
+            int level = 1;
+            try
             {
-                //качаем страницу
-                byte[] data = null;
-                data = client.DownloadData(url);
-                string text = Encoding.UTF8.GetString(data);
-
-                string has_ban_in_line = @"<span class=""profile_ban_status"">([^"">]+)";
-                var has_ban_in = Regex.Matches(text, has_ban_in_line).Cast<Match>().Select(x => x.Groups[1].Value).ToList();
-
-                //парсим ник
-                string nickname_line = @"<span class=""actual_persona_name"">([^"">]+)</span>";
-                string username = Regex.Match(text, nickname_line).Groups[1].Value;
-
-                //парсим уровень
-                string level_line = @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>";
-                int level = int.Parse(Regex.Match(text, level_line).Groups[1].Value);
-
-                //парсим адрес аватара и качаем аватар
-                var avatar_url_array = Regex.Matches(text, @"<img src=""([^"">]+)"">").Cast<Match>().Select(x => x.Groups[1].Value).ToList();
-
-                var avatar_url = Regex.Match(text, @"<div class=""playerAvatarAutoSizeInner"">(.*?)</div>").Groups[1].Value;
-                foreach (string img in avatar_url_array)
+                using (WebClient client = new WebClient())
                 {
-                    if (img.Contains("_full"))
+                    //качаем страницу
+                    byte[] data = null;
+                    data = client.DownloadData(url);
+                    string text = Encoding.UTF8.GetString(data);
+
+                    //парсим ник
+                    string nickname_line = @"<span class=""actual_persona_name"">([^"">]+)</span>";
+                    username = Regex.Match(text, nickname_line).Groups[1].Value;
+
+                    //парсим уровень
+                    string level_line = @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>";
+                    level = int.Parse(Regex.Match(text, level_line).Groups[1].Value);
+
+                    //парсим адрес аватара и качаем аватар
+                    var avatar_url_array = Regex.Matches(text, @"<img src=""([^"">]+)"">").Cast<Match>().Select(x => x.Groups[1].Value).ToList();
+                    foreach (string img in avatar_url_array)
                     {
-                        avatar_url = img;
-                        break;
+                        if (img.Contains("_full"))
+                        {
+                            avatar_url = img;
+                            break;
+                        }
                     }
+
+
                 }
-
-
-                return new SteamData(username, steam_id, level, avatar_url);
             }
+            catch (Exception exept)
+            {
+                MessageBox.Show(exept.Message);
+            }
+            return new SteamData(username, steam_id, level, avatar_url);
+
         }
 
         public static SteamData get_last_account_info()

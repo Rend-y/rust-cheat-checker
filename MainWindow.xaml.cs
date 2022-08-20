@@ -99,7 +99,7 @@ namespace RCC
             label_user_ip.Content = GetSysthemInfo.get_user_external_ip();
             list_other_accounts.ItemsSource = Steam.LocalInfo.get_steam_all_steam_account();
             ImageBrush myBrush = new ImageBrush();
-            myBrush.ImageSource = last_account_info.avatar.Source;
+            myBrush.ImageSource = last_account_info.get_account_avatar;
             rectangle_local_profile_image.Fill = myBrush;
         }
 
