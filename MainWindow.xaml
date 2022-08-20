@@ -11,36 +11,37 @@
         <Grid Margin="0,29,0,100" Background="#6610121B">
             <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
                 <Grid>
-                    <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="120,29,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="296" Padding="0,0,0,0"/>
-                    <Label x:Name="label_steam_account_steam_id" Content="Steam Id : 76561199169433570" FontSize="10" Foreground="#C6717790" Margin="120,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="296" Background="#00717790" Height="13" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0"/>
+                    <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="127,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Padding="0,0,0,0" FontSize="15" FontFamily="Tahoma"/>
+                    <Label x:Name="label_steam_account_steam_id" Content="Steam Id : 76561199169433570" Foreground="#C6717790" Margin="127,43,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Background="#00717790" Height="16" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0" FontFamily="Tahoma"/>
                     <Rectangle Fill="#3F717790" Height="2" Width="387" Margin="14,130,14,44"/>
                     <Rectangle Margin="14,142,15,9" RadiusX="10" RadiusY="10" OpacityMask="#8CF9FAFB" Stroke="#8CF9FAFB"/>
-                    <Button x:Name="button_open_steam_path" Content="Открыть папку" BorderThickness="0" Background="#FF1E59F1" Width="117" Margin="282,143,16,10" Foreground="#FFF9FAFB" Padding="0,0,0,0" Click="button_open_steam_path_Click">
+                    <Button x:Name="button_open_steam_path" Content="Открыть папку" BorderThickness="0" Background="#FF1E59F1" Width="117" Margin="282,143,16,10" Foreground="#FFF9FAFB" Padding="0,0,0,0" Click="button_open_steam_path_Click" FontFamily="Tahoma">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="0 9 9 0"/>
                             </Style>
                         </Button.Resources>
                     </Button>
-                    <Label x:Name="label_full_path_to_steam" Content="C:\Program Files (x86)\Steam" Margin="14,142,132,10" Foreground="#C6717790"/>
+                    <Label x:Name="label_full_path_to_steam" Content="C:\Program Files (x86)\Steam" Margin="14,142,132,10" Foreground="#C6717790" FontFamily="Tahoma"/>
+                    <Ellipse x:Name="rectangle_local_profile_image" HorizontalAlignment="Left" Height="90" Margin="25,25,0,0" VerticalAlignment="Top" Width="90"/>
                 </Grid>
             </Border>
             <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
                 <Grid>
-                    <Label Content="Время запуска системы :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="Операционная система :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="IP :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="Объём оперативной памяти :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="Процессор :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="Видеокарта :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label Content="Разрешение экрана :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15"/>
-                    <Label x:Name="label_start_up_time" Content="20.05.2022 20:20:20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221"/>
-                    <Label x:Name="label_windows_type" Content="Windows 11 Enterpise" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221"/>
-                    <Label x:Name="label_user_ip" Content="192.124.l.l" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="49,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="366"/>
-                    <Label x:Name="label_memory_size" Content="64Гб" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="228,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="187"/>
-                    <Label x:Name="label_cpu_type" Content="Intel Core i9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="306"/>
-                    <Label x:Name="label_gpu_type" Content="NVIDIA GeForce RTX 3090 super" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="303"/>
-                    <Label x:Name="label_screen_size" Content="1920x1080" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="247"/>
+                    <Label Content="Время запуска системы :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="Операционная система :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="IP :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="Объём оперативной памяти :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="Процессор :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="Видеокарта :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label Content="Разрешение экрана :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                    <Label x:Name="label_start_up_time" Content="20.05.2022 20:20:20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
+                    <Label x:Name="label_windows_type" Content="Windows 11 Enterpise" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
+                    <Label x:Name="label_user_ip" Content="192.124.l.l" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="49,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="366" FontFamily="Tahoma"/>
+                    <Label x:Name="label_memory_size" Content="64Гб" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="228,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="187" FontFamily="Tahoma"/>
+                    <Label x:Name="label_cpu_type" Content="Intel Core i9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="306" FontFamily="Tahoma"/>
+                    <Label x:Name="label_gpu_type" Content="NVIDIA GeForce RTX 3090 super" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="303" FontFamily="Tahoma"/>
+                    <Label x:Name="label_screen_size" Content="1920x1080" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="247" FontFamily="Tahoma"/>
                 </Grid>
             </Border>
             <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="459,23,20,22" Background="#219297B3" BorderBrush="#6610121B">
@@ -50,9 +51,11 @@
                             <DataTemplate>
                                 <StackPanel Background="Transparent" Orientation="Horizontal">
                                     <Grid Background="Transparent" Height="62" Width="625">
-                                        <Rectangle Width="50" Height="50" Margin="15,6,560,6"/>
-                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0"/>
-                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,44,0,0" Grid.RowSpan="1" FontSize="10" Height="12"/>
+                                        <Border BorderBrush="#FF000000" BorderThickness="1" CornerRadius="10,10,10,10" Width="50" Height="50" Margin="20,6,555,6">
+                                            <ContentControl Content="{Binding get_account_avatar}"  Width="50" Height="50"/>
+                                        </Border>
+                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
+                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
                                         <Rectangle Fill="#3F717790" Margin="0,61,0,0" />
                                     </Grid>
                                 </StackPanel>

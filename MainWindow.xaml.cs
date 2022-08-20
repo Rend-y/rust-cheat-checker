@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,8 +12,8 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
-
-
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace RCC
 {
@@ -79,6 +82,7 @@ namespace RCC
             Marshal.FreeHGlobal(accentPtr);
         }
         private void window_loaded(object sender, RoutedEventArgs e) => EnableBlur();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -94,7 +98,9 @@ namespace RCC
             label_start_up_time.Content = GetSysthemInfo.get_system_start_up;
             label_user_ip.Content = GetSysthemInfo.get_user_external_ip();
             list_other_accounts.ItemsSource = Steam.LocalInfo.get_steam_all_steam_account();
-
+            ImageBrush myBrush = new ImageBrush();
+            myBrush.ImageSource = last_account_info.avatar.Source;
+            rectangle_local_profile_image.Fill = myBrush;
         }
 
         private void windows_title_bar(object sender, MouseButtonEventArgs e) => DragMove();
