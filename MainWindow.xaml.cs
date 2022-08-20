@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace RCC
 {
@@ -97,6 +90,7 @@ namespace RCC
             label_memory_size.Content = GetSysthemInfo.get_ram_size;
             label_start_up_time.Content = GetSysthemInfo.get_system_start_up;
             label_user_ip.Content = GetSysthemInfo.get_user_external_ip();
+
             list_other_accounts.ItemsSource = Steam.LocalInfo.get_steam_all_steam_account();
             ImageBrush myBrush = new ImageBrush();
             myBrush.ImageSource = last_account_info.get_account_avatar;

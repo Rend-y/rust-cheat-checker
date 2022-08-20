@@ -62,7 +62,6 @@
     </ApplicationDefinition>
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
-    <Compile Include="Steam\SteamData.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,14 +90,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="README.md" />
+    <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
+    <Resource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
+    <Resource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
