@@ -47,7 +47,11 @@ namespace RCC.Steam
             public string get_steam_id => $"Steam Id : {this.steam_id}";
             public Visibility get_is_hide_for_window => this.is_hide_account ? Visibility.Visible : Visibility.Hidden;
         }
-
+        
+        /// <summary>
+        /// Use this function for get path to folder (steam)
+        /// </summary>
+        /// <returns>full path to steam</returns>
         public static string get_steam_location()
         {
             string steam_path_x64 = @"SOFTWARE\Wow6432Node\Valve\Steam";
@@ -64,10 +68,21 @@ namespace RCC.Steam
             return result;
         }
 
+        /// <summary>
+        /// use this for get full path to file which keeps all accounts data
+        /// </summary>
+        /// <returns>full path to file which keeps all accounts data</returns>
         private static string get_path_to_login() => $"{get_steam_location()}\\config\\loginusers.vdf";
 
         private static List<string> get_all_steam_id(string file_data) => Regex.Matches(file_data, "\\\"76(.*?)\\\"").Cast<Match>().Select(x => "76" + x.Groups[1].Value).ToList();
 
+
+        /// <summary>
+        /// Use this to get steam data (avatar, username, is hide account, account level)
+        /// if user account is hide. Then we return the level -1
+        /// </summary>
+        /// <param name="steam_id">steam id in steam</param>
+        /// <returns>steam data (avatar, username, is hide account, account level)</returns>
         public static SteamData parse_from_steam(long steam_id)
         {
             string url = $"https://steamcommunity.com/profiles/{steam_id}";
@@ -77,23 +92,15 @@ namespace RCC.Steam
             try
             {
                 WebClient client = new WebClient();
-                //качаем страницу
                 byte[] data = null;
-                data = client.DownloadData(url);
-                string text = Encoding.UTF8.GetString(data);
+                data = client.DownloadData(url); // download full markup a frontend
+                string text = Encoding.UTF8.GetString(data); // parse it's to utf 8 encode
 
-                is_hide_profile = (bool)(Regex.Match(text, @"<div\s+class=""profile_private_info"">([^"">]+)</div>").Groups[1].Length > 0);
-                
-                //парсим ник
-                string nickname_line = @"<span class=""actual_persona_name"">([^"">]+)</span>";
-                username = Regex.Match(text, nickname_line).Groups[1].Value;
-
-                //парсим уровень
+                is_hide_profile = Regex.Match(text, @"<div\s+class=""profile_private_info"">([^"">]+)</div>").Groups[1].Length > 0; // parse is hide profile
+                username = Regex.Match(text, @"<span class=""actual_persona_name"">([^"">]+)</span>").Groups[1].Value; // parse username
                 if (is_hide_profile) level = -1;
-                else level = int.Parse(Regex.Match(text, @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>").Groups[1].Value);
-
-                //парсим адрес аватара и качаем аватар
-                var avatar_url_array = Regex.Matches(text, @"<img src=""([^"">]+)"">").Cast<Match>().Select(x => x.Groups[1].Value).ToList();
+                else level = int.Parse(Regex.Match(text, @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>").Groups[1].Value); // parse level
+                var avatar_url_array = Regex.Matches(text, @"<img src=""([^"">]+)"">").Cast<Match>().Select(x => x.Groups[1].Value).ToList(); // parse avatar
                 foreach (string img in avatar_url_array)
                 {
                     if (img.Contains("_full"))
@@ -111,6 +118,11 @@ namespace RCC.Steam
 
         }
 
+        // TODO: this function return incorrect value
+        /// <summary>
+        /// use this to get last account
+        /// </summary>
+        /// <returns>Steam Data for current user (avatar, username, is hide account, account level)</returns>
         public static SteamData get_last_account_info()
         {
             string steam_path_to_login_user = get_path_to_login();
@@ -131,6 +143,10 @@ namespace RCC.Steam
             return parse_from_steam(long.Parse(get_steam_id_data[0]));
         }
 
+        /// <summary>
+        /// use this ti get all array account
+        /// </summary>
+        /// <returns>array Steam Data (avatar, username, is hide account, account level)</returns>
         public static List<SteamData> get_steam_all_steam_account()
         {
             string steam_path_to_login_user = get_path_to_login();

@@ -27,14 +27,14 @@
                 <Grid x:Name="grid_greeting" Visibility="Visible">
                     <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,571,23" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                         <Grid>
-                            <Label Content="Спасибо за ипользование моего RCC." Foreground="#FFFFFF" FontSize="15" VerticalAlignment="Top" Margin="127,20,126,0"/>
-                            <Label Content="Этот проект полностью открытый. Что даёт вам мозможность внести свой вклад в него. Так - же пользователям. Данный чекер можно безопасно скачать тока с GitHub ссылка будет ниже. (Для переходи нажмите на кнопку) Если вы хотетие поддержать разработчика чеканной монетой то вот контакты.  Discord: Midoriya#9281" Foreground="#C6717790" FontSize="15" VerticalAlignment="Top" Margin="28,78,28,0"/>
+                            <Label Foreground="#FFFFFF" FontSize="15" Content="Спасибо за ипользование моего RCC." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+                            <TextBlock Width="524" FontSize="15" TextAlignment="Center" Text="Этот проект полностью открытый.&#xD;&#xA;Что даёт вам мозможность внести свой вклад в него.&#xD;&#xA;Так - же пользователям.&#xD;&#xA;Данный чекер можно безопасно скачать тока с GitHub&#xD;&#xA;ссылка будет ниже.&#xD;&#xA;(Для переходи нажмите на кнопку)&#xD;&#xA;Если вы хотетие поддержать разработчика&#xD;&#xA;чеканной монетой то вот контакты. &#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,74,0,0"/>
                         </Grid>
                     </Border>
                     <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="573,22,23,24" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                         <Grid>
-                            <Label Content="Thanks for using my RCC (pet project)" Foreground="#FFFFFF" FontSize="15" VerticalAlignment="Top" Margin="127,20,126,0"/>
-                            <Label HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch" Content="It's project full open source.&#xA;What gives you the opportunity contribution to it. Also users. This checker can safely downloand Так - же пользователям. This checker can safely download current from GitHub link will be lower. (For move please click to button will be lower)&#xA;If you wait support programmer money, then here are the contacts Discord: Midoriya#9281" Foreground="#C6717790" FontSize="15" VerticalAlignment="Top" Margin="28,78,28,0" HorizontalAlignment="Center" FlowDirection="LeftToRight" Padding="0,0,0,0" FontWeight="Regular"/>
+                            <Label Foreground="#FFFFFF" FontSize="15" Content="Thanks for using my RCC (pet project)" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+                            <TextBlock Background="Transparent" FontSize="15" TextAlignment="Center" Text="It's project full open source.&#xD;&#xA;What gives you the opportunity contribution to it.&#xD;&#xA;Also users. This checker can safely downloand&#xD;&#xA;This checker can safely download&#xD;&#xA;current from GitHub link will be lower.&#xD;&#xA;(For move please click to button will be lower)&#xD;&#xA;If you wait support programmer money, then here are the contacts&#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" VerticalAlignment="Top" Margin="-1,74,0,0" HorizontalAlignment="Left" Width="524"/>
                         </Grid>
                     </Border>
                 </Grid>
