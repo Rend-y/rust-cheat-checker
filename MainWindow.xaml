@@ -6,70 +6,108 @@
         xmlns:local="clr-namespace:RCC"
         mc:Ignorable="d"
         MouseLeftButtonDown="windows_title_bar"
-    Title="MainWindow" Height="609" Loaded="window_loaded" Width="1122" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize">
+        Title="MainWindow" Height="609" Loaded="window_loaded" Width="1122" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="TabButton" TargetType="Label">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#F9FAFB"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Foreground" Value="#C6717790"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Border BorderThickness="1" CornerRadius="10,10,10,10" Background="#6610121B">
-        <Grid Margin="0,29,0,100" Background="#6610121B">
-            <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
-                <Grid>
-                    <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="127,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Padding="0,0,0,0" FontSize="15" FontFamily="Tahoma"/>
-                    <Label x:Name="label_steam_account_steam_id" Content="Steam Id : 76561199169433570" Foreground="#C6717790" Margin="127,43,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Background="#00717790" Height="16" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0" FontFamily="Tahoma"/>
-                    <Rectangle Fill="#3F717790" Height="2" Width="387" Margin="14,130,14,44"/>
-                    <Rectangle Margin="14,142,15,9" RadiusX="10" RadiusY="10" OpacityMask="#8CF9FAFB" Stroke="#8CF9FAFB"/>
-                    <Button x:Name="button_open_steam_path" Content="Открыть папку" BorderThickness="0" Background="#FF1E59F1" Width="117" Margin="282,143,16,10" Foreground="#FFF9FAFB" Padding="0,0,0,0" Click="button_open_steam_path_Click" FontFamily="Tahoma">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="0 9 9 0"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                    <Label x:Name="label_full_path_to_steam" Content="C:\Program Files (x86)\Steam" Margin="14,142,132,10" Foreground="#C6717790" FontFamily="Tahoma"/>
-                    <Ellipse x:Name="rectangle_local_profile_image" HorizontalAlignment="Left" Height="90" Margin="25,25,0,0" VerticalAlignment="Top" Width="90"/>
+        <Grid>
+            <Grid Margin="0,29,0,100" Background="#6610121B">
+                <Grid x:Name="grid_greeting" Visibility="Visible">
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,571,23" Width="524" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid>
+                            <Label Content="Спасибо за ипользование моего RCC." Foreground="#FFFFFF" FontSize="15" VerticalAlignment="Top" Margin="127,20,126,0"/>
+                            <Label Content="Этот проект полностью открытый. Что даёт вам мозможность внести свой вклад в него. Так - же пользователям. Данный чекер можно безопасно скачать тока с GitHub ссылка будет ниже. (Для переходи нажмите на кнопку) Если вы хотетие поддержать разработчика чеканной монетой то вот контакты.  Discord: Midoriya#9281" Foreground="#C6717790" FontSize="15" VerticalAlignment="Top" Margin="28,78,28,0"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="573,22,23,24" Width="524" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid>
+                            <Label Content="Thanks for using my RCC (pet project)" Foreground="#FFFFFF" FontSize="15" VerticalAlignment="Top" Margin="127,20,126,0"/>
+                            <Label HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch" Content="It's project full open source.&#xA;What gives you the opportunity contribution to it. Also users. This checker can safely downloand Так - же пользователям. This checker can safely download current from GitHub link will be lower. (For move please click to button will be lower)&#xA;If you wait support programmer money, then here are the contacts Discord: Midoriya#9281" Foreground="#C6717790" FontSize="15" VerticalAlignment="Top" Margin="28,78,28,0" HorizontalAlignment="Center" FlowDirection="LeftToRight" Padding="0,0,0,0" FontWeight="Regular"/>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
-            <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
-                <Grid>
-                    <Label Content="Время запуска системы :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="Операционная система :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="IP :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="Объём оперативной памяти :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="Процессор :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="Видеокарта :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label Content="Разрешение экрана :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
-                    <Label x:Name="label_start_up_time" Content="20.05.2022 20:20:20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
-                    <Label x:Name="label_windows_type" Content="Windows 11 Enterpise" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
-                    <Label x:Name="label_user_ip" Content="192.124.l.l" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="49,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="366" FontFamily="Tahoma"/>
-                    <Label x:Name="label_memory_size" Content="64Гб" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="228,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="187" FontFamily="Tahoma"/>
-                    <Label x:Name="label_cpu_type" Content="Intel Core i9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="306" FontFamily="Tahoma"/>
-                    <Label x:Name="label_gpu_type" Content="NVIDIA GeForce RTX 3090 super" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="303" FontFamily="Tahoma"/>
-                    <Label x:Name="label_screen_size" Content="1920x1080" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="247" FontFamily="Tahoma"/>
+                <Grid x:Name="grid_accont_info" Visibility="Hidden">
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid>
+                            <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="127,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Padding="0,0,0,0" FontSize="15" FontFamily="Tahoma"/>
+                            <Label x:Name="label_steam_account_steam_id" Content="Steam Id : 76561199169433570" Foreground="#C6717790" Margin="127,43,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Background="#00717790" Height="16" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0" FontFamily="Tahoma"/>
+                            <Rectangle Fill="#3F717790" Height="2" Width="387" Margin="14,130,14,44"/>
+                            <Rectangle Margin="14,142,15,9" RadiusX="10" RadiusY="10" OpacityMask="#8CF9FAFB" Stroke="#8CF9FAFB"/>
+                            <Button x:Name="button_open_steam_path" Content="Открыть папку" BorderThickness="0" Background="#FF1E59F1" Width="117" Margin="282,143,16,10" Foreground="#FFF9FAFB" Padding="0,0,0,0" Click="button_open_steam_path_Click" FontFamily="Tahoma">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="0 9 9 0"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Label x:Name="label_full_path_to_steam" Content="C:\Program Files (x86)\Steam" Margin="14,142,132,10" Foreground="#C6717790" FontFamily="Tahoma"/>
+                            <Ellipse x:Name="rectangle_local_profile_image" HorizontalAlignment="Left" Height="90" Margin="25,25,0,0" VerticalAlignment="Top" Width="90"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid>
+                            <Label Content="Время запуска системы :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="Операционная система :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="IP :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="Объём оперативной памяти :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="Процессор :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="Видеокарта :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label Content="Разрешение экрана :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#FFF9FAFB" FontSize="15" FontFamily="Tahoma"/>
+                            <Label x:Name="label_start_up_time" Content="20.05.2022 20:20:20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,27,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
+                            <Label x:Name="label_windows_type" Content="Windows 11 Enterpise" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="194,54,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="221" FontFamily="Tahoma"/>
+                            <Label x:Name="label_user_ip" Content="192.124.l.l" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="49,81,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="366" FontFamily="Tahoma"/>
+                            <Label x:Name="label_memory_size" Content="64Гб" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="228,0,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="187" FontFamily="Tahoma"/>
+                            <Label x:Name="label_cpu_type" Content="Intel Core i9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,135,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="306" FontFamily="Tahoma"/>
+                            <Label x:Name="label_gpu_type" Content="NVIDIA GeForce RTX 3090 super" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,162,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="303" FontFamily="Tahoma"/>
+                            <Label x:Name="label_screen_size" Content="1920x1080" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,190,0,0" Padding="0,0,0,0" Background="#00F9FAFB" Foreground="#C6717790" FontSize="15" Width="247" FontFamily="Tahoma"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="459,23,20,22" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid Background="Transparent">
+                            <ListBox Background="Transparent" x:Name="list_other_accounts" BorderBrush="#00ABADB3">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Background="Transparent" Orientation="Horizontal">
+                                            <Grid Background="Transparent" Height="62" Width="625">
+                                                <Ellipse Margin="20,6,555,6">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding get_account_avatar}"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                                <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
+                                                <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
+                                                <Rectangle Fill="#3F717790" Margin="0,61,0,0" />
+                                                <Ellipse Height="50" Stroke="#FF717790" Margin="555,6,20,6"/>
+                                                <Label Content="{Binding get_account_level}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <Ellipse Height="50" Visibility="{Binding get_is_hide_for_window}" Stroke="#FF717790" Margin="500,6,75,6"/>
+                                                <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Font Awesome 6 Free Regular" />
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
-            <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="459,23,20,22" Background="#219297B3" BorderBrush="#6610121B">
-                <Grid Background="Transparent">
-                    <ListBox Background="Transparent" x:Name="list_other_accounts" BorderBrush="#00ABADB3">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Background="Transparent" Orientation="Horizontal">
-                                    <Grid Background="Transparent" Height="62" Width="625">
-                                        <Ellipse Margin="20,6,555,6">
-                                            <Ellipse.Fill>
-                                                <ImageBrush ImageSource="{Binding get_account_avatar}"/>
-                                            </Ellipse.Fill>
-                                        </Ellipse>
-                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
-                                        <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
-                                        <Rectangle Fill="#3F717790" Margin="0,61,0,0" />
-                                        <Ellipse Height="50" Stroke="#FF717790" Margin="555,6,20,6"/>
-                                        <Label Content="{Binding get_account_level}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <Ellipse Height="50" Visibility="{Binding get_is_hide_for_window}" Stroke="#FF717790" Margin="500,6,75,6"/>
-                                        <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Font Awesome 6 Free Regular" />
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </Border>
+            </Grid>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
+                <Label Content="Проверка файловой системы" Style="{StaticResource TabButton}" Margin="131,0,0,0" HorizontalAlignment="Left"/>
+                <Label Content="USB устройства" Style="{StaticResource TabButton}" Margin="416,0,0,0" HorizontalAlignment="Left" />
+                <Label Content="Проверка мышы" Style="{StaticResource TabButton}" Margin="598,0,0,0" HorizontalAlignment="Left" />
+                <Label Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource TabButton}" Margin="790,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
+            </Grid>
         </Grid>
     </Border>
 </Window>

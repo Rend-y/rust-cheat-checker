@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -98,11 +99,23 @@ namespace RCC
             rectangle_local_profile_image.Fill = myBrush;
         }
 
+        private void window_page_manager(Grid show_grid)
+        {
+            grid_greeting.Visibility = Visibility.Hidden;
+            grid_accont_info.Visibility = Visibility.Hidden;
+            show_grid.Visibility = Visibility.Visible;
+        }
+
         private void windows_title_bar(object sender, MouseButtonEventArgs e) => DragMove();
 
         private void button_open_steam_path_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(Steam.LocalInfo.get_steam_location());
+        }
+
+        private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            window_page_manager(grid_accont_info);
         }
     }
 }
