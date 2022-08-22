@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -76,6 +75,8 @@ namespace RCC
         }
         private void window_loaded(object sender, RoutedEventArgs e) => EnableBlur();
 
+        List<Steam.LocalInfo.SteamData> steamDatas = new List<Steam.LocalInfo.SteamData>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -90,7 +91,7 @@ namespace RCC
             label_memory_size.Content = GetSysthemInfo.get_ram_size;
             label_start_up_time.Content = GetSysthemInfo.get_system_start_up;
             label_user_ip.Content = GetSysthemInfo.get_user_external_ip();
-
+            list_other_accounts.ItemsSource = steamDatas;
             list_other_accounts.ItemsSource = Steam.LocalInfo.get_steam_all_steam_account();
             ImageBrush myBrush = new ImageBrush();
             myBrush.ImageSource = last_account_info.get_account_avatar;

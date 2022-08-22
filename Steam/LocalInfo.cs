@@ -22,7 +22,7 @@ namespace RCC.Steam
             public string username;
             public long steam_id;
             public int account_level;
-            public System.Windows.Controls.Image avatar;
+            public BitmapSource avatar;
             public bool is_hide_account;
 
             public SteamData(string username,long stem_id, int accoung_level, string avatar_url, bool is_hide_account)
@@ -30,7 +30,6 @@ namespace RCC.Steam
                 this.username = username;
                 this.steam_id = stem_id;
                 this.account_level = accoung_level;
-                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
                 WebClient client = new WebClient();
                 Bitmap bitmap;
                 if (avatar_url == string.Empty)
@@ -38,12 +37,11 @@ namespace RCC.Steam
                 Stream stream = client.OpenRead(avatar_url);
                 bitmap = new Bitmap(stream);
                 stream.Close();
-                image.Source = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                this.avatar = image;
+                this.avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); ;
                 this.is_hide_account = is_hide_account;
             }
 
-            public ImageSource get_account_avatar => this.avatar.Source;
+            public ImageSource get_account_avatar => this.avatar;
             public string get_account_level => this.account_level.ToString();
             public string get_username => $"Username : {this.username}";
             public string get_steam_id => $"Steam Id : {this.steam_id}";
