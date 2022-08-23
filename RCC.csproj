@@ -90,7 +90,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -100,8 +100,8 @@
     </None>
     <None Include="README.md" />
     <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
-    <Resource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
-    <Resource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
+    <EmbeddedResource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
+    <EmbeddedResource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

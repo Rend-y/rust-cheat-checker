@@ -103,6 +103,7 @@ namespace RCC
         {
             grid_greeting.Visibility = Visibility.Hidden;
             grid_accont_info.Visibility = Visibility.Hidden;
+            grid_usb_device.Visibility = Visibility.Hidden;
             show_grid.Visibility = Visibility.Visible;
         }
 
@@ -113,9 +114,7 @@ namespace RCC
             Process.Start(Steam.LocalInfo.get_steam_location());
         }
 
-        private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            window_page_manager(grid_accont_info);
-        }
+        private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_accont_info);
+        private void button_show_usb_device_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_usb_device);
     }
 }
