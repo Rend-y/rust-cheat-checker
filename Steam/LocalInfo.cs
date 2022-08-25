@@ -23,6 +23,7 @@ namespace RCC.Steam
             public long steam_id;
             public int account_level;
             public BitmapSource avatar;
+            public string avatar_url;
             public bool is_hide_account;
 
             public SteamData(string username,long stem_id, int accoung_level, string avatar_url, bool is_hide_account)
@@ -37,6 +38,7 @@ namespace RCC.Steam
                 Stream stream = client.OpenRead(avatar_url);
                 bitmap = new Bitmap(stream);
                 stream.Close();
+                this.avatar_url = avatar_url;
                 this.avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); ;
                 this.is_hide_account = is_hide_account;
             }
@@ -72,9 +74,9 @@ namespace RCC.Steam
         /// use this for get full path to file which keeps all accounts data
         /// </summary>
         /// <returns>full path to file which keeps all accounts data</returns>
-        private static string get_path_to_login() => $"{get_steam_location()}\\config\\loginusers.vdf";
+        public static string get_path_to_login() => $"{get_steam_location()}\\config\\loginusers.vdf";
 
-        private static List<string> get_all_steam_id(string file_data) => Regex.Matches(file_data, "\\\"76(.*?)\\\"").Cast<Match>().Select(x => "76" + x.Groups[1].Value).ToList();
+        public static List<string> get_all_steam_id(string file_data) => Regex.Matches(file_data, "\\\"76(.*?)\\\"").Cast<Match>().Select(x => "76" + x.Groups[1].Value).ToList();
 
 
         /// <summary>
