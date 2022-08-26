@@ -15,37 +15,6 @@ using System.Xml.Linq;
 
 namespace RCC
 {
-    internal enum AccentState
-    {
-        ACCENT_DISABLED = 1,
-        ACCENT_ENABLE_GRADIENT = 0,
-        ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
-        ACCENT_ENABLE_BLURBEHIND = 3,
-        ACCENT_INVALID_STATE = 4
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct AccentPolicy
-    {
-        public AccentState AccentState;
-        public int AccentFlags;
-        public int GradientColor;
-        public int AnimationId;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct WindowCompositionAttributeData
-    {
-        public WindowCompositionAttribute Attribute;
-        public IntPtr Data;
-        public int SizeOfData;
-    }
-
-    internal enum WindowCompositionAttribute
-    {
-        WCA_ACCENT_POLICY = 19
-    }
-
     public partial class MainWindow : Window
     {
         public class usb_device_info
@@ -83,32 +52,8 @@ namespace RCC
                 this.full_path = full_path;
             }
         }
-
-        [DllImport("user32.dll")]
-        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-
-        internal void EnableBlur()
-        {
-            var windowHelper = new WindowInteropHelper(this);
-
-            var accent = new AccentPolicy();
-            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
-
-            var accentStructSize = Marshal.SizeOf(accent);
-
-            var accentPtr = Marshal.AllocHGlobal(accentStructSize);
-            Marshal.StructureToPtr(accent, accentPtr, false);
-
-            var data = new WindowCompositionAttributeData();
-            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
-            data.SizeOfData = accentStructSize;
-            data.Data = accentPtr;
-
-            SetWindowCompositionAttribute(windowHelper.Handle, ref data);
-
-            Marshal.FreeHGlobal(accentPtr);
-        }
-        private void window_loaded(object sender, RoutedEventArgs e) => EnableBlur();
+     
+        private void window_loaded(object sender, RoutedEventArgs e) => GlassEffect.EnableBlur(this);
 
         private readonly BackgroundWorker background_worker_find_steam_account = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_usb_device = new BackgroundWorker();
@@ -129,15 +74,8 @@ namespace RCC
             last_activity_info last_activity_info = e.UserState as last_activity_info;
             list_all_last_activity.Items.Add(new last_activity_info(last_activity_info.action_time, last_activity_info.description, last_activity_info.filename, last_activity_info.full_path));
         }
-        void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
+        void thread_to_remove_resources(string[] path_array)
         {
-            string path_to_local_application = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
-            string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
-            string path_to_save_usb_list = $"{path_to_local_application}\\usb_info.xml";
-            string argument_to_startup = $"/sxml {path_to_save_usb_list}";
-            File.WriteAllBytes(local_path_to_file, Properties.Resources.USBDeview);
-            Process.Start(local_path_to_file, argument_to_startup).WaitForExit();
-
             Thread delete_thread = new Thread(remove_file_list =>
             {
                 foreach (string file in (remove_file_list as string[]))
@@ -147,7 +85,18 @@ namespace RCC
                 }
 
             });
-            delete_thread.Start(new string[] { local_path_to_file, path_to_save_usb_list });
+            delete_thread.Start(path_array);
+        }
+        void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string path_to_local_application = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
+            string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
+            string path_to_save_usb_list = $"{path_to_local_application}\\usb_info.xml";
+            string argument_to_startup = $"/sxml {path_to_save_usb_list}";
+            File.WriteAllBytes(local_path_to_file, Properties.Resources.USBDeview);
+            Process.Start(local_path_to_file, argument_to_startup).WaitForExit();
+
+            thread_to_remove_resources(new string[] { local_path_to_file, path_to_save_usb_list });
 
             var load_xml_document = XDocument.Load(path_to_save_usb_list).Descendants("item");
 
@@ -174,16 +123,7 @@ namespace RCC
             File.WriteAllBytes(local_path_to_file, Properties.Resources.LastActivityView);
             Process.Start(local_path_to_file, argument_to_startup).WaitForExit();
 
-            Thread delete_thread = new Thread(remove_file_list =>
-            {
-                foreach (string file in (remove_file_list as string[]))
-                {
-                    Thread.Sleep(500);
-                    File.Delete(file);
-                }
-
-            });
-            delete_thread.Start(new string[] { local_path_to_file, path_to_save_usb_list });
+            thread_to_remove_resources(new string[] { local_path_to_file, path_to_save_usb_list });
 
             var load_xml_document = XDocument.Load(path_to_save_usb_list).Descendants("item");
 
@@ -194,6 +134,13 @@ namespace RCC
                 string description = element.Element("description").Value;
                 string filename = element.Element("filename").Value;
                 string full_path = element.Element("full_path").Value;
+
+                if (!File.Exists(full_path))
+                    full_path = "File has been removed";
+
+                if (string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(full_path))
+                    continue;
+
                 last_activity_info info = new last_activity_info(action_time, description, filename, full_path);
                 background_worker_find_last_activity.ReportProgress(i, info);
                 i++;
@@ -202,17 +149,13 @@ namespace RCC
         void background_worker_find_steam_account_DoWork(object sender, DoWorkEventArgs e)
         {
             string steam_path_to_login_user = Steam.LocalInfo.get_path_to_login();
-
             if (!File.Exists(steam_path_to_login_user))
                 return;
-
             string file_data = File.ReadAllText(steam_path_to_login_user);
             List<string> get_steam_id_data = Steam.LocalInfo.get_all_steam_id(file_data);
-
             for (int i = 0; i < get_steam_id_data.Count; i++)
                 background_worker_find_steam_account.ReportProgress(i,Steam.LocalInfo.parse_from_steam(long.Parse(get_steam_id_data[i])));
         }
-
         public MainWindow()
         {
             InitializeComponent();

@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="GetSysthemInfo.cs" />
+    <Compile Include="GlassEffect.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
