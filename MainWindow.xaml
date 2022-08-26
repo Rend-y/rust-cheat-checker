@@ -154,9 +154,6 @@
                     </Border>
                 </Grid>
                 <Grid Name="grid_last_activity" Visibility="Hidden">
-=======
-                <Grid Name="grid_last_activity" Visibility="Visible">
->>>>>>> 0f0cb72aa638c5b0cd55caaac441e35e68ce725b
                     <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,25,23" Background="#219297B3" BorderBrush="#6610121B">
                         <Grid>
                             <ListBox BorderBrush="#00ABADB3" x:Name="list_all_last_activity">
