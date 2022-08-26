@@ -74,8 +74,11 @@ namespace RCC
             last_activity_info last_activity_info = e.UserState as last_activity_info;
             list_all_last_activity.Items.Add(new last_activity_info(last_activity_info.action_time, last_activity_info.description, last_activity_info.filename, last_activity_info.full_path));
         }
-        void thread_to_remove_resources(string[] path_array)
+        IEnumerable<XElement> get_xml_document_from_resource_process(string path_to_exe, byte[] resource, string path_to_save_xml)
         {
+            File.WriteAllBytes(path_to_exe, resource);
+            Process.Start(path_to_exe, $"/sxml {path_to_save_xml}").WaitForExit();
+
             Thread delete_thread = new Thread(remove_file_list =>
             {
                 foreach (string file in (remove_file_list as string[]))
@@ -85,20 +88,16 @@ namespace RCC
                 }
 
             });
-            delete_thread.Start(path_array);
+            delete_thread.Start(new string[] { path_to_exe, path_to_save_xml });
+
+            return XDocument.Load(path_to_save_xml).Descendants("item");
         }
+        string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
         void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
         {
-            string path_to_local_application = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
             string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
             string path_to_save_usb_list = $"{path_to_local_application}\\usb_info.xml";
-            string argument_to_startup = $"/sxml {path_to_save_usb_list}";
-            File.WriteAllBytes(local_path_to_file, Properties.Resources.USBDeview);
-            Process.Start(local_path_to_file, argument_to_startup).WaitForExit();
-
-            thread_to_remove_resources(new string[] { local_path_to_file, path_to_save_usb_list });
-
-            var load_xml_document = XDocument.Load(path_to_save_usb_list).Descendants("item");
+            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.USBDeview,path_to_save_usb_list);
 
             int i = 0;
             foreach (XElement element in load_xml_document)
@@ -116,16 +115,9 @@ namespace RCC
         }
         void background_worker_find_last_activity_DoWork(object sender, DoWorkEventArgs e)
         {
-            string path_to_local_application = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
             string local_path_to_file = $"{path_to_local_application}\\LastActivityView.exe";
             string path_to_save_usb_list = $"{path_to_local_application}\\last_activity_view.xml";
-            string argument_to_startup = $"/sxml {path_to_save_usb_list}";
-            File.WriteAllBytes(local_path_to_file, Properties.Resources.LastActivityView);
-            Process.Start(local_path_to_file, argument_to_startup).WaitForExit();
-
-            thread_to_remove_resources(new string[] { local_path_to_file, path_to_save_usb_list });
-
-            var load_xml_document = XDocument.Load(path_to_save_usb_list).Descendants("item");
+            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.LastActivityView, path_to_save_usb_list);
 
             int i = 0;
             foreach (XElement element in load_xml_document)
