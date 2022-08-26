@@ -93,6 +93,16 @@ namespace RCC.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] LastActivityView {
+            get {
+                object obj = ResourceManager.GetObject("LastActivityView", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] USBDeview {
             get {
                 object obj = ResourceManager.GetObject("USBDeview", resourceCulture);

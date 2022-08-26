@@ -127,6 +127,9 @@
   <data name="Font_Awesome_6_Free_Solid_900" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Font Awesome 6 Free-Solid-900.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LastActivityView" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LastActivityView.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="USBDeview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\USBDeview.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
