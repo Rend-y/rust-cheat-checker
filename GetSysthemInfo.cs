@@ -12,7 +12,15 @@ namespace RCC
         public static string get_uset_name => get_single_component("Win32_ComputerSystem", "Name");
         public static string get_screen_size => $"{Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
         public static string get_os_type => get_single_component("Win32_OperatingSystem", "Caption");
-        public static string get_ram_size => $"{Int64.Parse(get_single_component("Win32_ComputerSystem", "TotalPhysicalMemory")) / 1048576 / 1024 + 1} Gb";
+        public static string get_ram_size
+        {
+            get
+            {
+                long size;
+                AllDllImport.GetPhysicallyInstalledSystemMemory(out size);
+                return $"{size / 1024L / 1024L} Gb";
+            }
+        }
         public static string get_system_start_up => DateTime.Now.AddMilliseconds(-Environment.TickCount).ToString();
 
         public static string get_user_external_ip()
@@ -35,4 +43,3 @@ namespace RCC
 
     }
 }
-    

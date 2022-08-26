@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Interop;
 
 namespace RCC
@@ -41,9 +37,6 @@ namespace RCC
             WCA_ACCENT_POLICY = 19
         }
 
-        [DllImport("user32.dll")]
-        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-
         public static void EnableBlur(System.Windows.Window window)
         {
             var windowHelper = new WindowInteropHelper(window);
@@ -61,7 +54,7 @@ namespace RCC
             data.SizeOfData = accentStructSize;
             data.Data = accentPtr;
 
-            SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+            AllDllImport.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
 
             Marshal.FreeHGlobal(accentPtr);
         }

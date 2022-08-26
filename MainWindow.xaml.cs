@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Xml.Linq;
 
@@ -52,7 +49,7 @@ namespace RCC
                 this.full_path = full_path;
             }
         }
-     
+
         private void window_loaded(object sender, RoutedEventArgs e) => GlassEffect.EnableBlur(this);
 
         private readonly BackgroundWorker background_worker_find_steam_account = new BackgroundWorker();
@@ -97,7 +94,7 @@ namespace RCC
         {
             string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
             string path_to_save_usb_list = $"{path_to_local_application}\\usb_info.xml";
-            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.USBDeview,path_to_save_usb_list);
+            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.USBDeview, path_to_save_usb_list);
 
             int i = 0;
             foreach (XElement element in load_xml_document)
@@ -146,7 +143,7 @@ namespace RCC
             string file_data = File.ReadAllText(steam_path_to_login_user);
             List<string> get_steam_id_data = Steam.LocalInfo.get_all_steam_id(file_data);
             for (int i = 0; i < get_steam_id_data.Count; i++)
-                background_worker_find_steam_account.ReportProgress(i,Steam.LocalInfo.parse_from_steam(long.Parse(get_steam_id_data[i])));
+                background_worker_find_steam_account.ReportProgress(i, Steam.LocalInfo.parse_from_steam(long.Parse(get_steam_id_data[i])));
         }
         public MainWindow()
         {

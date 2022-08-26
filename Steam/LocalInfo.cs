@@ -25,7 +25,7 @@ namespace RCC.Steam
             public string avatar_url;
             public bool is_hide_account;
 
-            public SteamData(string username,long stem_id, int accoung_level, string avatar_url, bool is_hide_account)
+            public SteamData(string username, long stem_id, int accoung_level, string avatar_url, bool is_hide_account)
             {
                 this.username = username;
                 this.steam_id = stem_id;
@@ -48,7 +48,7 @@ namespace RCC.Steam
             public string get_steam_id => $"Steam Id : {this.steam_id}";
             public Visibility get_is_hide_for_window => this.is_hide_account ? Visibility.Visible : Visibility.Hidden;
         }
-        
+
         /// <summary>
         /// Use this function for get path to folder (steam)
         /// </summary>
