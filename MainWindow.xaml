@@ -24,7 +24,7 @@
     <Border BorderThickness="1" CornerRadius="10,10,10,10" Background="#6610121B">
         <Grid Margin="2,0,-1,-1">
             <Grid Margin="0,29,-1,101" Background="#6610121B">
-                <Grid x:Name="grid_greeting" Visibility="Hidden">
+                <Grid x:Name="grid_greeting" Visibility="Visible">
                     <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,571,23" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                         <Grid>
                             <Label Foreground="#FFFFFF" FontSize="15" Content="Спасибо за ипользование моего RCC." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
@@ -38,7 +38,7 @@
                         </Grid>
                     </Border>
                 </Grid>
-                <Grid x:Name="grid_accont_info" Visibility="Visible">
+                <Grid x:Name="grid_accont_info" Visibility="Hidden">
                     <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
                         <Grid>
                             <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="127,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Padding="0,0,0,0" FontSize="15" FontFamily="Tahoma"/>
@@ -153,12 +153,56 @@
                         </Grid>
                     </Border>
                 </Grid>
+                <Grid Name="grid_last_activity" Visibility="Hidden">
+                    <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,25,23" Background="#219297B3" BorderBrush="#6610121B">
+                        <Grid>
+                            <ListBox BorderBrush="#00ABADB3" x:Name="list_all_last_activity">
+                                <ListBox.Template>
+                                    <ControlTemplate>
+                                        <DockPanel>
+                                            <Grid DockPanel.Dock="Top" Height="65">
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="249">File Name</Label>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="142" Foreground="#F9FAFB" Margin="249,0,0,0">Description</Label>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="393,0,0,0">Time Action</Label>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="487" Foreground="#F9FAFB" Margin="581,0,0,0">Full Path</Label>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="248,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="391,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="579,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
+                                                <Rectangle Width="1068" HorizontalAlignment="Center" Height="2" Margin="0,63,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
+                                            </Grid>
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                <ItemsPresenter></ItemsPresenter>
+                                            </ScrollViewer>
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Background="Transparent" Orientation="Horizontal">
+                                            <Grid>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243" Content="{Binding filename}"/>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB" Margin="245,0,0,0" Content="{Binding description}"/>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="388,0,0,0" Content="{Binding action_time}"/>
+                                                <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB" Margin="576,0,0,0" Content="{Binding full_path}"/>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="46" Margin="243,-18,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="386,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                                <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="574,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                                <Rectangle Width="1068" HorizontalAlignment="Left" Height="2" Margin="-7,28,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
             <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
-                <Label Content="Проверка файловой системы" Style="{StaticResource TabButton}" Margin="131,0,0,0" HorizontalAlignment="Left"/>
-                <Label Name="button_show_usb_device_page" MouseDown="button_show_usb_device_page_MouseDown" Content="USB устройства" Style="{StaticResource TabButton}" Margin="416,0,0,0" HorizontalAlignment="Left" />
-                <Label Content="Проверка мышы" Style="{StaticResource TabButton}" Margin="598,0,0,0" HorizontalAlignment="Left" />
-                <Label Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource TabButton}" Margin="790,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
+                <Label Content="Проверка файловой системы" Style="{StaticResource TabButton}" Margin="26,0,0,0" HorizontalAlignment="Left"/>
+                <Label Name="button_show_last_activity_page" MouseDown="button_show_last_activity_page_MouseDown" Content="Последние действия" Style="{StaticResource TabButton}" Margin="311,0,0,0" HorizontalAlignment="Left"/>
+                <Label Name="button_show_usb_device_page" MouseDown="button_show_usb_device_page_MouseDown" Content="USB устройства" Style="{StaticResource TabButton}" HorizontalAlignment="Left" Margin="533,0,0,0" />
+                <Label Content="Проверка мышы" Style="{StaticResource TabButton}" Margin="715,0,0,0" HorizontalAlignment="Left" />
+                <Label Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource TabButton}" Margin="905,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
             </Grid>
         </Grid>
     </Border>

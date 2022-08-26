@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <EmbeddedResource Include="Resources\LastActivityView.exe" />
     <EmbeddedResource Include="Resources\USBDeview.exe" />
   </ItemGroup>
   <ItemGroup>
