@@ -8,12 +8,21 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Xml.Linq;
+using Path = System.IO.Path;
 
 namespace RCC
 {
     public partial class MainWindow : Window
     {
+        public class mouse_activity { 
+            public string key { get; set; }
+            public mouse_activity(string key)
+            {
+                this.key = key;
+            }
+        }
         public class usb_device_info
         {
             public string device_name { get; set; }
@@ -33,7 +42,6 @@ namespace RCC
                 this.creating_time = creating_time;
             }
         }
-
         public class last_activity_info
         {
             public string action_time { get; set; }
@@ -49,9 +57,7 @@ namespace RCC
                 this.full_path = full_path;
             }
         }
-
         private void window_loaded(object sender, RoutedEventArgs e) => GlassEffect.EnableBlur(this);
-
         private readonly BackgroundWorker background_worker_find_steam_account = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_usb_device = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_last_activity = new BackgroundWorker();
@@ -148,6 +154,9 @@ namespace RCC
         public MainWindow()
         {
             InitializeComponent();
+
+            window_page_manager(grid_greeting);
+
             background_worker_find_steam_account.DoWork += new DoWorkEventHandler(background_worker_find_steam_account_DoWork);
             background_worker_find_steam_account.ProgressChanged += new ProgressChangedEventHandler(background_worker_find_steam_account_ProgressChanged);
             background_worker_find_steam_account.WorkerReportsProgress = true;
@@ -181,17 +190,63 @@ namespace RCC
 
         private void window_page_manager(Grid show_grid)
         {
+            grid_logger_mouse_move.Visibility = Visibility.Hidden;
             grid_last_activity.Visibility = Visibility.Hidden;
             grid_greeting.Visibility = Visibility.Hidden;
             grid_accont_info.Visibility = Visibility.Hidden;
             grid_usb_device.Visibility = Visibility.Hidden;
             show_grid.Visibility = Visibility.Visible;
         }
-
-        private void windows_title_bar(object sender, MouseButtonEventArgs e) => DragMove();
         private void button_open_steam_path_Click(object sender, RoutedEventArgs e) => Process.Start(Steam.LocalInfo.get_steam_location());
         private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_accont_info);
         private void button_show_usb_device_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_usb_device);
         private void button_show_last_activity_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_last_activity);
+        private void button_show_mouse_check_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_logger_mouse_move);
+        private void canvas_mouse_drawing_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Line line = new Line();
+
+                line.Stroke = SystemColors.WindowFrameBrush;
+                line.X1 = e.GetPosition(canvas_mouse_drawing).X - 1;
+                line.Y1 = e.GetPosition(canvas_mouse_drawing).Y - 1;
+                line.X2 = e.GetPosition(canvas_mouse_drawing).X;
+                line.Y2 = e.GetPosition(canvas_mouse_drawing).Y;
+                canvas_mouse_drawing.Children.Add(line);
+            }
+        }
+        private void canvas_mouse_drawing_MouseUp(object sender, MouseEventArgs e)
+        {
+            canvas_mouse_drawing.Children.Clear();
+        }
+
+        private void canvas_mouse_drawing_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string conversion_event_to_string = string.Empty;
+            switch (e.ChangedButton)
+            {
+                case MouseButton.Right:
+                    conversion_event_to_string = "User has pressed right mouse button";
+                    break;
+                case MouseButton.Left:
+                    conversion_event_to_string = "User has pressed left mouse button";
+                    break;
+                case MouseButton.Middle:
+                    conversion_event_to_string = "User has pressed middle mouse button";
+                    break;
+                case MouseButton.XButton1:
+                    conversion_event_to_string = "User has pressed mouse button 1";
+                    break;
+                case MouseButton.XButton2:
+                    conversion_event_to_string = "User has pressed mouse button 2";
+                    break;
+                default:
+                    conversion_event_to_string = "User has pressed uncnown mouse button (supplementary)";
+                    break;
+            }
+            list_all_mouse_event.Items.Insert(0, new mouse_activity(conversion_event_to_string));
+            if (list_all_mouse_event.Items.Count > 10) list_all_mouse_event.Items.RemoveAt(list_all_mouse_event.Items.Count - 1);
+        }
     }
 }

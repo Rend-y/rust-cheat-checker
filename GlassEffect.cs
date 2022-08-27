@@ -40,22 +40,16 @@ namespace RCC
         public static void EnableBlur(System.Windows.Window window)
         {
             var windowHelper = new WindowInteropHelper(window);
-
             var accent = new AccentPolicy();
             accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
-
             var accentStructSize = Marshal.SizeOf(accent);
-
             var accentPtr = Marshal.AllocHGlobal(accentStructSize);
             Marshal.StructureToPtr(accent, accentPtr, false);
-
             var data = new WindowCompositionAttributeData();
             data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
             data.SizeOfData = accentStructSize;
             data.Data = accentPtr;
-
             AllDllImport.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
-
             Marshal.FreeHGlobal(accentPtr);
         }
     }
