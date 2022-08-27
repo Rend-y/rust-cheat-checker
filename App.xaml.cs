@@ -21,6 +21,8 @@ namespace RCC
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            DetectingCleaning detecting_cleaning = new DetectingCleaning();
+            detecting_cleaning.search_all();
             Thread font = new Thread(reg_font);
             font.Start();
             MainWindow main = new MainWindow();

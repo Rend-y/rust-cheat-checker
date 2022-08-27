@@ -64,8 +64,8 @@ namespace RCC
 
         void background_worker_find_steam_account_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Steam.LocalInfo.SteamData steam = e.UserState as Steam.LocalInfo.SteamData;
-            list_other_accounts.Items.Add(new Steam.LocalInfo.SteamData(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
+            Steam.SteamData steam = e.UserState as Steam.SteamData;
+            list_other_accounts.Items.Add(new Steam.SteamData(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
         }
         void background_worker_find_usb_device_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -143,7 +143,7 @@ namespace RCC
         }
         void background_worker_find_steam_account_DoWork(object sender, DoWorkEventArgs e)
         {
-            string steam_path_to_login_user = Steam.LocalInfo.get_path_to_login();
+            string steam_path_to_login_user = Steam.LocalInfo.get_path_to_login_user();
             if (!File.Exists(steam_path_to_login_user))
                 return;
             string file_data = File.ReadAllText(steam_path_to_login_user);
@@ -173,7 +173,7 @@ namespace RCC
             background_worker_find_last_activity.RunWorkerAsync();
 
             label_full_path_to_steam.Content = Steam.LocalInfo.get_steam_location();
-            Steam.LocalInfo.SteamData last_account_info = Steam.LocalInfo.get_last_account_info();
+            Steam.SteamData last_account_info = Steam.LocalInfo.get_last_account_info();
             label_steam_account_steam_id.Content = last_account_info.get_steam_id;
             label_steam_account_username.Content = last_account_info.get_username;
             label_cpu_type.Content = GetSysthemInfo.get_cpu_name;
