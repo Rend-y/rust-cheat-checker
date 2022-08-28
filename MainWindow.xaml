@@ -39,7 +39,7 @@
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid x:Name="grid_accont_info" Visibility="Hidden">
+                    <Grid x:Name="grid_accont_info" Visibility="Visible">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <Label x:Name="label_steam_account_username" Content="Username: My panda, my choise" Foreground="#FFF9FAFB" Margin="127,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="288" Padding="0,0,0,0" FontSize="15" FontFamily="Tahoma"/>
@@ -77,7 +77,7 @@
                         </Border>
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="459,23,20,22" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid Background="Transparent">
-                                <ListBox Background="Transparent" x:Name="list_other_accounts" BorderBrush="#00ABADB3">
+                                <ListBox Background="Transparent" x:Name="list_other_accounts" BorderBrush="#00ABADB3" SelectionChanged="list_other_accounts_SelectionChanged">
                                     <ListBox.Template>
                                         <ControlTemplate>
                                             <DockPanel>
@@ -107,6 +107,7 @@
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
+                                    <StackPanel/>
                                 </ListBox>
                             </Grid>
                         </Border>
@@ -166,7 +167,7 @@
                     <Grid Name="grid_last_activity" Visibility="Hidden">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,25,23" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
-                                <ListBox BorderBrush="#00ABADB3" x:Name="list_all_last_activity">
+                                <ListBox IsTextSearchEnabled="True" BorderBrush="#00ABADB3" x:Name="list_all_last_activity">
                                     <ListBox.Template>
                                         <ControlTemplate>
                                             <DockPanel>
@@ -206,7 +207,7 @@
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid x:Name="grid_logger_mouse_move" Visibility="Visible">
+                    <Grid x:Name="grid_logger_mouse_move" Visibility="Hidden">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,745,23" Width="350" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <ListBox Name="list_all_mouse_event" BorderBrush="#00ABADB3">

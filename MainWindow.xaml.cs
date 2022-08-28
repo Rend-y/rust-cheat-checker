@@ -187,7 +187,6 @@ namespace RCC
             myBrush.ImageSource = last_account_info.get_account_avatar;
             rectangle_local_profile_image.Fill = myBrush;
         }
-
         private void window_page_manager(Grid show_grid)
         {
             grid_logger_mouse_move.Visibility = Visibility.Hidden;
@@ -220,7 +219,6 @@ namespace RCC
         {
             canvas_mouse_drawing.Children.Clear();
         }
-
         private void canvas_mouse_drawing_MouseDown(object sender, MouseButtonEventArgs e)
         {
             string conversion_event_to_string = string.Empty;
@@ -248,12 +246,12 @@ namespace RCC
             list_all_mouse_event.Items.Insert(0, new mouse_activity(conversion_event_to_string));
             if (list_all_mouse_event.Items.Count > 10) list_all_mouse_event.Items.RemoveAt(list_all_mouse_event.Items.Count - 1);
         }
-
         private void grid_custom_title_bar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (grid_logger_mouse_move.Visibility == Visibility.Visible)
                 return;
             DragMove();
         }
+        private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{(list_other_accounts.SelectedItem as Steam.SteamData).steam_id}");
     }
 }

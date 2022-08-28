@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq.Expressions;
+﻿using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Security.Principal;
 
 namespace RCC
 {
@@ -13,6 +12,14 @@ namespace RCC
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!isAdmin)
+            {
+                MessageBox.Show("Please run it's programm from admin");
+                return;
+            }
             Thread thread = new Thread(() =>
             {
                 DetectingCleaning detecting = new DetectingCleaning();
