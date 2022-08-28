@@ -2,6 +2,10 @@
 using System.Threading;
 using System.Windows;
 using System.Security.Principal;
+using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace RCC
 {
@@ -10,6 +14,12 @@ namespace RCC
     /// </summary>
     public partial class App : Application
     {
+        List<Tuple<string, byte[]>> list_fonts = new List<Tuple<string, byte[]>>()
+        {
+            Tuple.Create(@"Font Awesome 6 Brands-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Brands_Regular_400),
+            Tuple.Create(@"Font Awesome 6 Free-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Regular_400),
+            Tuple.Create(@"Font Awesome 6 Free-Solid-900.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Solid_900),
+        };
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -18,7 +28,7 @@ namespace RCC
             if (!isAdmin)
             {
                 MessageBox.Show("Please run it's programm from admin");
-                return;
+                Environment.Exit(Environment.ExitCode);
             }
             Thread thread = new Thread(() =>
             {
@@ -27,12 +37,11 @@ namespace RCC
             });
             Thread font = new Thread(() =>
             {
-                File.WriteAllBytes(@"C:/Windows/Fonts/Font Awesome 6 Brands-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Brands_Regular_400);
-                File.WriteAllBytes(@"C:/Windows/Fonts/Font Awesome 6 Free-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Regular_400);
-                File.WriteAllBytes(@"C:/Windows/Fonts/Font Awesome 6 Free-Solid-900.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Solid_900);
-                AllDllImport.AddFontResourceA(@"C:/Windows/Fonts/Font Awesome 6 Brands-Regular-400.otf");
-                AllDllImport.AddFontResourceA(@"C:/Windows/Fonts/Font Awesome 6 Free-Regular-400.otf");
-                AllDllImport.AddFontResourceA(@"C:/Windows/Fonts/Font Awesome 6 Free-Solid-900.otf");
+                list_fonts.ForEach((fonts) => new Thread(() =>
+                    {
+                        File.WriteAllBytes(fonts.Item1, fonts.Item2);
+                        File.Move(fonts.Item1, $"C:/Windows/Fonts/{fonts.Item1}");
+                    }).Start());
             });
             MainWindow main = new MainWindow();
             thread.Start();
