@@ -10,29 +10,40 @@ namespace RCC
 {
     public class DetectingCleaning
     {
-        List<String> all_logs_detected_cleaning = new List<string>();
-        public DetectingCleaning() { }
-        public void detect_clear_prefetch()
+        List<string> all_logs_detected_cleaning = new List<string>();
+        public DetectingCleaning() 
         {
-            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\Prefetch", "*.pf");
-            if (files.Count() == 0)
+        }
+        List<Tuple<string, string, string>> folder_and_file_for_clear = new List<Tuple<string, string, string>>()
+        {
+            Tuple.Create("C:\\Users\\Timofey\\Recent","", "Recent"),
+            Tuple.Create("C:\\Windows\\Prefetch\\Prefetch","", "Prefetch"),
+        };
+        public void detect_clear_protected_folder()
+        {
+            foreach(Tuple<string, string, string> folder in folder_and_file_for_clear)
             {
-                all_logs_detected_cleaning.Add("Prefetch folder cleaning was discovered");
-                return;
-            }
+                string[] files = Directory.GetFiles(folder.Item1, folder.Item2);
+                if (files.Count() <= 5)
+                {
+                    all_logs_detected_cleaning.Add($"Обнаружена очищенная папка {folder.Item3}");
+                    return;
+                }
 
-            DateTime dateTime = DateTime.Now;
-            string[] array = files;
-            for (int i = 0; i < array.Length; i++)
-            {
-                DateTime creationTime = File.GetCreationTime(array[i]);
-                if ((dateTime - creationTime).TotalMinutes > 0.0)
-                    dateTime = creationTime;
-            }
+                DateTime dateTime = DateTime.Now;
+                string[] array = files;
+                for (int i = 0; i < array.Length; i++)
+                {
+                    DateTime creationTime = File.GetCreationTime(array[i]);
+                    if ((dateTime - creationTime).TotalMinutes > 0.0)
+                        dateTime = creationTime;
+                }
+                int total_minutes = (int)(DateTime.Now - dateTime).TotalMinutes;
+                if (total_minutes < 45.0)
+                    all_logs_detected_cleaning.Add($"Обнаружена попытка очистки папки {folder.Item3}");
+                else if (total_minutes < 360) all_logs_detected_cleaning.Add($"Самый первый файл в {folder.Item3} был создан {total_minutes} минут назад");
 
-            if ((DateTime.Now - dateTime).TotalMinutes < 45.0)
-                all_logs_detected_cleaning.Add("An attempt was found to clear the Prefetch folder");
-            else all_logs_detected_cleaning.Add($"The oldst file was been created {(int)((DateTime.Now - dateTime).TotalMinutes)} min ago");
+            }
         }
         public void detect_clear_steam_account()
         {
@@ -44,12 +55,12 @@ namespace RCC
                 return;
 
             int account_detect = get_steam_id_data_from_config.Count - get_steam_id_data_from_login_user.Count;
-            all_logs_detected_cleaning.Add($"Account deletion detected at {Math.Abs(account_detect)}");
+            all_logs_detected_cleaning.Add($"Обнаружено {Math.Abs(account_detect)} удалённых аккаунтов");
         }
         public void search_all()
         {
             this.detect_clear_steam_account();
-            this.detect_clear_prefetch();
+            this.detect_clear_protected_folder();
             if (all_logs_detected_cleaning.Count == 0)
                 return;
             string message = string.Empty;

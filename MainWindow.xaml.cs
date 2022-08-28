@@ -227,26 +227,33 @@ namespace RCC
             switch (e.ChangedButton)
             {
                 case MouseButton.Right:
-                    conversion_event_to_string = "User has pressed right mouse button";
+                    conversion_event_to_string = "Пользователь нажал правую кнопку";
                     break;
                 case MouseButton.Left:
-                    conversion_event_to_string = "User has pressed left mouse button";
+                    conversion_event_to_string = "Пользователь нажал левую кнопку";
                     break;
                 case MouseButton.Middle:
-                    conversion_event_to_string = "User has pressed middle mouse button";
+                    conversion_event_to_string = "Пользователь нажал центральную кнопку";
                     break;
                 case MouseButton.XButton1:
-                    conversion_event_to_string = "User has pressed mouse button 1";
+                    conversion_event_to_string = "Пользователь нажал боковую (1) кнопку";
                     break;
                 case MouseButton.XButton2:
-                    conversion_event_to_string = "User has pressed mouse button 2";
+                    conversion_event_to_string = "Пользователь нажал боковую (2) кнопку";
                     break;
                 default:
-                    conversion_event_to_string = "User has pressed uncnown mouse button (supplementary)";
+                    conversion_event_to_string = "Пользователь нажал неизвестную кнопку";
                     break;
             }
             list_all_mouse_event.Items.Insert(0, new mouse_activity(conversion_event_to_string));
             if (list_all_mouse_event.Items.Count > 10) list_all_mouse_event.Items.RemoveAt(list_all_mouse_event.Items.Count - 1);
+        }
+
+        private void grid_custom_title_bar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (grid_logger_mouse_move.Visibility == Visibility.Visible)
+                return;
+            DragMove();
         }
     }
 }
