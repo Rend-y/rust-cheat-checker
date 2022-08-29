@@ -31,13 +31,12 @@ namespace RCC
                 }
 
                 DateTime dateTime = DateTime.Now;
-                string[] array = files;
-                for (int i = 0; i < array.Length; i++)
+                files.ToList().ForEach((get_file) =>
                 {
-                    DateTime creationTime = File.GetCreationTime(array[i]);
+                    DateTime creationTime = File.GetCreationTime(get_file);
                     if ((dateTime - creationTime).TotalMinutes > 0.0)
                         dateTime = creationTime;
-                }
+                });
                 int total_minutes = (int)(DateTime.Now - dateTime).TotalMinutes;
                 if (total_minutes < 45.0)
                     all_logs_detected_cleaning.Add($"Обнаружена попытка очистки папки {folder.Item3}");
@@ -64,8 +63,7 @@ namespace RCC
             if (all_logs_detected_cleaning.Count == 0)
                 return;
             string message = string.Empty;
-            foreach (string messages in all_logs_detected_cleaning)
-                message += $"{messages}\n";
+            all_logs_detected_cleaning.ForEach((messages) => message += $"{messages}\n");
             MessageBox.Show(message);
         }
     }

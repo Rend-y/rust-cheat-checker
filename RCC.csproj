@@ -122,6 +122,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="README.md" />
+    <None Include="version.ini" />
     <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
     <EmbeddedResource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
     <EmbeddedResource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
