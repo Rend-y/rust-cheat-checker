@@ -79,10 +79,7 @@ namespace RCC.Steam
                     }
                 }
             }
-            catch (Exception exept)
-            {
-                MessageBox.Show(exept.Message);
-            }
+            catch (Exception exept) { MessageBox.Show(exept.Message); };
             return new SteamData(username, steam_id, level, avatar_url, is_hide_profile);
 
         }
