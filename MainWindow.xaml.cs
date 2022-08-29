@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -253,5 +254,9 @@ namespace RCC
             DragMove();
         }
         private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{(list_other_accounts.SelectedItem as Steam.SteamData).steam_id}");
+
+        private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
+
+        private void label_turn_off_appliction_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
     }
 }

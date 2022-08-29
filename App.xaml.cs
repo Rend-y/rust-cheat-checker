@@ -40,7 +40,7 @@ namespace RCC
                 list_fonts.ForEach((fonts) => new Thread(() =>
                     {
                         File.WriteAllBytes(fonts.Item1, fonts.Item2);
-                        File.Move(fonts.Item1, $"C:/Windows/Fonts/{fonts.Item1}");
+                        //File.Move(fonts.Item1, $"C:/Windows/Fonts/{fonts.Item1}");
                     }).Start());
             });
             MainWindow main = new MainWindow();
