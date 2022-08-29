@@ -102,7 +102,6 @@ namespace RCC.Steam
             string file_data = File.ReadAllText(steam_path_to_login_user);
             List<string> get_steam_id_data = get_all_steam_id(file_data);
             List<string> is_last_account = Regex.Matches(file_data, "\\\"mostrecent\\\"		\\\"(.*?)\\\"").Cast<Match>().Select(x => x.Groups[1].Value).ToList();
-
             for (int i = 0; i < is_last_account.Count; i++)
             {
                 if (is_last_account[i] == true.ToString())
@@ -127,8 +126,7 @@ namespace RCC.Steam
             List<string> get_steam_id_data = get_all_steam_id(file_data);
             List<SteamData> result = new List<SteamData>();
 
-            for (int i = 0; i < get_steam_id_data.Count; i++)
-                result.Add(parse_from_steam(long.Parse(get_steam_id_data[i])));
+            get_steam_id_data.ForEach((steam_id) => result.Add(parse_from_steam(long.Parse(steam_id))));
 
             return result;
         }

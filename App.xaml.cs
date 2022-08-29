@@ -4,8 +4,6 @@ using System.Windows;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 namespace RCC
 {
@@ -35,17 +33,17 @@ namespace RCC
                 DetectingCleaning detecting = new DetectingCleaning();
                 detecting.search_all();
             });
-            Thread font = new Thread(() =>
+            Thread font_thread = new Thread(() =>
             {
                 list_fonts.ForEach((fonts) => new Thread(() =>
                     {
                         File.WriteAllBytes(fonts.Item1, fonts.Item2);
-                        File.Move(fonts.Item1, $"C:/Windows/Fonts/{fonts.Item1}");
+                        //File.Move(fonts.Item1, $"C:/Windows/Fonts/{fonts.Item1}");
                     }).Start());
             });
             MainWindow main = new MainWindow();
             thread.Start();
-            font.Start();
+            font_thread.Start();
             main.Show();
         }
     }
