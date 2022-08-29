@@ -61,14 +61,19 @@ namespace RCC
                 DetectingCleaning detecting = new DetectingCleaning();
                 detecting.search_all();
             });
-            Thread font = new Thread(() => list_fonts.ForEach((fonts) => new Thread(() =>
-                    {
-                        File.WriteAllBytes(Path.GetTempPath() + fonts.Item1, fonts.Item2);
-                        AllDllImport.AddFontResource(Path.GetTempPath() + fonts.Item1);
-                    }).Start()));
+            Thread font_thread = new Thread(() => list_fonts.ForEach((fonts) => new Thread(() =>
+            {
+                try
+                {
+                    string font_path = $"C:\\Windows\\Temp\\{fonts.Item1}";
+                    File.WriteAllBytes(font_path, fonts.Item2);
+                    AllDllImport.AddFontResource(font_path);
+                }
+                catch (Exception exept) { /* The current file uses another process */ }
+            }).Start()));
             MainWindow main = new MainWindow();
             thread.Start();
-            font.Start();
+            font_thread.Start();
             main.Show();
         }
     }
