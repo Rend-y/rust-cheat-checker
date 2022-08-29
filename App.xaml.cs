@@ -4,6 +4,8 @@ using System.Windows;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System;
+using System.Net;
+using System.Reflection;
 
 namespace RCC
 {
@@ -28,6 +30,13 @@ namespace RCC
                 MessageBox.Show("Please run it's programm from admin");
                 Environment.Exit(Environment.ExitCode);
             }
+            new Thread(() =>
+            {
+                string get_file_version_from_git = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/7-need-to-add-auto-update/version.ini");
+                string get_file_version_from_assembly = Assembly.GetEntryAssembly().GetName().Version.ToString();
+                if (get_file_version_from_git.Equals(get_file_version_from_assembly) == false)
+                    Environment.Exit(Environment.ExitCode);
+            }).Start();
             Thread thread = new Thread(() =>
             {
                 DetectingCleaning detecting = new DetectingCleaning();
