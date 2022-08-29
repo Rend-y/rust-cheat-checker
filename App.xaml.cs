@@ -24,12 +24,20 @@ namespace RCC
         };
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            string get_file_version_from_git = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/7-need-to-add-auto-update/version.ini");
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!isAdmin)
+            {
+                System.Windows.Forms.MessageBox.Show("Please run it's programm from admin");
+                Environment.Exit(Environment.ExitCode);
+            }
+            string get_file_version_from_git = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/main/version.ini");
             string get_file_version_from_assembly = Assembly.GetEntryAssembly().GetName().Version.ToString();
             if (get_file_version_from_git.Equals(get_file_version_from_assembly) == false)
             {
                 DialogResult button_pressed = System.Windows.Forms.MessageBox.Show(
-                       "Вышла новая версия вы жилаете обновится ?",
+                       "Вышла новая версия вы желаете обновится ?",
                        "Обновление",
                        MessageBoxButtons.YesNo,
                        MessageBoxIcon.Information,
@@ -37,7 +45,7 @@ namespace RCC
                        System.Windows.Forms.MessageBoxOptions.DefaultDesktopOnly);
                 if (button_pressed == DialogResult.Yes)
                 {
-                    new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{get_file_version_from_git}/RCC.exe","Updated.exe");
+                    new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{get_file_version_from_git}/RCC.exe", "Updated.exe");
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.FileName = "cmd.exe";
                     startInfo.Arguments = "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe";
@@ -47,14 +55,6 @@ namespace RCC
                     Process proc = Process.Start(startInfo);
                     Environment.Exit(Environment.ExitCode);
                 }
-            }
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            if (!isAdmin)
-            {
-                System.Windows.Forms.MessageBox.Show("Please run it's programm from admin");
-                Environment.Exit(Environment.ExitCode);
             }
             Thread thread = new Thread(() =>
             {
