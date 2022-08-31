@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 namespace RCC.Steam
 {
-    public class LocalInfo
+    public static class local_info
     {
         /// <summary>
         /// Use this function for get path to folder (steam)

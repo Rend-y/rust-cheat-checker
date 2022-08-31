@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -11,13 +12,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using RCC.Steam;
 using Path = System.IO.Path;
 
 namespace RCC
 {
     public partial class main_window : Window
     {
-        public class mouse_activity { 
+        public class mouse_activity {
             public string key { get; set; }
             public mouse_activity(string key)
             {
@@ -85,18 +87,18 @@ namespace RCC
 
             Thread delete_thread = new Thread(remove_file_list =>
             {
-                foreach (string file in (remove_file_list as string[]))
+                var file_list = remove_file_list as string[];
+                file_list.ToList().ForEach(file =>
                 {
                     Thread.Sleep(500);
                     File.Delete(file);
-                }
-
+                });
             });
             delete_thread.Start(new string[] { path_to_exe, path_to_save_xml });
 
             return XDocument.Load(path_to_save_xml).Descendants("item");
         }
-        string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.ToString());
+        string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
         {
             string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
@@ -144,16 +146,16 @@ namespace RCC
         }
         void background_worker_find_steam_account_DoWork(object sender, DoWorkEventArgs e)
         {
-            string steam_path_to_login_user = Steam.LocalInfo.get_path_to_login_user();
+            string steam_path_to_login_user = local_info.get_path_to_login_user();
             if (!File.Exists(steam_path_to_login_user))
                 return;
             string file_data = File.ReadAllText(steam_path_to_login_user);
-            List<string> get_steam_id_data = Steam.LocalInfo.get_all_steam_id(file_data);
+            List<string> get_steam_id_data = local_info.get_all_steam_id(file_data);
 
             int i = 0;
-            get_steam_id_data.ForEach((steam_id) =>
+            get_steam_id_data.ForEach(steam_id =>
             {
-                background_worker_find_steam_account.ReportProgress(i, Steam.LocalInfo.parse_from_steam(long.Parse(steam_id)));
+                background_worker_find_steam_account.ReportProgress(i, local_info.parse_from_steam(long.Parse(steam_id)));
                 i++;
             });
         }
@@ -163,23 +165,23 @@ namespace RCC
 
             window_page_manager(grid_greeting);
 
-            background_worker_find_steam_account.DoWork += new DoWorkEventHandler(background_worker_find_steam_account_DoWork);
-            background_worker_find_steam_account.ProgressChanged += new ProgressChangedEventHandler(background_worker_find_steam_account_ProgressChanged);
+            background_worker_find_steam_account.DoWork += background_worker_find_steam_account_DoWork;
+            background_worker_find_steam_account.ProgressChanged += background_worker_find_steam_account_ProgressChanged;
             background_worker_find_steam_account.WorkerReportsProgress = true;
             background_worker_find_steam_account.RunWorkerAsync();
 
-            background_worker_find_usb_device.DoWork += new DoWorkEventHandler(background_worker_find_usb_device_DoWork);
-            background_worker_find_usb_device.ProgressChanged += new ProgressChangedEventHandler(background_worker_find_usb_device_ProgressChanged);
+            background_worker_find_usb_device.DoWork += background_worker_find_usb_device_DoWork;
+            background_worker_find_usb_device.ProgressChanged += background_worker_find_usb_device_ProgressChanged;
             background_worker_find_usb_device.WorkerReportsProgress = true;
             background_worker_find_usb_device.RunWorkerAsync();
 
-            background_worker_find_last_activity.DoWork += new DoWorkEventHandler(background_worker_find_last_activity_DoWork);
-            background_worker_find_last_activity.ProgressChanged += new ProgressChangedEventHandler(background_worker_find_last_activity_ProgressChanged);
+            background_worker_find_last_activity.DoWork += background_worker_find_last_activity_DoWork;
+            background_worker_find_last_activity.ProgressChanged += background_worker_find_last_activity_ProgressChanged;
             background_worker_find_last_activity.WorkerReportsProgress = true;
             background_worker_find_last_activity.RunWorkerAsync();
 
-            label_full_path_to_steam.Content = Steam.LocalInfo.get_steam_location();
-            Steam.steam_data last_account_info = Steam.LocalInfo.get_last_account_info();
+            label_full_path_to_steam.Content = local_info.get_steam_location();
+            steam_data last_account_info = local_info.get_last_account_info();
             label_steam_account_steam_id.Content = last_account_info.get_steam_id;
             label_steam_account_username.Content = last_account_info.get_username;
             label_cpu_type.Content = get_system_info.get_cpu_name;
@@ -200,9 +202,10 @@ namespace RCC
             grid_greeting.Visibility = Visibility.Hidden;
             grid_accont_info.Visibility = Visibility.Hidden;
             grid_usb_device.Visibility = Visibility.Hidden;
+            grid_search_file.Visibility = Visibility.Hidden;
             show_grid.Visibility = Visibility.Visible;
         }
-        private void button_open_steam_path_Click(object sender, RoutedEventArgs e) => Process.Start(Steam.LocalInfo.get_steam_location());
+        private void button_open_steam_path_Click(object sender, RoutedEventArgs e) => Process.Start(local_info.get_steam_location());
         private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_accont_info);
         private void button_show_usb_device_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_usb_device);
         private void button_show_last_activity_page_MouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_last_activity);
@@ -221,13 +224,10 @@ namespace RCC
                 canvas_mouse_drawing.Children.Add(line);
             }
         }
-        private void canvas_mouse_drawing_MouseUp(object sender, MouseEventArgs e)
+        private void canvas_mouse_drawing_MouseUp(object sender, MouseEventArgs e) => canvas_mouse_drawing.Children.Clear();
+            private void canvas_mouse_drawing_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            canvas_mouse_drawing.Children.Clear();
-        }
-        private void canvas_mouse_drawing_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            string conversion_event_to_string = string.Empty;
+            string conversion_event_to_string;
             switch (e.ChangedButton)
             {
                 case MouseButton.Right:
@@ -258,10 +258,9 @@ namespace RCC
                 return;
             DragMove();
         }
-        private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{(list_other_accounts.SelectedItem as Steam.steam_data).steam_id}");
-
+        private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{((steam_data)list_other_accounts.SelectedItem).steam_id}");
         private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
-
         private void label_turn_off_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
+        private void Button_show_search_file_OnMouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_search_file);
     }
 }
