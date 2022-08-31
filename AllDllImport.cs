@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static RCC.GlassEffect;
+using static RCC.glass_effect;
 
 namespace RCC
 {
-    public class AllDllImport
+    public static class all_dll_import
     {
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

@@ -16,7 +16,7 @@ namespace RCC
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        List<Tuple<string, byte[]>> list_fonts = new List<Tuple<string, byte[]>>()
+        readonly List<Tuple<string, byte[]>> list_fonts = new List<Tuple<string, byte[]>>()
         {
             Tuple.Create(@"Font Awesome 6 Brands-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Brands_Regular_400),
             Tuple.Create(@"Font Awesome 6 Free-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Regular_400),
@@ -33,7 +33,7 @@ namespace RCC
                 Environment.Exit(Environment.ExitCode);
             }
             string get_file_version_from_git = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/main/version.ini");
-            string get_file_version_from_assembly = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            string get_file_version_from_assembly = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
             if (get_file_version_from_git.Equals(get_file_version_from_assembly) == false)
             {
                 DialogResult button_pressed = System.Windows.Forms.MessageBox.Show(
@@ -46,32 +46,34 @@ namespace RCC
                 if (button_pressed == DialogResult.Yes)
                 {
                     new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{get_file_version_from_git}/RCC.exe", "Updated.exe");
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "cmd.exe";
-                    startInfo.Arguments = "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe";
-                    startInfo.UseShellExecute = false;
-                    startInfo.RedirectStandardOutput = true;
-                    startInfo.CreateNoWindow = true;
-                    Process proc = Process.Start(startInfo);
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    };
+                    Process.Start(startInfo);
                     Environment.Exit(Environment.ExitCode);
                 }
             }
             Thread thread = new Thread(() =>
             {
-                DetectingCleaning detecting = new DetectingCleaning();
+                detecting_cleaning detecting = new detecting_cleaning();
                 detecting.search_all();
             });
-            Thread font_thread = new Thread(() => list_fonts.ForEach((fonts) => new Thread(() =>
+            Thread font_thread = new Thread(() => list_fonts.ForEach(fonts => new Thread(() =>
             {
                 try
                 {
                     string font_path = $"C:\\Windows\\Temp\\{fonts.Item1}";
                     File.WriteAllBytes(font_path, fonts.Item2);
-                    AllDllImport.AddFontResource(font_path);
+                    all_dll_import.AddFontResource(font_path);
                 }
-                catch (Exception exept) { /* The current file uses another process */ }
+                catch { /* The current file uses another process */ }
             }).Start()));
-            MainWindow main = new MainWindow();
+            main_window main = new main_window();
             thread.Start();
             font_thread.Start();
             main.Show();

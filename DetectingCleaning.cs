@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace RCC
 {
-    public class DetectingCleaning
+    public class detecting_cleaning
     {
-        List<string> all_logs_detected_cleaning = new List<string>();
-        public DetectingCleaning() 
+        readonly List<string> all_logs_detected_cleaning = new List<string>();
+        readonly List<Tuple<string, string, string>> folder_and_file_for_clear = new List<Tuple<string, string, string>>()
         {
-        }
-        List<Tuple<string, string, string>> folder_and_file_for_clear = new List<Tuple<string, string, string>>()
-        {
-            Tuple.Create("C:\\Users\\Timofey\\Recent","", "Recent"),
+            Tuple.Create($"C:\\Users\\{Environment.UserName}\\Recent","", "Recent"),
             Tuple.Create("C:\\Windows\\Prefetch\\Prefetch","", "Prefetch"),
         };
-        public void detect_clear_protected_folder()
+        private void detect_clear_protected_folder()
         {
             foreach(Tuple<string, string, string> folder in folder_and_file_for_clear)
             {
@@ -44,7 +39,7 @@ namespace RCC
 
             }
         }
-        public void detect_clear_steam_account()
+        private void detect_clear_steam_account()
         {
             string file_data_from_config = File.ReadAllText(Steam.LocalInfo.get_path_to_config());
             List<string> get_steam_id_data_from_config = Steam.LocalInfo.get_all_steam_id(file_data_from_config);

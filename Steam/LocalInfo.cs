@@ -27,10 +27,10 @@ namespace RCC.Steam
             string result = string.Empty;
             try
             {
-                bool is_x64_opearation_sysytem = Environment.Is64BitOperatingSystem;
-                RegistryKey get_base_reg_dir = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, is_x64_opearation_sysytem ? RegistryView.Registry64 : RegistryView.Registry32);
-                result = get_base_reg_dir.OpenSubKey(is_x64_opearation_sysytem ? steam_path_x64 : steam_path_x32, is_x64_opearation_sysytem)
-                    .GetValue(is_x64_opearation_sysytem ? "InstallPath" : "SourceModInstallPath")?.ToString();
+                bool is_x64_operation_system = Environment.Is64BitOperatingSystem;
+                RegistryKey get_base_reg_dir = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, is_x64_operation_system ? RegistryView.Registry64 : RegistryView.Registry32);
+                result = get_base_reg_dir.OpenSubKey(is_x64_operation_system ? steam_path_x64 : steam_path_x32, is_x64_operation_system)
+                    .GetValue(is_x64_operation_system ? "InstallPath" : "SourceModInstallPath")?.ToString();
             }
             catch (Exception exept) { MessageBox.Show(exept.Message.ToString()); }
             return result;
@@ -52,7 +52,7 @@ namespace RCC.Steam
         /// </summary>
         /// <param name="steam_id">steam id in steam</param>
         /// <returns>steam data (avatar, username, is hide account, account level)</returns>
-        public static SteamData parse_from_steam(long steam_id)
+        public static steam_data parse_from_steam(long steam_id)
         {
             string url = $"https://steamcommunity.com/profiles/{steam_id}";
             string username = "", avatar_url = "";
@@ -79,8 +79,8 @@ namespace RCC.Steam
                     }
                 }
             }
-            catch (Exception exept) { MessageBox.Show(exept.Message); };
-            return new SteamData(username, steam_id, level, avatar_url, is_hide_profile);
+            catch (Exception exception) { MessageBox.Show(exception.Message); };
+            return new steam_data(username, steam_id, level, avatar_url, is_hide_profile);
 
         }
 
@@ -89,7 +89,7 @@ namespace RCC.Steam
         /// use this to get last account
         /// </summary>
         /// <returns>Steam Data for current user (avatar, username, is hide account, account level)</returns>
-        public static SteamData get_last_account_info()
+        public static steam_data get_last_account_info()
         {
             string steam_path_to_login_user = get_path_to_login_user();
 
@@ -112,7 +112,7 @@ namespace RCC.Steam
         /// use this ti get all array account
         /// </summary>
         /// <returns>array Steam Data (avatar, username, is hide account, account level)</returns>
-        public static List<SteamData> get_steam_all_steam_account()
+        public static List<steam_data> get_steam_all_steam_account()
         {
             string steam_path_to_login_user = get_path_to_login_user();
 
@@ -121,9 +121,9 @@ namespace RCC.Steam
 
             string file_data = File.ReadAllText(steam_path_to_login_user);
             List<string> get_steam_id_data = get_all_steam_id(file_data);
-            List<SteamData> result = new List<SteamData>();
+            List<steam_data> result = new List<steam_data>();
 
-            get_steam_id_data.ForEach((steam_id) => result.Add(parse_from_steam(long.Parse(steam_id))));
+            get_steam_id_data.ForEach(steam_id => result.Add(parse_from_steam(long.Parse(steam_id))));
 
             return result;
         }

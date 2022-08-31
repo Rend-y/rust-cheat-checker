@@ -4,7 +4,7 @@ using System.Windows.Interop;
 
 namespace RCC
 {
-    public class GlassEffect
+    public static class glass_effect
     {
         internal enum AccentState
         {
@@ -37,11 +37,13 @@ namespace RCC
             WCA_ACCENT_POLICY = 19
         }
 
-        public static void EnableBlur(System.Windows.Window window)
+        public static void enable_blur(System.Windows.Window window)
         {
             var windowHelper = new WindowInteropHelper(window);
-            var accent = new AccentPolicy();
-            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+            var accent = new AccentPolicy
+            {
+                AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND
+            };
             var accentStructSize = Marshal.SizeOf(accent);
             var accentPtr = Marshal.AllocHGlobal(accentStructSize);
             Marshal.StructureToPtr(accent, accentPtr, false);
@@ -49,7 +51,7 @@ namespace RCC
             data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
             data.SizeOfData = accentStructSize;
             data.Data = accentPtr;
-            AllDllImport.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+            all_dll_import.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
             Marshal.FreeHGlobal(accentPtr);
         }
     }

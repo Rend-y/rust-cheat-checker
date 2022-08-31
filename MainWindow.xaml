@@ -1,13 +1,12 @@
-﻿<Window x:Class="RCC.MainWindow"
+﻿<Window x:Class="RCC.main_window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RCC"
         mc:Ignorable="d"
         Title="MainWindow" Height="609" Loaded="window_loaded" Width="1122" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize">
     <Window.Resources>
-        <Style x:Key="TabButton" TargetType="Label">
+        <Style x:Key="style_tab_button" TargetType="Label">
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -19,8 +18,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="TitleButton" TargetType="Label">
-            <Setter Property="FontSize" Value="15"/>
+        <Style x:Key="style_title_button" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#F9FAFB"/>
@@ -262,17 +260,17 @@
                     </Grid>
                 </Grid>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
-                    <Label Content="Проверка файловой системы" Style="{StaticResource TabButton}" Margin="26,0,0,0" HorizontalAlignment="Left"/>
-                    <Label Name="button_show_last_activity_page" MouseDown="button_show_last_activity_page_MouseDown" Content="Последние действия" Style="{StaticResource TabButton}" Margin="311,0,0,0" HorizontalAlignment="Left"/>
-                    <Label Name="button_show_usb_device_page" MouseDown="button_show_usb_device_page_MouseDown" Content="USB устройства" Style="{StaticResource TabButton}" HorizontalAlignment="Left" Margin="533,0,0,0" />
-                    <Label Name="button_show_mouse_check" MouseDown="button_show_mouse_check_MouseDown" Content="Проверка мыши" Style="{StaticResource TabButton}" Margin="715,0,0,0" HorizontalAlignment="Left" />
-                    <Label Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource TabButton}" Margin="905,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
+                    <Label Content="Проверка файловой системы" Style="{StaticResource style_tab_button}" Margin="26,0,0,0" HorizontalAlignment="Left"/>
+                    <Label x:Name="button_show_last_activity_page" MouseDown="button_show_last_activity_page_MouseDown" Content="Последние действия" Style="{StaticResource style_tab_button}" Margin="311,0,0,0" HorizontalAlignment="Left"/>
+                    <Label x:Name="button_show_usb_device_page" MouseDown="button_show_usb_device_page_MouseDown" Content="USB устройства" Style="{StaticResource style_tab_button}" HorizontalAlignment="Left" Margin="533,0,0,0" />
+                    <Label x:Name="button_show_mouse_check" MouseDown="button_show_mouse_check_MouseDown" Content="Проверка мыши" Style="{StaticResource style_tab_button}" Margin="715,0,0,0" HorizontalAlignment="Left" />
+                    <Label x:Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource style_tab_button}" Margin="905,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
                 </Grid>
             </Grid>
         </Border>
         <Grid MouseLeftButtonDown="grid_custom_title_bar_MouseLeftButtonDown" Height="30" VerticalAlignment="Top">
-            <Label x:Name="label_close_application" MouseLeftButtonDown="label_close_application_MouseLeftButtonDown" Style="{StaticResource TitleButton}" Content="X" HorizontalAlignment="Right" Margin="0 0 10 0" />
-            <Label Name="label_turn_off_appliction" MouseLeftButtonDown="label_turn_off_appliction_MouseLeftButtonDown" Style="{StaticResource TitleButton}" Content="_" HorizontalAlignment="Right" Margin="0 0 30 0"/>
+            <Label x:Name="label_close_application" MouseLeftButtonDown="label_close_application_MouseLeftButtonDown" Style="{StaticResource style_title_button}" Content="X" HorizontalAlignment="Right" Margin="0 0 10 0" />
+            <Label x:Name="label_turn_off_application" MouseLeftButtonDown="label_turn_off_application_MouseLeftButtonDown" Style="{StaticResource style_title_button}" Content="_" HorizontalAlignment="Right" Margin="0 0 30 0"/>
         </Grid>
     </Grid>
 </Window>

@@ -15,7 +15,7 @@ using Path = System.IO.Path;
 
 namespace RCC
 {
-    public partial class MainWindow : Window
+    public partial class main_window : Window
     {
         public class mouse_activity { 
             public string key { get; set; }
@@ -58,15 +58,15 @@ namespace RCC
                 this.full_path = full_path;
             }
         }
-        private void window_loaded(object sender, RoutedEventArgs e) => GlassEffect.EnableBlur(this);
+        private void window_loaded(object sender, RoutedEventArgs e) => glass_effect.enable_blur(this);
         private readonly BackgroundWorker background_worker_find_steam_account = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_usb_device = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_last_activity = new BackgroundWorker();
 
         void background_worker_find_steam_account_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Steam.SteamData steam = e.UserState as Steam.SteamData;
-            list_other_accounts.Items.Add(new Steam.SteamData(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
+            Steam.steam_data steam = e.UserState as Steam.steam_data;
+            list_other_accounts.Items.Add(new Steam.steam_data(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
         }
         void background_worker_find_usb_device_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -157,7 +157,7 @@ namespace RCC
                 i++;
             });
         }
-        public MainWindow()
+        public main_window()
         {
             InitializeComponent();
 
@@ -179,16 +179,16 @@ namespace RCC
             background_worker_find_last_activity.RunWorkerAsync();
 
             label_full_path_to_steam.Content = Steam.LocalInfo.get_steam_location();
-            Steam.SteamData last_account_info = Steam.LocalInfo.get_last_account_info();
+            Steam.steam_data last_account_info = Steam.LocalInfo.get_last_account_info();
             label_steam_account_steam_id.Content = last_account_info.get_steam_id;
             label_steam_account_username.Content = last_account_info.get_username;
-            label_cpu_type.Content = GetSysthemInfo.get_cpu_name;
-            label_gpu_type.Content = GetSysthemInfo.get_gpu_name;
-            label_screen_size.Content = GetSysthemInfo.get_screen_size;
-            label_windows_type.Content = GetSysthemInfo.get_os_type;
-            label_memory_size.Content = GetSysthemInfo.get_ram_size;
-            label_start_up_time.Content = GetSysthemInfo.get_system_start_up;
-            label_user_ip.Content = GetSysthemInfo.get_user_external_ip();
+            label_cpu_type.Content = get_system_info.get_cpu_name;
+            label_gpu_type.Content = get_system_info.get_gpu_name;
+            label_screen_size.Content = get_system_info.get_screen_size;
+            label_windows_type.Content = get_system_info.get_os_type;
+            label_memory_size.Content = get_system_info.get_ram_size;
+            label_start_up_time.Content = get_system_info.get_system_start_up;
+            label_user_ip.Content = get_system_info.get_user_external_ip();
             ImageBrush myBrush = new ImageBrush();
             myBrush.ImageSource = last_account_info.get_account_avatar;
             rectangle_local_profile_image.Fill = myBrush;
@@ -258,10 +258,10 @@ namespace RCC
                 return;
             DragMove();
         }
-        private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{(list_other_accounts.SelectedItem as Steam.SteamData).steam_id}");
+        private void list_other_accounts_SelectionChanged(object sender, SelectionChangedEventArgs e) => Process.Start($"https://steamcommunity.com/profiles/{(list_other_accounts.SelectedItem as Steam.steam_data).steam_id}");
 
         private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
 
-        private void label_turn_off_appliction_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
+        private void label_turn_off_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
     }
 }

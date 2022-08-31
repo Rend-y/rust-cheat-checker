@@ -1,27 +1,27 @@
 ﻿using System;
+using System.Globalization;
 using System.Management;
 using System.Net;
 using System.Windows.Forms;
 
 namespace RCC
 {
-    public class GetSysthemInfo
+    public static class get_system_info
     {
         public static string get_cpu_name => get_single_component("Win32_Processor", "Name");
         public static string get_gpu_name => get_single_component("Win32_VideoController", "Name");
-        public static string get_uset_name => get_single_component("Win32_ComputerSystem", "Name");
+        public static string get_user_name => get_single_component("Win32_ComputerSystem", "Name");
         public static string get_screen_size => $"{Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
         public static string get_os_type => get_single_component("Win32_OperatingSystem", "Caption");
         public static string get_ram_size
         {
             get
             {
-                long size;
-                AllDllImport.GetPhysicallyInstalledSystemMemory(out size);
+                all_dll_import.GetPhysicallyInstalledSystemMemory(out long size);
                 return $"{size / 1024L / 1024L} Gb";
             }
         }
-        public static string get_system_start_up => DateTime.Now.AddMilliseconds(-Environment.TickCount).ToString();
+        public static string get_system_start_up => DateTime.Now.AddMilliseconds(-Environment.TickCount).ToString(CultureInfo.InvariantCulture);
 
         public static string get_user_external_ip()
         {
