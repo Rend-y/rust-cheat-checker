@@ -2,3 +2,5 @@ bin/*
 obj/*
 .vs/*
 RCC.csproj.user
+RCC.sln.DotSettings.user
+.idea/*
