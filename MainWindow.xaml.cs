@@ -110,21 +110,93 @@ namespace RCC
         string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         void background_worker_find_all_files_DoWork(object sender, DoWorkEventArgs e)
         {
-            string local_path_to_file = $"{path_to_local_application}\\FileSystemScaner.exe";
-            string path_to_save = $"{path_to_local_application}\\file_list.xml";
-            var load_xml_document = get_xml_document_from_web_process(local_path_to_file, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/FileSystemScaner.exe?raw=true", path_to_save);
-
-            int i = 0;
-            foreach (XElement element in load_xml_document)
+int counter = 0;
+            
+            XDocument document = new XDocument();
+            XElement root_list = new XElement("items");
+            
+            List<DriveInfo> all_driver = DriveInfo.GetDrives().ToList();
+            List<DirectoryInfo> list_all_disc = new List<DirectoryInfo>();
+            all_driver.ForEach(driver =>
             {
-                string filename = element.Element("filename").Value;
-                string create_date = element.Element("create-data").Value;
-                string directory = element.Element("directory").Value;
-                string size = element.Element("file-size").Value;
-                file_information device_info = new file_information(filename, create_date, directory, size);
-                background_worker_find_usb_device.ReportProgress(i, device_info);
-                i++;
-            }
+                if (driver.DriveType == DriveType.Fixed)
+                    list_all_disc.Add(new DirectoryInfo(driver.Name));
+            });
+            
+            list_all_disc.Add(new DirectoryInfo("C:\\"));
+
+            list_all_disc.ForEach(directory =>
+            {
+                // if at the directory have sub directories. Then run the following code
+                List<DirectoryInfo> get_subdirectories = directory.GetDirectories().ToList();
+                if (get_subdirectories.Count != 0)
+                {
+                    // create new search list
+                    List<searcher_files> search_list = new List<searcher_files>();
+                    // create new thread list
+                    List<Thread> thread_list = new List<Thread>();
+
+                    // for each folder in the root directory. Creating a class search and thread
+                    get_subdirectories.ForEach(sub_directory =>
+                    {
+                        searcher_files s1 = new searcher_files(sub_directory, "*.*", DateTime.MinValue, DateTime.MaxValue, 0, Int32.MaxValue);
+                        search_list.Add(s1);
+                        Thread t1 = new Thread(s1.start_search);
+                        thread_list.Add(t1);
+                    });
+
+                    thread_list.ForEach(thread => thread.Start()); // runin all threads
+
+                    // waiting for all threads to finish
+                    while (true)
+                    {
+                        int end_count = 0;
+                        thread_list.ForEach(thread =>
+                        {
+                            if (thread.ThreadState == ThreadState.Running)
+                                end_count++;
+                        });
+                        if (end_count == 0) break;
+                    }
+                    search_list.ForEach(search => search.find_files.ForEach(file =>
+                    {
+                        background_worker_find_all_files.ReportProgress(counter, file);
+                        XElement root_class = new XElement("file");
+                        XElement filename = new XElement("filename", file.file_name);
+                        XElement create_date = new XElement("create-data", file.create_date);
+                        XElement directories = new XElement("directory", file.directory);
+                        XElement file_size = new XElement("file-size", file.size);
+                        root_class.Add(filename);
+                        root_class.Add(create_date);
+                        root_class.Add(directories);
+                        root_class.Add(file_size);
+                        root_list.Add(root_class);
+                        counter++;
+                    }));
+                }
+
+                // creating a new searches for find all files in the root directory
+                searcher_files ls = new searcher_files(directory, "*.*", DateTime.MinValue, DateTime.MaxValue, 0, Int32.MaxValue);
+                List<file_information> local_file = ls.search_files(directory); // Search for files only in the root directory
+                local_file.ForEach(file =>
+                {
+                    background_worker_find_all_files.ReportProgress(counter, file);
+                    XElement root_class = new XElement("file");
+                    XElement filename = new XElement("filename", file.file_name);
+                    XElement create_date = new XElement("create-data", file.create_date);
+                    XElement directories = new XElement("directory", file.directory);
+                    XElement file_size = new XElement("file-size", file.size);
+                    root_class.Add(filename);
+                    root_class.Add(create_date);
+                    root_class.Add(directories);
+                    root_class.Add(file_size);
+                    root_list.Add(root_class);
+                    counter++;
+                });
+            });
+            
+            document.Add(root_list);
+            document.Save("file_list.xml");
         }
         void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
         {
