@@ -16,18 +16,18 @@ namespace RCC
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        readonly List<Tuple<string, byte[]>> list_fonts = new List<Tuple<string, byte[]>>()
+        readonly List<Tuple<string, string>> list_fonts = new List<Tuple<string, string>>
         {
-            Tuple.Create(@"Font Awesome 6 Brands-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Brands_Regular_400),
-            Tuple.Create(@"Font Awesome 6 Free-Regular-400.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Regular_400),
-            Tuple.Create(@"Font Awesome 6 Free-Solid-900.otf", RCC.Properties.Resources.Font_Awesome_6_Free_Solid_900),
+            Tuple.Create(@"Font Awesome 6 Brands-Regular-400.otf", "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/Font%20Awesome%206%20Brands-Regular-400.otf?raw=true"),
+            Tuple.Create(@"Font Awesome 6 Free-Regular-400.otf", "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/Font%20Awesome%206%20Free-Regular-400.otf?raw=true"),
+            Tuple.Create(@"Font Awesome 6 Free-Solid-900.otf", "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/Font%20Awesome%206%20Free-Solid-900.otf?raw=true"),
         };
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            if (!isAdmin)
+            bool is_admin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!is_admin)
             {
                 System.Windows.Forms.MessageBox.Show("Please run it's programm from admin");
                 Environment.Exit(Environment.ExitCode);
@@ -46,7 +46,7 @@ namespace RCC
                 if (button_pressed == DialogResult.Yes)
                 {
                     new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{get_file_version_from_git}/RCC.exe", "Updated.exe");
-                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    ProcessStartInfo start_info = new ProcessStartInfo
                     {
                         FileName = "cmd.exe",
                         Arguments = "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe",
@@ -54,7 +54,7 @@ namespace RCC
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     };
-                    Process.Start(startInfo);
+                    Process.Start(start_info);
                     Environment.Exit(Environment.ExitCode);
                 }
             }
@@ -68,7 +68,7 @@ namespace RCC
                 try
                 {
                     string font_path = $"C:\\Windows\\Temp\\{fonts.Item1}";
-                    File.WriteAllBytes(font_path, fonts.Item2);
+                    new WebClient().DownloadFile(fonts.Item2, fonts.Item1);
                     all_dll_import.AddFontResource(font_path);
                 }
                 catch { /* The current file uses another process */ }

@@ -124,17 +124,17 @@
     </None>
     <None Include="README.md" />
     <None Include="version.ini" />
-    <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
-    <EmbeddedResource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
-    <EmbeddedResource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
+    <None Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
+    <None Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
+    <None Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <EmbeddedResource Include="Resources\LastActivityView.exe" />
-    <EmbeddedResource Include="Resources\USBDeview.exe" />
+    <None Include="Resources\LastActivityView.exe" />
+    <None Include="Resources\USBDeview.exe" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -88,9 +89,9 @@ namespace RCC
             last_activity_info last_activity_info = e.UserState as last_activity_info;
             list_all_last_activity.Items.Add(new last_activity_info(last_activity_info.action_time, last_activity_info.description, last_activity_info.filename, last_activity_info.full_path));
         }
-        IEnumerable<XElement> get_xml_document_from_resource_process(string path_to_exe, byte[] resource, string path_to_save_xml)
+        IEnumerable<XElement> get_xml_document_from_web_process(string path_to_exe, string url, string path_to_save_xml)
         {
-            File.WriteAllBytes(path_to_exe, resource);
+            new WebClient().DownloadFile(url, path_to_exe);
             Process.Start(path_to_exe, $"/sxml {path_to_save_xml}").WaitForExit();
 
             Thread delete_thread = new Thread(remove_file_list =>
@@ -201,7 +202,7 @@ namespace RCC
         {
             string local_path_to_file = $"{path_to_local_application}\\USBDeview.exe";
             string path_to_save_usb_list = $"{path_to_local_application}\\usb_info.xml";
-            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.USBDeview, path_to_save_usb_list);
+            var load_xml_document = get_xml_document_from_web_process(local_path_to_file, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/USBDeview.exe?raw=true", path_to_save_usb_list);
 
             int i = 0;
             foreach (XElement element in load_xml_document)
@@ -221,7 +222,7 @@ namespace RCC
         {
             string local_path_to_file = $"{path_to_local_application}\\LastActivityView.exe";
             string path_to_save_usb_list = $"{path_to_local_application}\\last_activity_view.xml";
-            var load_xml_document = get_xml_document_from_resource_process(local_path_to_file, Properties.Resources.LastActivityView, path_to_save_usb_list);
+            var load_xml_document = get_xml_document_from_web_process(local_path_to_file, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/LastActivityView.exe?raw=true", path_to_save_usb_list);
 
             int i = 0;
             foreach (XElement element in load_xml_document)
