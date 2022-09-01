@@ -338,13 +338,15 @@ namespace RCC
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Line line = new Line();
+                Line line = new Line
+                {
+                    Stroke = SystemColors.WindowFrameBrush,
+                    X1 = e.GetPosition(canvas_mouse_drawing).X - 1,
+                    Y1 = e.GetPosition(canvas_mouse_drawing).Y - 1,
+                    X2 = e.GetPosition(canvas_mouse_drawing).X,
+                    Y2 = e.GetPosition(canvas_mouse_drawing).Y
+                };
 
-                line.Stroke = SystemColors.WindowFrameBrush;
-                line.X1 = e.GetPosition(canvas_mouse_drawing).X - 1;
-                line.Y1 = e.GetPosition(canvas_mouse_drawing).Y - 1;
-                line.X2 = e.GetPosition(canvas_mouse_drawing).X;
-                line.Y2 = e.GetPosition(canvas_mouse_drawing).Y;
                 canvas_mouse_drawing.Children.Add(line);
             }
         }
@@ -386,5 +388,7 @@ namespace RCC
         private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
         private void label_turn_off_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
         private void Button_show_search_file_OnMouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_search_file);
+        private void button_to_redirect_on_git_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
+            Process.Start("https://github.com/Midoruya/rust-cheat-checker/releases/latest/");
     }
 }

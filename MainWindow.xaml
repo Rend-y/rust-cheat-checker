@@ -36,17 +36,19 @@
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Background="#6610121B">
             <Grid Margin="2,0,-1,-1">
                 <Grid Margin="0,29,-1,101" Background="#6610121B">
-                    <Grid x:Name="grid_greeting" Visibility="Hidden">
+                    <Grid x:Name="grid_greeting" Visibility="Visible">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,571,23" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <Label Foreground="#FFFFFF" FontSize="15" Content="Спасибо за ипользование моего RCC." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
                                 <TextBlock Width="524" FontSize="15" TextAlignment="Center" Text="Этот проект полностью открытый.&#xD;&#xA;Что даёт вам мозможность внести свой вклад в него.&#xD;&#xA;Так - же пользователям.&#xD;&#xA;Данный чекер можно безопасно скачать тока с GitHub&#xD;&#xA;ссылка будет ниже.&#xD;&#xA;(Для переходи нажмите на кнопку)&#xD;&#xA;Если вы хотетие поддержать разработчика&#xD;&#xA;чеканной монетой то вот контакты. &#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,74,0,0"/>
+                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/> 
                             </Grid>
                         </Border>
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="573,22,23,24" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <Label Foreground="#FFFFFF" FontSize="15" Content="Thanks for using my RCC (pet project)" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
                                 <TextBlock Background="Transparent" FontSize="15" TextAlignment="Center" Text="It's project full open source.&#xD;&#xA;What gives you the opportunity contribution to it.&#xD;&#xA;Also users. This checker can safely downloand&#xD;&#xA;This checker can safely download&#xD;&#xA;current from GitHub link will be lower.&#xD;&#xA;(For move please click to button will be lower)&#xD;&#xA;If you wait support programmer money, then here are the contacts&#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" VerticalAlignment="Top" Margin="-1,74,0,0" HorizontalAlignment="Left" Width="524"/>
+                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/> 
                             </Grid>
                         </Border>
                     </Grid>
@@ -217,7 +219,7 @@
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid x:Name="grid_search_file" Visibility="Visible">
+                    <Grid x:Name="grid_search_file" Visibility="Hidden">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,25,23" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <ListBox IsTextSearchEnabled="True" BorderBrush="#00ABADB3" x:Name="list_all_file_search">
