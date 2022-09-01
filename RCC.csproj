@@ -83,6 +83,7 @@
     <Compile Include="DetectingCleaning.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
+    <Compile Include="SearchFile.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
     <Page Include="MainWindow.xaml">
