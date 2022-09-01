@@ -25,14 +25,14 @@ namespace RCC
                     return;
                 }
 
-                DateTime dateTime = DateTime.Now;
+                DateTime date_time = DateTime.Now;
                 files.ToList().ForEach((get_file) =>
                 {
-                    DateTime creationTime = File.GetCreationTime(get_file);
-                    if ((dateTime - creationTime).TotalMinutes > 0.0)
-                        dateTime = creationTime;
+                    DateTime creation_time = File.GetCreationTime(get_file);
+                    if ((date_time - creation_time).TotalMinutes > 0.0)
+                        date_time = creation_time;
                 });
-                int total_minutes = (int)(DateTime.Now - dateTime).TotalMinutes;
+                int total_minutes = (int)(DateTime.Now - date_time).TotalMinutes;
                 if (total_minutes < 45.0)
                     all_logs_detected_cleaning.Add($"Обнаружена попытка очистки папки {folder.Item3}");
                 else if (total_minutes < 360) all_logs_detected_cleaning.Add($"Самый первый файл в {folder.Item3} был создан {total_minutes} минут назад");

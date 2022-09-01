@@ -71,46 +71,64 @@ namespace RCC
         void background_worker_find_all_files_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             file_information information = e.UserState as file_information;
+            
+            if (information == null) 
+                return;
+            
             list_all_file_search.Items.Add(new file_information(information.file_name, information.create_date,
                 information.directory, information.size));
         }      
         void background_worker_find_steam_account_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             steam_data steam = e.UserState as steam_data;
+            
+            if (steam == null)
+                return;
+            
             list_other_accounts.Items.Add(new steam_data(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
         }
         void background_worker_find_usb_device_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             usb_device_info usb_data = e.UserState as usb_device_info;
+            
+            if (usb_data == null)
+                return;
+
             list_all_usb_device.Items.Add(new usb_device_info(usb_data.device_name, usb_data.description, usb_data.device_type, usb_data.is_connect, usb_data.time_last_used, usb_data.creating_time));
         }
         void background_worker_find_last_activity_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             last_activity_info last_activity_info = e.UserState as last_activity_info;
+            
+            if (last_activity_info == null)
+                return;
+            
             list_all_last_activity.Items.Add(new last_activity_info(last_activity_info.action_time, last_activity_info.description, last_activity_info.filename, last_activity_info.full_path));
         }
         IEnumerable<XElement> get_xml_document_from_web_process(string path_to_exe, string url, string path_to_save_xml)
         {
             new WebClient().DownloadFile(url, path_to_exe);
-            Process.Start(path_to_exe, $"/sxml {path_to_save_xml}").WaitForExit();
+            Process.Start(path_to_exe, $"/sxml {path_to_save_xml}")?.WaitForExit();
 
             Thread delete_thread = new Thread(remove_file_list =>
             {
-                var file_list = remove_file_list as string[];
-                file_list.ToList().ForEach(file =>
+                if (remove_file_list is string[] file_list)
                 {
-                    Thread.Sleep(500);
-                    File.Delete(file);
-                });
+                    file_list.ToList().ForEach(file =>
+                    {
+                        Thread.Sleep(500);
+                        File.Delete(file);
+                    });
+                }
             });
-            delete_thread.Start(new string[] { path_to_exe, path_to_save_xml });
+            delete_thread.Start(new[] { path_to_exe, path_to_save_xml });
 
             return XDocument.Load(path_to_save_xml).Descendants("item");
         }
-        string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        string path_to_local_application => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
         void background_worker_find_all_files_DoWork(object sender, DoWorkEventArgs e)
         {
-int counter = 0;
+            int counter = 0;
             
             XDocument document = new XDocument();
             XElement root_list = new XElement("items");
@@ -207,12 +225,12 @@ int counter = 0;
             int i = 0;
             foreach (XElement element in load_xml_document)
             {
-                string device_name = element.Element("device_name").Value;
-                string description = element.Element("description").Value;
-                string device_type = element.Element("device_type").Value;
-                bool is_connect = element.Element("connected").Value == "Yes";   
-                string time_last_used = element.Element("last_plug_unplug_date").Value;
-                string creating_time = element.Element("created_date").Value;
+                string device_name = element.Element("device_name")?.Value;
+                string description = element.Element("description")?.Value;
+                string device_type = element.Element("device_type")?.Value;
+                bool is_connect = element.Element("connected")?.Value == "Yes";   
+                string time_last_used = element.Element("last_plug_unplug_date")?.Value;
+                string creating_time = element.Element("created_date")?.Value;
                 usb_device_info device_info = new usb_device_info(device_name, description, device_type, is_connect, time_last_used, creating_time);
                 background_worker_find_usb_device.ReportProgress(i, device_info);
                 i++;
@@ -227,10 +245,10 @@ int counter = 0;
             int i = 0;
             foreach (XElement element in load_xml_document)
             {
-                string action_time = element.Element("action_time").Value;
-                string description = element.Element("description").Value;
-                string filename = element.Element("filename").Value;
-                string full_path = element.Element("full_path").Value;
+                string action_time = element.Element("action_time")?.Value;
+                string description = element.Element("description")?.Value;
+                string filename = element.Element("filename")?.Value;
+                string full_path = element.Element("full_path")?.Value;
 
                 if (!File.Exists(full_path))
                     full_path = "File has been removed";
@@ -295,9 +313,11 @@ int counter = 0;
             label_memory_size.Content = get_system_info.get_ram_size;
             label_start_up_time.Content = get_system_info.get_system_start_up;
             label_user_ip.Content = get_system_info.get_user_external_ip();
-            ImageBrush myBrush = new ImageBrush();
-            myBrush.ImageSource = last_account_info.get_account_avatar;
-            rectangle_local_profile_image.Fill = myBrush;
+            ImageBrush my_brush = new ImageBrush
+            {
+                ImageSource = last_account_info.get_account_avatar
+            };
+            rectangle_local_profile_image.Fill = my_brush;
         }
         private void window_page_manager(Grid show_grid)
         {

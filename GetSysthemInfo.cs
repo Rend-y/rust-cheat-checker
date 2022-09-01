@@ -25,18 +25,19 @@ namespace RCC
 
         public static string get_user_external_ip()
         {
-            string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
-            return IPAddress.Parse(externalIpString).ToString();
+            string external_ip_string = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+            return IPAddress.Parse(external_ip_string).ToString();
         }
 
         public static string get_single_component(string hwclass, string syntax)
         {
             string result = string.Empty;
             ManagementObjectCollection mos = new ManagementObjectSearcher("root\\CIMV2", $"SELECT * FROM {hwclass}").Get();
-            foreach (ManagementObject mj in mos)
+            foreach (ManagementBaseObject base_object in mos)
             {
-                if (Convert.ToString(mj[syntax]) != "")
-                    result = Convert.ToString(mj[syntax]);
+                ManagementObject management_object = (ManagementObject)base_object;
+                if (Convert.ToString(management_object[syntax]) != "")
+                    result = Convert.ToString(management_object[syntax]);
             }
             return result;
         }

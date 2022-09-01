@@ -54,7 +54,7 @@ namespace RCC
                     if (file.CreationTime.Date >= this.min_create_time && file.CreationTime.Date <= this.max_create_time && (double)file.Length / 1000 <= this.max_file_size && (double)file.Length / 1000 >= this.min_file_size)
                     {
                         try { result.Add(new file_information(file.Name, file.CreationTime.ToString(CultureInfo.InvariantCulture), file.DirectoryName, (file.Length / 1024).ToString())); } // adding to result array new file
-                        catch { Thread.Sleep(1); }; // if this file gives an error
+                        catch { Thread.Sleep(1); } // if this file gives an error
                     }
                 }
                 catch { Thread.Sleep(1); } // if this file gives an error.
