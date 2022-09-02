@@ -6,15 +6,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="609" Loaded="window_loaded" Width="1122" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize">
     <Window.Resources>
-        <Style x:Key="style_tab_button" TargetType="Label">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#F9FAFB"/>
+        <Style x:Key="style_tab_button" TargetType="Grid">
             <Setter Property="Cursor" Value="Hand"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Foreground" Value="#C6717790"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -305,11 +300,26 @@
                     </Grid>
                 </Grid>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
-                    <Label x:Name="button_show_search_file" MouseDown="Button_show_search_file_OnMouseDown" Content="Проверка файловой системы" Style="{StaticResource style_tab_button}" Margin="26,0,0,0" HorizontalAlignment="Left"/>
-                    <Label x:Name="button_show_last_activity_page" MouseDown="button_show_last_activity_page_MouseDown" Content="Последние действия" Style="{StaticResource style_tab_button}" Margin="311,0,0,0" HorizontalAlignment="Left"/>
-                    <Label x:Name="button_show_usb_device_page" MouseDown="button_show_usb_device_page_MouseDown" Content="USB устройства" Style="{StaticResource style_tab_button}" HorizontalAlignment="Left" Margin="533,0,0,0" />
-                    <Label x:Name="button_show_mouse_check" MouseDown="button_show_mouse_check_MouseDown" Content="Проверка мыши" Style="{StaticResource style_tab_button}" Margin="715,0,0,0" HorizontalAlignment="Left" />
-                    <Label x:Name="button_show_account_info_page" MouseDown="button_show_account_info_page_MouseDown" Content="Информация об аккаунте" Style="{StaticResource style_tab_button}" Margin="905,0,0,0" HorizontalAlignment="Left" Cursor="Hand" />
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" Margin="163 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="Последнии действия" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="Button_show_search_file_OnMouseDown" Margin="362 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="Посик файлов" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_mouse_check_MouseDown" Margin="512 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="Проверка мыши" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_account_info_page_MouseDown" Margin="695 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Brands Regular" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="Steam" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_usb_device_page_MouseDown" Margin="802 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Brands Regular" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="USB устройства" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
                 </Grid>
             </Grid>
         </Border>
