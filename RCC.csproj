@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="AllDllImport.cs" />
+    <Compile Include="dangerous_apps.cs" />
     <Compile Include="DetectingCleaning.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />

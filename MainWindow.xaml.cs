@@ -304,6 +304,7 @@ namespace RCC
             
             label_full_path_to_steam.Content = local_info.get_steam_location();
             steam_data last_account_info = local_info.get_last_account_info();
+            dangerous_apps.start_scan().ForEach(item => list_all_dangerous_apps.Items.Add(item));
             label_steam_account_steam_id.Content = last_account_info.get_steam_id;
             label_steam_account_username.Content = last_account_info.get_username;
             label_cpu_type.Content = get_system_info.get_cpu_name;

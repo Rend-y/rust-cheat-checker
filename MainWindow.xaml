@@ -150,8 +150,8 @@
                                         <DataTemplate>
                                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                                 <Grid>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="138" Content="{Binding device_name}"/>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="263" Foreground="#F9FAFB" Margin="138,0,0,0" Content="{Binding description}"/>
+                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="138" Content="{Binding display_name}"/>
+                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="263" Foreground="#F9FAFB" Margin="138,0,0,0" Content="{Binding install_path}"/>
                                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="138,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                                     <Rectangle Width="415" HorizontalAlignment="Left" Height="2" Margin="-7,28,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
                                                 </Grid>
