@@ -31,19 +31,19 @@
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Background="#6610121B">
             <Grid Margin="2,0,-1,-1">
                 <Grid Margin="0,29,-1,101" Background="#6610121B">
-                    <Grid x:Name="grid_greeting" Visibility="Visible">
+                    <Grid x:Name="grid_greeting" Visibility="Hidden">
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,571,23" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <Label Foreground="#FFFFFF" FontSize="15" Content="Спасибо за ипользование моего RCC." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
                                 <TextBlock Width="524" FontSize="15" TextAlignment="Center" Text="Этот проект полностью открытый.&#xD;&#xA;Что даёт вам мозможность внести свой вклад в него.&#xD;&#xA;Так - же пользователям.&#xD;&#xA;Данный чекер можно безопасно скачать тока с GitHub&#xD;&#xA;ссылка будет ниже.&#xD;&#xA;(Для переходи нажмите на кнопку)&#xD;&#xA;Если вы хотетие поддержать разработчика&#xD;&#xA;чеканной монетой то вот контакты. &#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,74,0,0"/>
-                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/> 
+                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/>
                             </Grid>
                         </Border>
                         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="573,22,23,24" Width="524" Background="#219297B3" BorderBrush="#6610121B">
                             <Grid>
                                 <Label Foreground="#FFFFFF" FontSize="15" Content="Thanks for using my RCC (pet project)" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
                                 <TextBlock Background="Transparent" FontSize="15" TextAlignment="Center" Text="It's project full open source.&#xD;&#xA;What gives you the opportunity contribution to it.&#xD;&#xA;Also users. This checker can safely downloand&#xD;&#xA;This checker can safely download&#xD;&#xA;current from GitHub link will be lower.&#xD;&#xA;(For move please click to button will be lower)&#xD;&#xA;If you wait support programmer money, then here are the contacts&#xD;&#xA;Discord: Midoriya#9281" Foreground="#C6717790" VerticalAlignment="Top" Margin="-1,74,0,0" HorizontalAlignment="Left" Width="524"/>
-                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/> 
+                                <Label MouseLeftButtonDown="button_to_redirect_on_git_OnMouseLeftButtonDown" FontFamily="Font Awesome 6 Brands Regular" Content="" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 30" FontSize="90" Foreground="#C6717790"/>
                             </Grid>
                         </Border>
                     </Grid>
@@ -111,6 +111,49 @@
                                                     <Label Content="{Binding get_account_level}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     <Ellipse Height="50" Visibility="{Binding get_is_hide_for_window}" Stroke="#FF717790" Margin="500,6,75,6"/>
                                                     <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Font Awesome 6 Free Regular" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Grid x:Name="grid_other" Visibility="Visible">
+                        <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
+                            <Grid>
+                                <Label Foreground="#F9FAFB" Content="Проверка клавиш" Padding="0" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15"/>
+                                <Rectangle Height="2" Margin="20,53,20,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                <Grid Height="35" VerticalAlignment="Bottom" Margin="20 0 20 20">
+                                    <Rectangle Fill="#1E59F1" RadiusX="10" RadiusY="10"/>
+                                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Запустить проверку в игре." Foreground="#FFFFFF" Padding="0" FontSize="15" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
+                            <Grid>
+                                <ListBox Background="Transparent" x:Name="list_all_dangerous_apps">
+                                    <ListBox.Template>
+                                        <ControlTemplate>
+                                            <DockPanel>
+                                                <Grid DockPanel.Dock="Top" Height="65">
+                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="307">Список подазрительных приложений</Label>
+                                                    <Rectangle Height="2" Margin="20,53,20,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                                </Grid>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                    <ItemsPresenter></ItemsPresenter>
+                                                </ScrollViewer>
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </ListBox.Template>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Background="Transparent" Orientation="Horizontal">
+                                                <Grid>
+                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="138" Content="{Binding device_name}"/>
+                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="263" Foreground="#F9FAFB" Margin="138,0,0,0" Content="{Binding description}"/>
+                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="138,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
+                                                    <Rectangle Width="415" HorizontalAlignment="Left" Height="2" Margin="-7,28,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
                                                 </Grid>
                                             </StackPanel>
                                         </DataTemplate>
@@ -300,25 +343,29 @@
                     </Grid>
                 </Grid>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
-                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" Margin="163 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" Margin="122,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
                         <Label VerticalAlignment="Bottom" Content="Последнии действия" Padding="0" FontSize="15" Foreground="#FFFFFF" />
                     </Grid>
-                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="Button_show_search_file_OnMouseDown" Margin="362 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="Button_show_search_file_OnMouseDown" Margin="320,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
                         <Label VerticalAlignment="Bottom" Content="Посик файлов" Padding="0" FontSize="15" Foreground="#FFFFFF" />
                     </Grid>
-                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_mouse_check_MouseDown" Margin="512 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_mouse_check_MouseDown" Margin="470,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
                         <Label VerticalAlignment="Bottom" Content="Проверка мыши" Padding="0" FontSize="15" Foreground="#FFFFFF" />
                     </Grid>
-                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_account_info_page_MouseDown" Margin="695 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_account_info_page_MouseDown" Margin="654,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Brands Regular" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
                         <Label VerticalAlignment="Bottom" Content="Steam" Padding="0" FontSize="15" Foreground="#FFFFFF" />
                     </Grid>
-                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_usb_device_page_MouseDown" Margin="802 0 0 0" Height="71" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_usb_device_page_MouseDown" Margin="760,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Brands Regular" VerticalAlignment="Center" Margin="0 0 0 19" Content="" Padding="0" />
                         <Label VerticalAlignment="Bottom" Content="USB устройства" Padding="0" FontSize="15" Foreground="#FFFFFF" />
+                    </Grid>
+                    <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_other_page_MouseLeftButtonDown" Margin="922,13,0,0" Height="71" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="&#xF0C9;" Padding="0" />
+                        <Label VerticalAlignment="Bottom" Content="Остальное" Padding="0" FontSize="15" Foreground="#FFFFFF" />
                     </Grid>
                 </Grid>
             </Grid>

@@ -327,6 +327,7 @@ namespace RCC
             grid_accont_info.Visibility = Visibility.Hidden;
             grid_usb_device.Visibility = Visibility.Hidden;
             grid_search_file.Visibility = Visibility.Hidden;
+            grid_other.Visibility = Visibility.Hidden;
             show_grid.Visibility = Visibility.Visible;
         }
         private void button_open_steam_path_Click(object sender, RoutedEventArgs e) => Process.Start(local_info.get_steam_location());
@@ -390,5 +391,6 @@ namespace RCC
         private void Button_show_search_file_OnMouseDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_search_file);
         private void button_to_redirect_on_git_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
             Process.Start("https://github.com/Midoruya/rust-cheat-checker/releases/latest/");
+        private void button_show_other_page_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => window_page_manager(grid_other);
     }
 }
