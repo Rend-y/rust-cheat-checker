@@ -4,7 +4,7 @@ using static RCC.glass_effect;
 
 namespace RCC
 {
-    public static class all_dll_import
+    public static class AllDllImport
     {
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

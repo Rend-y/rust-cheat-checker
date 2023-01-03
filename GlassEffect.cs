@@ -51,7 +51,7 @@ namespace RCC
             data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
             data.SizeOfData = accentStructSize;
             data.Data = accentPtr;
-            all_dll_import.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+            AllDllImport.SetWindowCompositionAttribute(windowHelper.Handle, ref data);
             Marshal.FreeHGlobal(accentPtr);
         }
     }

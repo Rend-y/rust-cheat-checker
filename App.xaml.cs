@@ -26,27 +26,27 @@ namespace RCC
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            bool is_admin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            if (!is_admin)
+            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!isAdmin)
             {
                 System.Windows.Forms.MessageBox.Show("Please run it's programm from admin");
                 Environment.Exit(Environment.ExitCode);
             }
-            string get_file_version_from_git = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/main/version.ini");
-            string get_file_version_from_assembly = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-            if (get_file_version_from_git.Equals(get_file_version_from_assembly) == false)
+            string getFileVersionFromGit = new WebClient().DownloadString("https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/main/version.ini");
+            string getFileVersionFromAssembly = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
+            if (getFileVersionFromGit.Equals(getFileVersionFromAssembly) == false)
             {
-                DialogResult button_pressed = System.Windows.Forms.MessageBox.Show(
+                DialogResult buttonPressed = System.Windows.Forms.MessageBox.Show(
                        "Вышла новая версия вы желаете обновится ?",
                        "Обновление",
                        MessageBoxButtons.YesNo,
                        MessageBoxIcon.Information,
                        MessageBoxDefaultButton.Button1,
                        System.Windows.Forms.MessageBoxOptions.DefaultDesktopOnly);
-                if (button_pressed == DialogResult.Yes)
+                if (buttonPressed == DialogResult.Yes)
                 {
-                    new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{get_file_version_from_git}/RCC.exe", "Updated.exe");
-                    ProcessStartInfo start_info = new ProcessStartInfo
+                    new WebClient().DownloadFile($"https://github.com/Midoruya/rust-cheat-checker/releases/download/{getFileVersionFromGit}/RCC.exe", "Updated.exe");
+                    ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = "cmd.exe",
                         Arguments = "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe",
@@ -54,7 +54,7 @@ namespace RCC
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     };
-                    Process.Start(start_info);
+                    Process.Start(startInfo);
                     Environment.Exit(Environment.ExitCode);
                 }
             }
@@ -63,19 +63,19 @@ namespace RCC
                 detecting_cleaning detecting = new detecting_cleaning();
                 detecting.search_all();
             });
-            Thread font_thread = new Thread(() => list_fonts.ForEach(fonts => new Thread(() =>
+            Thread fontThread = new Thread(() => list_fonts.ForEach(fonts => new Thread(() =>
             {
                 try
                 {
-                    string font_path = $"C:\\Windows\\Temp\\{fonts.Item1}";
+                    string fontPath = $"C:\\Windows\\Temp\\{fonts.Item1}";
                     new WebClient().DownloadFile(fonts.Item2, fonts.Item1);
-                    all_dll_import.AddFontResource(font_path);
+                    AllDllImport.AddFontResource(fontPath);
                 }
                 catch { /* The current file uses another process */ }
             }).Start()));
             main_window main = new main_window();
             thread.Start();
-            font_thread.Start();
+            fontThread.Start();
             main.Show();
         }
     }

@@ -307,13 +307,13 @@ namespace RCC
             dangerous_apps.start_scan().ForEach(item => list_all_dangerous_apps.Items.Add(item));
             label_steam_account_steam_id.Content = last_account_info.get_steam_id;
             label_steam_account_username.Content = last_account_info.get_username;
-            label_cpu_type.Content = get_system_info.get_cpu_name;
-            label_gpu_type.Content = get_system_info.get_gpu_name;
-            label_screen_size.Content = get_system_info.get_screen_size;
-            label_windows_type.Content = get_system_info.get_os_type;
-            label_memory_size.Content = get_system_info.get_ram_size;
-            label_start_up_time.Content = get_system_info.get_system_start_up;
-            label_user_ip.Content = get_system_info.get_user_external_ip();
+            label_cpu_type.Content = GetSystemInfo.GetCpuName;
+            label_gpu_type.Content = GetSystemInfo.GetGpuName;
+            label_screen_size.Content = GetSystemInfo.GetScreenSize;
+            label_windows_type.Content = GetSystemInfo.GetOsType;
+            label_memory_size.Content = GetSystemInfo.GetRamSize;
+            label_start_up_time.Content = GetSystemInfo.GetSystemStartUp;
+            label_user_ip.Content = GetSystemInfo.get_user_external_ip();
             ImageBrush my_brush = new ImageBrush
             {
                 ImageSource = last_account_info.get_account_avatar
