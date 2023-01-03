@@ -84,6 +84,15 @@
     <Compile Include="DetectingCleaning.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
+    <Compile Include="Pages\GreetingPage.xaml.cs">
+      <DependentUpon>GreetingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MouseLoggerPage.xaml.cs">
+      <DependentUpon>MouseLoggerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SteamDataPage.xaml.cs">
+      <DependentUpon>SteamDataPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchFile.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
@@ -99,6 +108,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\GreetingPage.xaml" />
+    <Page Include="Pages\MouseLoggerPage.xaml" />
+    <Page Include="Pages\SteamDataPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
