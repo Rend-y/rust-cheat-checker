@@ -15,9 +15,9 @@ namespace RCC
         }
     }
     
-    public static class dangerous_apps
+    public static class DangerousApps
     {
-        private readonly static List<string> list_dangerous_applications = new List<string>
+        private static readonly List<string> ListDangerousApplications = new List<string>
         {
             "Process Hacker",
         };
@@ -31,22 +31,22 @@ namespace RCC
             {
                 try 
                 {
-                    RegistryKey sub_key = key.OpenSubKey(keyName);
-                    if (sub_key == null) continue;
-                    string display_name = sub_key.GetValue("DisplayName").ToString();
-                    string install_path = sub_key.GetValue("InstallLocation").ToString();
-                    bool is_dangerous = false;
-                    foreach (string app in list_dangerous_applications)
+                    RegistryKey subKey = key.OpenSubKey(keyName);
+                    if (subKey == null) continue;
+                    string displayName = subKey.GetValue("DisplayName").ToString();
+                    string installPath = subKey.GetValue("InstallLocation").ToString();
+                    bool isDangerous = false;
+                    foreach (string app in ListDangerousApplications)
                     {
-                        if (display_name.ToLower().Contains(app.ToLower()))
+                        if (displayName.ToLower().Contains(app.ToLower()))
                         {
-                            display_name = app;
-                            is_dangerous = true;
+                            displayName = app;
+                            isDangerous = true;
                             break;
                         }
                     }
-                    if (is_dangerous)
-                        result.Add(new dangerous_application(display_name,install_path));
+                    if (isDangerous)
+                        result.Add(new dangerous_application(displayName,installPath));
                 }
                 catch
                 { 

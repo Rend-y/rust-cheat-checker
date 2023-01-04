@@ -20,7 +20,7 @@ namespace RCC
             this.file_name = file_name;
         }
     }
-    public class searcher_files
+    public class SearcherFiles
     {
         private readonly DirectoryInfo directory_info;
         private readonly string pattern_for_search;
@@ -28,7 +28,7 @@ namespace RCC
         private readonly DateTime max_create_time;
         private readonly double min_file_size;
         private readonly double max_file_size;
-        public searcher_files(DirectoryInfo directory_info, string pattern_for_search, DateTime min_create_time, DateTime max_create_time, double min_file_size, double max_file_size)
+        public SearcherFiles(DirectoryInfo directory_info, string pattern_for_search, DateTime min_create_time, DateTime max_create_time, double min_file_size, double max_file_size)
         {
             this.directory_info = directory_info;
             this.pattern_for_search = pattern_for_search;
@@ -71,7 +71,7 @@ namespace RCC
                 {
                     info_about_current_directory.ForEach(directory => // For each directory, we launch a new search
                     {
-                        searcher_files second = new searcher_files(directory, pattern_for_search, min_create_time, max_create_time, min_file_size, max_file_size);
+                        SearcherFiles second = new SearcherFiles(directory, pattern_for_search, min_create_time, max_create_time, min_file_size, max_file_size);
                         second.start_search(); // Start search in subdirectory
                         find_files.AddRange(second.find_files); // Get list of all files which statisfy all conditions
                     });

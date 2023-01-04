@@ -7,6 +7,22 @@ namespace RCC.Pages
 {
     public partial class LastActivityPage : Page
     {
+        public class LastActivityInfo
+        {
+            public string action_time { get; set; }
+            public string description { get; set; }
+            public string filename { get; set; }
+            public string full_path { get; set; }
+
+            public LastActivityInfo(string action_time, string description, string filename, string full_path)
+            {
+                this.action_time = action_time;
+                this.description = description;
+                this.filename = filename;
+                this.full_path = full_path;
+            }
+        }
+        
         void BackgroundWorkerFindLastActivityDoWork(object sender, DoWorkEventArgs e)
         {
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";
@@ -27,7 +43,7 @@ namespace RCC.Pages
                 if (string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(fullPath))
                     continue;
 
-                main_window.LastActivityInfo info = new main_window.LastActivityInfo(actionTime, description, filename, fullPath);
+                LastActivityInfo info = new LastActivityInfo(actionTime, description, filename, fullPath);
                 backgroundWorkerFindLastActivity.ReportProgress(i, info);
                 i++;
             }
@@ -35,12 +51,12 @@ namespace RCC.Pages
         
         void BackgroundWorkerFindLastActivityProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            main_window.LastActivityInfo lastActivityInfo = e.UserState as main_window.LastActivityInfo;
+            LastActivityInfo lastActivityInfo = e.UserState as LastActivityInfo;
             
             if (lastActivityInfo == null)
                 return;
             
-            ListAllLastActivity.Items.Add(new main_window.LastActivityInfo(lastActivityInfo.action_time, lastActivityInfo.description, lastActivityInfo.filename, lastActivityInfo.full_path));
+            ListAllLastActivity.Items.Add(new LastActivityInfo(lastActivityInfo.action_time, lastActivityInfo.description, lastActivityInfo.filename, lastActivityInfo.full_path));
         }
         
         private readonly BackgroundWorker backgroundWorkerFindLastActivity = new BackgroundWorker();

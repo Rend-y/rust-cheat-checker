@@ -83,49 +83,6 @@
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid x:Name="grid_search_file" Visibility="Hidden">
-                        <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,25,23" Background="#219297B3" BorderBrush="#6610121B">
-                            <Grid>
-                                <ListBox IsTextSearchEnabled="True" BorderBrush="#00ABADB3" x:Name="list_all_file_search">
-                                    <ListBox.Template>
-                                        <ControlTemplate>
-                                            <DockPanel>
-                                                <Grid DockPanel.Dock="Top" Height="65">
-                                                    <Label Content="File Name" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="249"/>
-                                                    <Label Content="File Size" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="142" Foreground="#F9FAFB" Margin="249,0,0,0"/>
-                                                    <Label Content="Edit Date" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="393,0,0,0"/>
-                                                    <Label Content="File Path" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="487" Foreground="#F9FAFB" Margin="581,0,0,0"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="248,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="391,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="61" Margin="579,0,0,0" VerticalAlignment="Center" Fill="#3F717790"/>
-                                                    <Rectangle Width="1068" HorizontalAlignment="Center" Height="2" Margin="0,63,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
-                                                </Grid>
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                                    <ItemsPresenter></ItemsPresenter>
-                                                </ScrollViewer>
-                                            </DockPanel>
-                                        </ControlTemplate>
-                                    </ListBox.Template>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Background="Transparent" Orientation="Horizontal">
-                                                <Grid>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243" Content="{Binding file_name}"/>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB" Margin="245,0,0,0" Content="{Binding size}"/>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="388,0,0,0" Content="{Binding create_date}"/>
-                                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB" Margin="576,0,0,0" Content="{Binding directory}"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="46" Margin="243,-18,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="386,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
-                                                    <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="574,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
-                                                    <Rectangle Width="1068" HorizontalAlignment="Left" Height="2" Margin="-7,28,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
-                                                </Grid>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                        </Border>
-                    </Grid>
                 </Grid>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Height="100" Width="1120" Margin="0,507,0,0">
                     <Grid Style="{StaticResource style_tab_button}" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" Margin="122,0,0,0" Height="72" VerticalAlignment="Center" HorizontalAlignment="Left">

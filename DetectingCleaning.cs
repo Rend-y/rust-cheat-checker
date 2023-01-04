@@ -28,28 +28,28 @@ namespace RCC
                 DateTime date_time = DateTime.Now;
                 files.ToList().ForEach((get_file) =>
                 {
-                    DateTime creation_time = File.GetCreationTime(get_file);
-                    if ((date_time - creation_time).TotalMinutes > 0.0)
-                        date_time = creation_time;
+                    DateTime creationTime = File.GetCreationTime(get_file);
+                    if ((date_time - creationTime).TotalMinutes > 0.0)
+                        date_time = creationTime;
                 });
-                int total_minutes = (int)(DateTime.Now - date_time).TotalMinutes;
-                if (total_minutes < 45.0)
+                int totalMinutes = (int)(DateTime.Now - date_time).TotalMinutes;
+                if (totalMinutes < 45.0)
                     all_logs_detected_cleaning.Add($"Обнаружена попытка очистки папки {folder.Item3}");
-                else if (total_minutes < 360) all_logs_detected_cleaning.Add($"Самый первый файл в {folder.Item3} был создан {total_minutes} минут назад");
+                else if (totalMinutes < 360) all_logs_detected_cleaning.Add($"Самый первый файл в {folder.Item3} был создан {totalMinutes} минут назад");
 
             }
         }
         private void detect_clear_steam_account()
         {
-            string file_data_from_config = File.ReadAllText(Steam.local_info.get_path_to_config());
-            List<string> get_steam_id_data_from_config = Steam.local_info.get_all_steam_id(file_data_from_config);
-            string file_data_from_login_user = File.ReadAllText(Steam.local_info.get_path_to_login_user());
-            List<string> get_steam_id_data_from_login_user = Steam.local_info.get_all_steam_id(file_data_from_login_user);
-            if (get_steam_id_data_from_config.Count == get_steam_id_data_from_login_user.Count)
+            string fileDataFromConfig = File.ReadAllText(Steam.local_info.get_path_to_config());
+            List<string> getSteamIdDataFromConfig = Steam.local_info.get_all_steam_id(fileDataFromConfig);
+            string fileDataFromLoginUser = File.ReadAllText(Steam.local_info.get_path_to_login_user());
+            List<string> getSteamIdDataFromLoginUser = Steam.local_info.get_all_steam_id(fileDataFromLoginUser);
+            if (getSteamIdDataFromConfig.Count == getSteamIdDataFromLoginUser.Count)
                 return;
 
-            int account_detect = get_steam_id_data_from_config.Count - get_steam_id_data_from_login_user.Count;
-            all_logs_detected_cleaning.Add($"Обнаружено {Math.Abs(account_detect)} удалённых аккаунтов");
+            int accountDetect = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count;
+            all_logs_detected_cleaning.Add($"Обнаружено {Math.Abs(accountDetect)} удалённых аккаунтов");
         }
         public void search_all()
         {
@@ -58,7 +58,7 @@ namespace RCC
             if (all_logs_detected_cleaning.Count == 0)
                 return;
             string message = string.Empty;
-            all_logs_detected_cleaning.ForEach((messages) => message += $"{messages}\n");
+            all_logs_detected_cleaning.ForEach(messages => message += $"{messages}\n");
             MessageBox.Show(message);
         }
     }
