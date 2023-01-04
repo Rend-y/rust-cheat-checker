@@ -93,6 +93,9 @@
     <Compile Include="Pages\MouseLoggerPage.xaml.cs">
       <DependentUpon>MouseLoggerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\OtherPage.xaml.cs">
+      <DependentUpon>OtherPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SearchFilePage.xaml.cs">
       <DependentUpon>SearchFilePage.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,7 @@
     <Page Include="Pages\GreetingPage.xaml" />
     <Page Include="Pages\LastActivityPage.xaml" />
     <Page Include="Pages\MouseLoggerPage.xaml" />
+    <Page Include="Pages\OtherPage.xaml" />
     <Page Include="Pages\SearchFilePage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
     <Page Include="Pages\UsbDevicePage.xaml" />
