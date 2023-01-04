@@ -87,15 +87,22 @@
     <Compile Include="Pages\GreetingPage.xaml.cs">
       <DependentUpon>GreetingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LastActivityPage.xaml.cs">
+      <DependentUpon>LastActivityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MouseLoggerPage.xaml.cs">
       <DependentUpon>MouseLoggerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SteamDataPage.xaml.cs">
       <DependentUpon>SteamDataPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\UsbDevicePage.xaml.cs">
+      <DependentUpon>UsbDevicePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchFile.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
+    <Compile Include="Utilities.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,8 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\GreetingPage.xaml" />
+    <Page Include="Pages\LastActivityPage.xaml" />
     <Page Include="Pages\MouseLoggerPage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
+    <Page Include="Pages\UsbDevicePage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

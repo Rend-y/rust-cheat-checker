@@ -10,11 +10,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Xml.Linq;
 using RCC.Pages;
-using RCC.Steam;
 using Path = System.IO.Path;
 using ThreadState = System.Threading.ThreadState;
 
@@ -22,25 +19,6 @@ namespace RCC
 {
     public partial class main_window : Window
     {
-        public class UsbDeviceInfo
-        {
-            public string device_name { get; set; }
-            public string description { get; set; }
-            public string device_type { get; set; }
-            public bool is_connect { get; set; }
-            public string time_last_used { get; set; }
-            public string creating_time { get; set; }
-
-            public UsbDeviceInfo(string device_name, string description, string device_type, bool is_connect, string time_last_used, string creating_time)
-            {
-                this.device_name = device_name;
-                this.description = description;
-                this.device_type = device_type;
-                this.is_connect = is_connect;
-                this.time_last_used = time_last_used;
-                this.creating_time = creating_time;
-            }
-        }
         public class LastActivityInfo
         {
             public string action_time { get; set; }
@@ -57,11 +35,11 @@ namespace RCC
             }
         }
         private void window_loaded(object sender, RoutedEventArgs e) => glass_effect.enable_blur(this);
-        private readonly BackgroundWorker background_worker_find_usb_device = new BackgroundWorker();
-        private readonly BackgroundWorker background_worker_find_last_activity = new BackgroundWorker();
         private readonly BackgroundWorker background_worker_find_all_files = new BackgroundWorker();
         private readonly SteamDataPage steamDataPage = new SteamDataPage();
         private readonly MouseLoggerPage mouseLoggerPage = new MouseLoggerPage();
+        private readonly LastActivityPage lastActivityPage = new LastActivityPage();
+        private readonly UsbDevicePage usbDevicesPage = new UsbDevicePage();
         void background_worker_find_all_files_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             file_information information = e.UserState as file_information;
@@ -71,24 +49,6 @@ namespace RCC
             
             list_all_file_search.Items.Add(new file_information(information.file_name, information.create_date,
                 information.directory, information.size));
-        }
-        void background_worker_find_usb_device_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            UsbDeviceInfo usbData = e.UserState as UsbDeviceInfo;
-            
-            if (usbData == null)
-                return;
-
-            list_all_usb_device.Items.Add(new UsbDeviceInfo(usbData.device_name, usbData.description, usbData.device_type, usbData.is_connect, usbData.time_last_used, usbData.creating_time));
-        }
-        void background_worker_find_last_activity_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            LastActivityInfo lastActivityInfo = e.UserState as LastActivityInfo;
-            
-            if (lastActivityInfo == null)
-                return;
-            
-            list_all_last_activity.Items.Add(new LastActivityInfo(lastActivityInfo.action_time, lastActivityInfo.description, lastActivityInfo.filename, lastActivityInfo.full_path));
         }
         IEnumerable<XElement> get_xml_document_from_web_process(string path_to_exe, string url, string path_to_save_xml)
         {
@@ -202,67 +162,12 @@ namespace RCC
             document.Add(rootList);
             document.Save("file_list.xml");
         }
-        void background_worker_find_usb_device_DoWork(object sender, DoWorkEventArgs e)
-        {
-            string localPathToFile = $"{PathToLocalApplication}\\USBDeview.exe";
-            string pathToSaveUsbList = $"{PathToLocalApplication}\\usb_info.xml";
-            var loadXmlDocument = get_xml_document_from_web_process(localPathToFile, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/USBDeview.exe?raw=true", pathToSaveUsbList);
-
-            int i = 0;
-            foreach (XElement element in loadXmlDocument)
-            {
-                string deviceName = element.Element("device_name")?.Value;
-                string description = element.Element("description")?.Value;
-                string deviceType = element.Element("device_type")?.Value;
-                bool isConnect = element.Element("connected")?.Value == "Yes";   
-                string timeLastUsed = element.Element("last_plug_unplug_date")?.Value;
-                string creatingTime = element.Element("created_date")?.Value;
-                UsbDeviceInfo deviceInfo = new UsbDeviceInfo(deviceName, description, deviceType, isConnect, timeLastUsed, creatingTime);
-                background_worker_find_usb_device.ReportProgress(i, deviceInfo);
-                i++;
-            }
-        }
-        void background_worker_find_last_activity_DoWork(object sender, DoWorkEventArgs e)
-        {
-            string localPathToFile = $"{PathToLocalApplication}\\LastActivityView.exe";
-            string pathToSaveUsbList = $"{PathToLocalApplication}\\last_activity_view.xml";
-            var loadXmlDocument = get_xml_document_from_web_process(localPathToFile, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/LastActivityView.exe?raw=true", pathToSaveUsbList);
-
-            int i = 0;
-            foreach (XElement element in loadXmlDocument)
-            {
-                string actionTime = element.Element("action_time")?.Value;
-                string description = element.Element("description")?.Value;
-                string filename = element.Element("filename")?.Value;
-                string fullPath = element.Element("full_path")?.Value;
-
-                if (!File.Exists(fullPath))
-                    fullPath = "File has been removed";
-
-                if (string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(fullPath))
-                    continue;
-
-                LastActivityInfo info = new LastActivityInfo(actionTime, description, filename, fullPath);
-                background_worker_find_last_activity.ReportProgress(i, info);
-                i++;
-            }
-        }
         public main_window()
         {
             InitializeComponent();
 
             WindowsPageManager(new GreetingPage());
 
-            // background_worker_find_usb_device.DoWork += background_worker_find_usb_device_DoWork;
-            // background_worker_find_usb_device.ProgressChanged += background_worker_find_usb_device_ProgressChanged;
-            // background_worker_find_usb_device.WorkerReportsProgress = true;
-            // background_worker_find_usb_device.RunWorkerAsync();
-            //
-            // background_worker_find_last_activity.DoWork += background_worker_find_last_activity_DoWork;
-            // background_worker_find_last_activity.ProgressChanged += background_worker_find_last_activity_ProgressChanged;
-            // background_worker_find_last_activity.WorkerReportsProgress = true;
-            // background_worker_find_last_activity.RunWorkerAsync();
-            //
             // background_worker_find_all_files.DoWork += background_worker_find_all_files_DoWork;
             // background_worker_find_all_files.ProgressChanged += background_worker_find_all_files_ProgressChanged;
             // background_worker_find_all_files.WorkerReportsProgress = true;
@@ -272,8 +177,8 @@ namespace RCC
         }
         private void WindowsPageManager(Page newPage) => PagesFrame.Content = newPage; 
         private void button_show_account_info_page_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(steamDataPage);
-        private void button_show_usb_device_page_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(new SteamDataPage());
-        private void button_show_last_activity_page_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(new SteamDataPage());
+        private void button_show_usb_device_page_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(usbDevicesPage);
+        private void button_show_last_activity_page_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(lastActivityPage);
         private void button_show_mouse_check_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(mouseLoggerPage);
         private void grid_custom_title_bar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
         private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
