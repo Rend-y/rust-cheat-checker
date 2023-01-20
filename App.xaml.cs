@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Collections.Generic;
 using System;
+using System.IO;
 using System.Net;
 
 namespace RCC
@@ -36,11 +37,19 @@ namespace RCC
                 try
                 {
                     string fontPath = $"C:\\Windows\\Temp\\{fonts.Item1}";
-                    new WebClient().DownloadFile(fonts.Item2, fonts.Item1);
+                    bool isExistFont = File.Exists(fontPath);
+                    if (!isExistFont)
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            client.DownloadFile(fonts.Item2, fontPath);
+                        }
+                    }
                     AllDllImport.AddFontResource(fontPath);
                 }
                 catch { /* The current file uses another process */ }
             }));
+            Utilities.OpenDiscordServer();
             main_window main = new main_window();
             thread.Start();
             main.Show();

@@ -80,7 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="AllDllImport.cs" />
-    <Compile Include="dangerous_apps.cs" />
+    <Compile Include="DangerousApps.cs" />
     <Compile Include="DetectingCleaning.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
@@ -109,6 +109,12 @@
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="windows\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Notify.xaml.cs">
+      <DependentUpon>Notify.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,6 +134,8 @@
     <Page Include="Pages\SearchFilePage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
     <Page Include="Pages\UsbDevicePage.xaml" />
+    <Page Include="windows\MessageBox.xaml" />
+    <Page Include="windows\Notify.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

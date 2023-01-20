@@ -16,8 +16,8 @@ namespace RCC.Steam
         public readonly int account_level;
         private readonly BitmapSource avatar;
         public readonly string avatar_url;
-        public readonly bool is_hide_account;
-
+        public bool is_hide_account;
+        public steam_data() { }
         public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account)
         {
             this.username = username;

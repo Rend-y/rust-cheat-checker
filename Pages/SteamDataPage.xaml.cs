@@ -24,16 +24,16 @@ namespace RCC.Pages
         
         void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
         {
-            string steamPathToLoginUser = local_info.get_path_to_login_user();
+            string steamPathToLoginUser = local_info.GetPathToLoginUser();
             if (!File.Exists(steamPathToLoginUser))
                 return;
             string fileData = File.ReadAllText(steamPathToLoginUser);
-            List<string> getSteamIdData = local_info.get_all_steam_id(fileData);
+            List<string> getSteamIdData = local_info.GetAllSteamId(fileData);
 
             int i = 0;
             getSteamIdData.ForEach(steam_id =>
             {
-                backgroundWorkerFindSteamAccount.ReportProgress(i, local_info.parse_from_steam(long.Parse(steam_id)));
+                backgroundWorkerFindSteamAccount.ReportProgress(i, local_info.PeParseFromSteam(long.Parse(steam_id)));
                 i++;
             });
         }
@@ -48,9 +48,9 @@ namespace RCC.Pages
             backgroundWorkerFindSteamAccount.RunWorkerAsync();
             InitializeComponent();
             
-            LabelFullPathToSteam.Content = local_info.get_steam_location();
+            LabelFullPathToSteam.Content = local_info.GetSteamLocation();
             
-            steam_data lastAccountInfo = local_info.get_last_account_info();
+            steam_data lastAccountInfo = local_info.GetLastAccountInfo();
 
             LabelSteamAccountSteamId.Content = lastAccountInfo.get_steam_id;
             LabelSteamAccountUsername.Content = lastAccountInfo.get_username;

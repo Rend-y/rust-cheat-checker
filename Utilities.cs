@@ -14,6 +14,7 @@ namespace RCC
 {
     public abstract class Utilities
     {
+        public static void OpenDiscordServer() => Process.Start("https://discord.gg/xNxm5vKVfZ");
         public static string PathToLocalApplication => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
         public static IEnumerable<XElement> GetXmlDocumentFromWebProcess(string path_to_exe, string url, string path_to_save_xml)
         {

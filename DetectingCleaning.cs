@@ -41,10 +41,10 @@ namespace RCC
         }
         private void detect_clear_steam_account()
         {
-            string fileDataFromConfig = File.ReadAllText(Steam.local_info.get_path_to_config());
-            List<string> getSteamIdDataFromConfig = Steam.local_info.get_all_steam_id(fileDataFromConfig);
-            string fileDataFromLoginUser = File.ReadAllText(Steam.local_info.get_path_to_login_user());
-            List<string> getSteamIdDataFromLoginUser = Steam.local_info.get_all_steam_id(fileDataFromLoginUser);
+            string fileDataFromConfig = File.ReadAllText(Steam.local_info.GetPathToConfig());
+            List<string> getSteamIdDataFromConfig = Steam.local_info.GetAllSteamId(fileDataFromConfig);
+            string fileDataFromLoginUser = File.ReadAllText(Steam.local_info.GetPathToLoginUser());
+            List<string> getSteamIdDataFromLoginUser = Steam.local_info.GetAllSteamId(fileDataFromLoginUser);
             if (getSteamIdDataFromConfig.Count == getSteamIdDataFromLoginUser.Count)
                 return;
 
