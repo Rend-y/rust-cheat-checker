@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Linq;
 using RCC.Pages;
-using Path = System.IO.Path;
-using ThreadState = System.Threading.ThreadState;
 
 namespace RCC
 {
@@ -30,7 +19,6 @@ namespace RCC
         public main_window()
         {
             InitializeComponent();
-
             WindowsPageManager(new GreetingPage());
         }
         private void WindowsPageManager(Page newPage) => PagesFrame.Content = newPage; 

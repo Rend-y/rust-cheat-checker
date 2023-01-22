@@ -1,9 +1,6 @@
 ﻿<Window x:Class="RCC.main_window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
         Title="MainWindow"
         Height="609"
         Loaded="window_loaded" 
@@ -13,28 +10,6 @@
         Background="Transparent"
         ResizeMode="NoResize"
         >
-    <Window.Resources>
-        <Style x:Key="style_tab_button" TargetType="Grid">
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="False">
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="style_title_button" TargetType="Label">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#F9FAFB"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Padding" Value="0"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Foreground" Value="#C6717790"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Background="#6610121B">
             <Grid Margin="2,0,-1,-1">
@@ -70,8 +45,8 @@
             </Grid>
         </Border>
         <Grid MouseLeftButtonDown="grid_custom_title_bar_MouseLeftButtonDown" Height="30" VerticalAlignment="Top">
-            <Label x:Name="label_close_application" MouseLeftButtonDown="label_close_application_MouseLeftButtonDown" Style="{StaticResource style_title_button}" Content="X" HorizontalAlignment="Right" Margin="0 0 10 0" />
-            <Label x:Name="label_turn_off_application" MouseLeftButtonDown="label_turn_off_application_MouseLeftButtonDown" Style="{StaticResource style_title_button}" Content="_" HorizontalAlignment="Right" Margin="0 0 30 0"/>
+            <Label MouseLeftButtonDown="label_close_application_MouseLeftButtonDown" Style="{StaticResource StyleTitleButton}" Content="X" HorizontalAlignment="Right" Margin="0 0 10 0" />
+            <Label MouseLeftButtonDown="label_turn_off_application_MouseLeftButtonDown" Style="{StaticResource StyleTitleButton}" Content="_" HorizontalAlignment="Right" Margin="0 0 30 0"/>
         </Grid>
     </Grid>
 </Window>
