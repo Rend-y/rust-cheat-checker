@@ -80,6 +80,12 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="AllDllImport.cs" />
+    <Compile Include="Components\Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\TabButton.xaml.cs">
+      <DependentUpon>TabButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DangerousApps.cs" />
     <Compile Include="DetectingCleaning.cs" />
     <Compile Include="GetSysthemInfo.cs" />
@@ -115,6 +121,8 @@
     <Compile Include="windows\Notify.xaml.cs">
       <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
+    <Page Include="Components\Button.xaml" />
+    <Page Include="Components\TabButton.xaml" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -162,9 +170,15 @@
     </None>
     <None Include="README.md" />
     <None Include="version.ini" />
-    <None Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
-    <None Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
-    <None Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
+    <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font Awesome 6 Free-Regular-400.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font Awesome 6 Free-Solid-900.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Linq;
 using RCC.Pages;
-using Path = System.IO.Path;
-using ThreadState = System.Threading.ThreadState;
 
 namespace RCC
 {
@@ -30,7 +19,6 @@ namespace RCC
         public main_window()
         {
             InitializeComponent();
-
             WindowsPageManager(new GreetingPage());
         }
         private void WindowsPageManager(Page newPage) => PagesFrame.Content = newPage; 
@@ -40,7 +28,7 @@ namespace RCC
         private void button_show_mouse_check_MouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(mouseLoggerPage);
         private void Button_show_search_file_OnMouseDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(searchFilePage);
         private void button_show_other_page_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => WindowsPageManager(otherPage);
-        private void grid_custom_title_bar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+        private void grid_custom_title_bar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.DragMove();
         private void label_close_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => Environment.Exit(Environment.ExitCode);
         private void label_turn_off_application_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.WindowState = WindowState.Minimized;
     }

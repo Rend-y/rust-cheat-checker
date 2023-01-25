@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
+using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
 {
-    public class detecting_cleaning
+    public class DetectingCleaning
     {
         readonly List<string> all_logs_detected_cleaning = new List<string>();
         readonly List<Tuple<string, string, string>> folder_and_file_for_clear = new List<Tuple<string, string, string>>()
@@ -51,7 +53,7 @@ namespace RCC
             int accountDetect = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count;
             all_logs_detected_cleaning.Add($"Обнаружено {Math.Abs(accountDetect)} удалённых аккаунтов");
         }
-        public void search_all()
+        public void SearchAll()
         {
             this.detect_clear_steam_account();
             this.detect_clear_protected_folder();
@@ -60,6 +62,16 @@ namespace RCC
             string message = string.Empty;
             all_logs_detected_cleaning.ForEach(messages => message += $"{messages}\n");
             MessageBox.Show(message);
+        }
+        public static void Start()
+        {
+            Thread thread = new Thread(() =>
+            {
+                DetectingCleaning detectingCleaning = new DetectingCleaning();
+                detectingCleaning.SearchAll();
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
     }
 }

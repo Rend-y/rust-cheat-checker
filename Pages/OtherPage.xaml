@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:RCC.Pages"
+      xmlns:components="clr-namespace:RCC.Components"
       mc:Ignorable="d"
       Title="OtherPage"
       Width="1122" 
@@ -11,13 +11,16 @@
       >
     <Grid>
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
-            <Grid>
-                <Label Foreground="#F9FAFB" Content="Проверка клавиш" Padding="0" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15"/>
-                <Rectangle Height="2" Margin="20,53,20,0" VerticalAlignment="Top" Fill="#3F717790"/>
-                <Grid Height="35" VerticalAlignment="Bottom" Margin="20 0 20 20">
-                    <Rectangle Fill="#1E59F1" RadiusX="10" RadiusY="10"/>
-                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Запустить проверку в игре." Foreground="#FFFFFF" Padding="0" FontSize="15" />
-                </Grid>
+            <Grid Height="178">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Foreground="#F9FAFB" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Проверка клавиш" Padding="0" FontSize="15"/>
+                <Rectangle Grid.Row="1" Height="2" Fill="#3F717790"/>
+                <components:Button Grid.Row="3" Height="35" Width="375" Text="Запустить проверку в игре"/>
             </Grid>
         </Border>
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
