@@ -29,15 +29,15 @@ namespace RCC.windows
         }
         private void TitleBar_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.DragMove();
         private void MessageBox_OnLoaded(object sender, RoutedEventArgs e) => glass_effect.enable_blur(this);
-        private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
-        {
-            Result = MessageBoxResult.OK;
-            Close();
-        }
-
         private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
         {
             Result = MessageBoxResult.Cancel;
+            Close();
+        }
+
+        private void ButtonOk_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Result = MessageBoxResult.OK;
             Close();
         }
     }

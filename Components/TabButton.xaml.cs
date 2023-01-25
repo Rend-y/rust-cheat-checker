@@ -1,15 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace RCC
+namespace RCC.Components
 {
-    public partial class CustomTabButtonControl : UserControl
+    public partial class TabButton : UserControl
     {
-        public CustomTabButtonControl()
+        public TabButton()
         {
             InitializeComponent();
             this.DataContext = this;
         }
-        
+
         public string Icon { get; set; }
         public string Text { get; set; }
     }
