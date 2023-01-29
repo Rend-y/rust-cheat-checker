@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,14 +19,19 @@ namespace RCC.windows
         }
         public static void Show(string message, string title = "Rust Cheat Checker")
         {
-            using (var msg = new MessageBox())
+            Thread thread = new Thread(() =>
             {
-                msg.LabelTitle.Content = title;
-                msg.TextBlockMessage.Text = message;
+                using (var msg = new MessageBox())
+                {
+                    msg.LabelTitle.Content = title;
+                    msg.TextBlockMessage.Text = message;
 
-                msg.ButtonOk.Focus();
-                msg.ShowDialog();
-            }
+                    msg.ButtonOk.Focus();
+                    msg.ShowDialog();
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
         private void TitleBar_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.DragMove();
         private void MessageBox_OnLoaded(object sender, RoutedEventArgs e) => glass_effect.enable_blur(this);

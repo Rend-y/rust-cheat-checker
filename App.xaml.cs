@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Net;
+using RCC.windows;
 
 namespace RCC
 {
@@ -55,6 +56,7 @@ namespace RCC
             // TODO: need uncommitted this before release
             //Utilities.OpenDiscordServer();
             DetectingCleaning.Start();
+            Notify.Show("Приложение запущено", "Приложение Rust cheat checker\nуспешно запущено");
             main_window main = new main_window();
             main.Show();
         }
