@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="DangerousApps.cs" />
     <Compile Include="DetectingCleaning.cs" />
+    <Compile Include="DeviceEvents.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
     <Compile Include="Pages\GreetingPage.xaml.cs">
