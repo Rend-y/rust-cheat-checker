@@ -8,40 +8,71 @@ using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
 {
+    public struct CleaningFolderData
+    {
+        public string FullPath { get; set; }
+        public string SearchPattern { get; set; }
+        public string FolderName { get; set; }
+        public CleaningFolderData(string fullPath, string any, string folderName)
+        {
+            this.FullPath = fullPath;
+            this.SearchPattern = any;
+            this.FolderName = folderName;
+        }
+    }
     public class DetectingCleaning
     {
-        readonly List<string> all_logs_detected_cleaning = new List<string>();
-        readonly List<Tuple<string, string, string>> folder_and_file_for_clear = new List<Tuple<string, string, string>>()
-        {
-            Tuple.Create($"C:\\Users\\{Environment.UserName}\\Recent","", "Recent"),
-            Tuple.Create("C:\\Windows\\Prefetch\\Prefetch","", "Prefetch"),
+        readonly List<string> _allLogsDetectedCleaning = new List<string>();
+        readonly List<CleaningFolderData> _folderAndFileForClear = new List<CleaningFolderData>()
+        { 
+            new CleaningFolderData($"C:\\Users\\{Environment.UserName}\\Recent","", "Recent"),
+            new CleaningFolderData("C:\\Windows\\Prefetch\\Prefetch","", "Prefetch"),
         };
-        private void detect_clear_protected_folder()
+        private void DetectClearProtectedFolder()
         {
-            foreach(Tuple<string, string, string> folder in folder_and_file_for_clear)
+            foreach(CleaningFolderData folder in _folderAndFileForClear)
             {
-                string[] files = Directory.GetFiles(folder.Item1, folder.Item2);
-                if (files.Count() <= 5)
+                try
                 {
-                    all_logs_detected_cleaning.Add($"Обнаружена очищенная папка {folder.Item3}");
+                    DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullPath);
+                    FileInfo[] files = directoryInfo.GetFiles();
+                    int filesCount = files.Count();
+                    System.Windows.Forms.MessageBox.Show($"filesCount: {filesCount}");
+                    if (filesCount <= 15)
+                    {
+                        _allLogsDetectedCleaning.Add($"Обнаружена очищенная папка {folder.FolderName}");
+                        _allLogsDetectedCleaning.Add($"Текушие количество файлов в папке {folder.FolderName}: {filesCount}");
+                        return;
+                    }
+                    DateTime dateTime = DateTime.Now;
+                    files.ToList().ForEach(file =>
+                    {
+                        if ((dateTime - file.CreationTime).TotalMinutes > 0.0)
+                            dateTime = file.CreationTime;
+                    });
+                    int totalMinutes = (int)(DateTime.Now - dateTime).TotalMinutes;
+                    if (totalMinutes < 45.0)
+                        _allLogsDetectedCleaning.Add($"Обнаружена попытка очистки папки {folder.FolderName}");
+                    else if (totalMinutes < 360)
+                        _allLogsDetectedCleaning.Add($"Самый первый файл в {folder.FolderName} был создан {totalMinutes} минут назад");
+                }
+                // catch (UnauthorizedAccessException e)
+                // {
+                //     MessageBox.Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
+                //     return;
+                // }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Неизвестная ошибка\n" +
+                                    $"При попытке получить доступ к папке {folder.FolderName}\n" + 
+                                    "Пожалуйста сообщите об этой ошибке разработчику\n" +
+                                    $"Приложите скриншот этого окна\n" +
+                                    $"Сообщение об ошибке:\n{e.Message}\n" );
                     return;
                 }
-
-                DateTime date_time = DateTime.Now;
-                files.ToList().ForEach((get_file) =>
-                {
-                    DateTime creationTime = File.GetCreationTime(get_file);
-                    if ((date_time - creationTime).TotalMinutes > 0.0)
-                        date_time = creationTime;
-                });
-                int totalMinutes = (int)(DateTime.Now - date_time).TotalMinutes;
-                if (totalMinutes < 45.0)
-                    all_logs_detected_cleaning.Add($"Обнаружена попытка очистки папки {folder.Item3}");
-                else if (totalMinutes < 360) all_logs_detected_cleaning.Add($"Самый первый файл в {folder.Item3} был создан {totalMinutes} минут назад");
-
             }
         }
-        private void detect_clear_steam_account()
+        private void DetectClearSteamAccount()
         {
             string fileDataFromConfig = File.ReadAllText(Steam.local_info.GetPathToConfig());
             List<string> getSteamIdDataFromConfig = Steam.local_info.GetAllSteamId(fileDataFromConfig);
@@ -51,16 +82,17 @@ namespace RCC
                 return;
 
             int accountDetect = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count;
-            all_logs_detected_cleaning.Add($"Обнаружено {Math.Abs(accountDetect)} удалённых аккаунтов");
+            _allLogsDetectedCleaning.Add($"Обнаружено {Math.Abs(accountDetect)} удалённых аккаунтов");
         }
-        public void SearchAll()
+
+        private void SearchAll()
         {
-            this.detect_clear_steam_account();
-            this.detect_clear_protected_folder();
-            if (all_logs_detected_cleaning.Count == 0)
+            this.DetectClearSteamAccount();
+            this.DetectClearProtectedFolder();
+            if (_allLogsDetectedCleaning.Count == 0)
                 return;
             string message = string.Empty;
-            all_logs_detected_cleaning.ForEach(messages => message += $"{messages}\n");
+            _allLogsDetectedCleaning.ForEach(messages => message += $"{messages}\n");
             MessageBox.Show(message);
         }
         public static void Start()

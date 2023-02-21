@@ -4,14 +4,14 @@ using Microsoft.Win32;
 
 namespace RCC
 {
-    public class dangerous_application
+    public struct DangerousApplication
     {
-        public string display_name { get; set; }
-        public string install_path { get; set; }
-        public dangerous_application(string display_name, string install_path)
+        public string DisplayName { get; set; }
+        public string InstallPath { get; set; }
+        public DangerousApplication(string displayName, string installPath)
         {
-            this.display_name = display_name;
-            this.install_path = install_path;
+            this.DisplayName = displayName;
+            this.InstallPath = installPath;
         }
     }
     
@@ -22,9 +22,9 @@ namespace RCC
             "Process Hacker",
         };
 
-        public static List<dangerous_application> start_scan()
+        public static List<DangerousApplication> start_scan()
         {
-            List<dangerous_application> result = new List<dangerous_application>();
+            List<DangerousApplication> result = new List<DangerousApplication>();
             
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
             foreach (String keyName in key.GetSubKeyNames())
@@ -46,7 +46,7 @@ namespace RCC
                         }
                     }
                     if (isDangerous)
-                        result.Add(new dangerous_application(displayName,installPath));
+                        result.Add(new DangerousApplication(displayName,installPath));
                 }
                 catch
                 { 

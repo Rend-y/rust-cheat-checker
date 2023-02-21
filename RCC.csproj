@@ -88,7 +88,8 @@
     </Compile>
     <Compile Include="DangerousApps.cs" />
     <Compile Include="DetectingCleaning.cs" />
-    <Compile Include="DeviceEvents.cs" />
+    <Compile Include="DeviceEvents\Keyboard.cs" />
+    <Compile Include="DeviceEvents\Mouse.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
     <Compile Include="Pages\GreetingPage.xaml.cs">
@@ -112,6 +113,8 @@
     <Compile Include="Pages\UsbDevicePage.xaml.cs">
       <DependentUpon>UsbDevicePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QuickCheck\ConsoleCommand.cs" />
+    <Compile Include="QuickCheck\KeyboardCheck.cs" />
     <Compile Include="SearchFile.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
