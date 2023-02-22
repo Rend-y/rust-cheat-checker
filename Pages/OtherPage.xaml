@@ -10,7 +10,7 @@
       Height="479"
       >
     <Grid>
-        <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,23,678,277" Width="417" Height="178" Background="#219297B3" BorderBrush="#6610121B">
+        <Border BorderThickness="1" CornerRadius="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25" Width="220" Height="178" Background="#219297B3" BorderBrush="#6610121B">
             <Grid Height="178">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -20,7 +20,20 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Foreground="#F9FAFB" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Проверка клавиш" Padding="0" FontSize="15"/>
                 <Rectangle Grid.Row="1" Height="2" Fill="#3F717790"/>
-                <components:Button Grid.Row="3" Height="35" Width="375" Text="Запустить проверку в игре"/>
+                <components:Button Grid.Row="3" Height="35" Width="200" MouseLeftButtonDown="ButtonStartKeyBoardSearch_OnMouseLeftButtonDown" Text="Запустить проверку"/>
+            </Grid>
+        </Border>
+        <Border BorderThickness="1" CornerRadius="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="265,25,0,0" Width="220" Height="178" Background="#219297B3" BorderBrush="#6610121B">
+            <Grid Height="178">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Foreground="#F9FAFB" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Проверка консоли" Padding="0" FontSize="15"/>
+                <Rectangle Grid.Row="1" Height="2" Fill="#3F717790"/>
+                <components:Button Grid.Row="3" x:Name="ButtonStartKeyBoardSearch" Height="35" Width="200" MouseLeftButtonDown="ButtonStartConsoleCommandSearch_OnMouseLeftButtonDown" Text="Запустить проверку"/>
             </Grid>
         </Border>
         <Border BorderThickness="1" CornerRadius="10,10,10,10" Margin="25,218,678,22" Width="417" Background="#219297B3" BorderBrush="#6610121B">
@@ -43,8 +56,8 @@
                         <DataTemplate>
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="138" Content="{Binding display_name}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="263" Foreground="#F9FAFB" Margin="138,0,0,0" Content="{Binding install_path}"/>
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="138" Content="{Binding DisplayName}"/>
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="263" Foreground="#F9FAFB" Margin="138,0,0,0" Content="{Binding InstallPath}"/>
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="138,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                     <Rectangle Width="415" HorizontalAlignment="Left" Height="2" Margin="-7,28,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
                                 </Grid>
