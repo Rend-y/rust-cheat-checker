@@ -12,9 +12,9 @@ using System.Xml.Linq;
 
 namespace RCC
 {
-    public abstract class Utilities
+    public static class Utilities
     {
-        public static void OpenDiscordServer() => Process.Start("https://discord.gg/xNxm5vKVfZ");
+        public static void OpenDiscordServer() => Process.Start(Global.DiscordInviteLink);
         public static string PathToLocalApplication => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
         public static IEnumerable<XElement> GetXmlDocumentFromWebProcess(string path_to_exe, string url, string path_to_save_xml)
         {

@@ -20,6 +20,7 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Foreground="#F9FAFB" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Проверка клавиш" Padding="0" FontSize="15"/>
                 <Rectangle Grid.Row="1" Height="2" Fill="#3F717790"/>
+                <TextBlock Grid.Row="2" Foreground="#F9FAFB" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Text="Автоматическое нажатие&#xD;&#xA;клавиш" Padding="0" FontSize="15"/>
                 <components:Button Grid.Row="3" Height="35" Width="200" MouseLeftButtonDown="ButtonStartKeyBoardSearch_OnMouseLeftButtonDown" Text="Запустить проверку"/>
             </Grid>
         </Border>
@@ -33,6 +34,7 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Foreground="#F9FAFB" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Проверка консоли" Padding="0" FontSize="15"/>
                 <Rectangle Grid.Row="1" Height="2" Fill="#3F717790"/>
+                <TextBlock Grid.Row="2" Foreground="#F9FAFB" HorizontalAlignment="Center" TextAlignment="Center"  VerticalAlignment="Center" Text="Автоматическое проверка&#xD;&#xA;консольных команд" Padding="0" FontSize="15"/>
                 <components:Button Grid.Row="3" x:Name="ButtonStartKeyBoardSearch" Height="35" Width="200" MouseLeftButtonDown="ButtonStartConsoleCommandSearch_OnMouseLeftButtonDown" Text="Запустить проверку"/>
             </Grid>
         </Border>

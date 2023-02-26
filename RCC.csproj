@@ -113,6 +113,11 @@
     <Compile Include="Pages\UsbDevicePage.xaml.cs">
       <DependentUpon>UsbDevicePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Global.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
     <Compile Include="QuickCheck\ConsoleCommand.cs" />
     <Compile Include="QuickCheck\KeyboardCheck.cs" />
     <Compile Include="SearchFile.cs" />
@@ -163,6 +168,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Global.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

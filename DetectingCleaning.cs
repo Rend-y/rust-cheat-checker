@@ -37,7 +37,6 @@ namespace RCC
                     DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullPath);
                     FileInfo[] files = directoryInfo.GetFiles();
                     int filesCount = files.Count();
-                    System.Windows.Forms.MessageBox.Show($"filesCount: {filesCount}");
                     if (filesCount <= 15)
                     {
                         _allLogsDetectedCleaning.Add($"Обнаружена очищенная папка {folder.FolderName}");
@@ -56,11 +55,11 @@ namespace RCC
                     else if (totalMinutes < 360)
                         _allLogsDetectedCleaning.Add($"Самый первый файл в {folder.FolderName} был создан {totalMinutes} минут назад");
                 }
-                // catch (UnauthorizedAccessException e)
-                // {
-                //     MessageBox.Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
-                //     return;
-                // }
+                catch (UnauthorizedAccessException e)
+                {
+                    MessageBox.Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
+                    return;
+                }
                 catch (Exception e)
                 {
                     MessageBox.Show($"Неизвестная ошибка\n" +

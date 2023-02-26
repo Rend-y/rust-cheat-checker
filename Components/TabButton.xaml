@@ -12,7 +12,7 @@
              d:DesignWidth="150"
              >
     <Grid>
-        <Label HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" FontFamily="Font Awesome 6 Free Solid" VerticalAlignment="Center" Margin="0 0 0 19" Content="{Binding  Icon}" Padding="0" />
+        <Label x:Name="LabelIcon" HorizontalAlignment="Center" FontSize="30" Foreground="#C6717790" VerticalAlignment="Center" Margin="0 0 0 19" FontFamily="{Binding FontIcon}" Content="{Binding  Icon}" Padding="0" />
         <Label VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Content="{Binding  Text}" Padding="0" FontSize="15" Foreground="#FFFFFF" />
     </Grid>
 </UserControl>

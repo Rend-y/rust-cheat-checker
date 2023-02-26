@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Net;
-using RCC.windows;
+using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
 {
@@ -28,7 +28,7 @@ namespace RCC
             bool isAdmin = Utilities.IsAdminStartup();
             if (!isAdmin)
             {
-                System.Windows.Forms.MessageBox.Show("Please run it's programm from admin");
+                MessageBox.Show("Please run it's programm from admin");
                 Environment.Exit(Environment.ExitCode);
             }
             Utilities.CheckOnUpdate();
@@ -53,10 +53,8 @@ namespace RCC
                     // ignored
                 }
             }));
-            // TODO: need uncommitted this before release
-            //Utilities.OpenDiscordServer();
+            Utilities.OpenDiscordServer();
             DetectingCleaning.Start();
-            Notify.Show("Приложение запущено", "Приложение Rust cheat checker\nуспешно запущено");
             main_window main = new main_window();
             main.Show();
         }

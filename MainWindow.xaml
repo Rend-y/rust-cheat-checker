@@ -43,12 +43,12 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <components:TabButton Grid.Column="1" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" Icon="" Text="Последнии действия" />
-                    <components:TabButton Grid.Column="2" MouseLeftButtonDown="Button_show_search_file_OnMouseDown" Icon="" Text="Посик файлов" />
-                    <components:TabButton Grid.Column="3" MouseLeftButtonDown="button_show_mouse_check_MouseDown" Icon="" Text="Проверка мыши" />
-                    <components:TabButton Grid.Column="4" MouseLeftButtonDown="button_show_account_info_page_MouseDown" Icon="" Text="Steam" />
-                    <components:TabButton Grid.Column="5" MouseLeftButtonDown="button_show_usb_device_page_MouseDown" Icon="" Text="USB устройства" />
-                    <components:TabButton Grid.Column="6" MouseLeftButtonDown="button_show_other_page_MouseLeftButtonDown" Icon="&#xF0C9;" Text="Остальное" />
+                    <components:TabButton Grid.Column="1" MouseLeftButtonDown="button_show_last_activity_page_MouseDown" FontIcon="Font Awesome 6 Free Solid" Icon="" Text="Последнии действия" />
+                    <components:TabButton Grid.Column="2" MouseLeftButtonDown="Button_show_search_file_OnMouseDown" FontIcon="Font Awesome 6 Free Solid" Icon="" Text="Посик файлов" />
+                    <components:TabButton Grid.Column="3" MouseLeftButtonDown="button_show_mouse_check_MouseDown" FontIcon="Font Awesome 6 Free Solid" Icon="" Text="Проверка мыши" />
+                    <components:TabButton Grid.Column="4" MouseLeftButtonDown="button_show_account_info_page_MouseDown" FontIcon="Font Awesome 6 Brands Regular" Icon="" Text="Steam" />
+                    <components:TabButton Grid.Column="5" MouseLeftButtonDown="button_show_usb_device_page_MouseDown" FontIcon="Font Awesome 6 Brands Regular" Icon="" Text="USB устройства" />
+                    <components:TabButton Grid.Column="6" MouseLeftButtonDown="button_show_other_page_MouseLeftButtonDown" FontIcon="Font Awesome 6 Free Solid" Icon="&#xF0C9;" Text="Остальное" />
                 </Grid>
             </Grid>
         </Border>

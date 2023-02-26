@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Win32;
+using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
 {
@@ -15,18 +17,22 @@ namespace RCC
         }
     }
     
-    public static class DangerousApps
+    public class DangerousApps
     {
         private static readonly List<string> ListDangerousApplications = new List<string>
         {
             "Process Hacker",
         };
 
-        public static List<DangerousApplication> start_scan()
+        private readonly List<DangerousApplication> _dangerousApplications = new List<DangerousApplication>();
+        public DangerousApps()
         {
-            List<DangerousApplication> result = new List<DangerousApplication>();
-            
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+            if (key == null)
+            {
+                MessageBox.Show("Пожалуйста запустите программу\nот имени администрартора");
+                return;
+            }
             foreach (String keyName in key.GetSubKeyNames())
             {
                 try 
@@ -35,26 +41,19 @@ namespace RCC
                     if (subKey == null) continue;
                     string displayName = subKey.GetValue("DisplayName").ToString();
                     string installPath = subKey.GetValue("InstallLocation").ToString();
-                    bool isDangerous = false;
-                    foreach (string app in ListDangerousApplications)
-                    {
-                        if (displayName.ToLower().Contains(app.ToLower()))
-                        {
-                            displayName = app;
-                            isDangerous = true;
-                            break;
-                        }
-                    }
-                    if (isDangerous)
-                        result.Add(new DangerousApplication(displayName,installPath));
+                    int dangerousAppIndex = ListDangerousApplications.ToList()
+                        .FindIndex(dangerousApp => displayName.ToLower().Contains(dangerousApp.ToLower()));
+                    if (dangerousAppIndex != -1)
+                        this._dangerousApplications.Add(new DangerousApplication(displayName,installPath));
                 }
-                catch
-                { 
-                    // ignored
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Пожалуйста перезапустите программу\nот имени админа.\nИли напишите нам в дискорд\nСообщение об ошибке:\n{e.Message}");
+                    return;
                 }
             }
-            
-            return result;
         }
+        
+        public List<DangerousApplication> AllFindDangerousApplications() => _dangerousApplications;
     }
 }

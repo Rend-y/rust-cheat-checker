@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
+using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC.Pages
 {
