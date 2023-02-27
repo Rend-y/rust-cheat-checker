@@ -72,7 +72,7 @@
                                     <Ellipse Height="50" Stroke="#FF717790" Margin="555,6,20,6"/>
                                     <Label Content="{Binding get_account_level}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     <Ellipse Height="50" Visibility="{Binding get_is_hide_for_window}" Stroke="#FF717790" Margin="500,6,75,6"/>
-                                    <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Font Awesome 6 Free Regular" />
+                                    <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeRegular}" />
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>

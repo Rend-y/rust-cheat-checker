@@ -25,5 +25,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <FontFamily x:Key="FontAwesomeFreeSolid">pack://application:,,,/Resources/#Font Awesome 6 Free Solid</FontFamily>
+        <FontFamily x:Key="FontAwesomeFreeRegular">pack://application:,,,/Resources/#Font Awesome 6 Free Regular</FontFamily>
+        <FontFamily x:Key="FontAwesomeBrandsRegular">pack://application:,,,/Resources/#Font Awesome 6 Brands Regular</FontFamily>
     </Application.Resources>
 </Application>

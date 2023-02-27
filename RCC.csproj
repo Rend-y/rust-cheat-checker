@@ -183,15 +183,9 @@
     </None>
     <None Include="README.md" />
     <None Include="version.ini" />
-    <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Font Awesome 6 Free-Regular-400.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Font Awesome 6 Free-Solid-900.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Font Awesome 6 Brands-Regular-400.otf" />
+    <Resource Include="Resources\Font Awesome 6 Free-Regular-400.otf" />
+    <Resource Include="Resources\Font Awesome 6 Free-Solid-900.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
