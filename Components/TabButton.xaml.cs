@@ -22,7 +22,7 @@ namespace RCC.Components
             this.DataContext = this;
         }
 
-        public string FontIcon { get; set; }
+        public FontFamily FontIcon { get; set; }
         public string Icon { get; set; }
         public string Text { get; set; }
     }

@@ -33,14 +33,14 @@ namespace RCC
                 MessageBox.Show("Пожалуйста запустите программу\nот имени администрартора");
                 return;
             }
-            foreach (String keyName in key.GetSubKeyNames())
+            foreach (string keyName in key.GetSubKeyNames())
             {
                 try 
                 {
                     RegistryKey subKey = key.OpenSubKey(keyName);
                     if (subKey == null) continue;
-                    string displayName = subKey.GetValue("DisplayName").ToString();
-                    string installPath = subKey.GetValue("InstallLocation").ToString();
+                    string displayName = subKey.GetValue("DisplayName", "").ToString();
+                    string installPath = subKey.GetValue("InstallLocation", "").ToString();
                     int dangerousAppIndex = ListDangerousApplications.ToList()
                         .FindIndex(dangerousApp => displayName.ToLower().Contains(dangerousApp.ToLower()));
                     if (dangerousAppIndex != -1)
@@ -52,6 +52,7 @@ namespace RCC
                     return;
                 }
             }
+            key.Close();
         }
         
         public List<DangerousApplication> AllFindDangerousApplications() => _dangerousApplications;
