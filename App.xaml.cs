@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using MessageBox = RCC.windows.MessageBox;
@@ -15,14 +16,16 @@ namespace RCC
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+#if !DEBUG
             bool isAdmin = Utilities.IsAdminStartup();
             if (!isAdmin)
             {
                 MessageBox.Show("Please run it's program from admin");
                 Environment.Exit(Environment.ExitCode);
-            }
+            } 
             Utilities.CheckOnUpdate();
             Utilities.OpenDiscordServer();
+#endif
             DetectingCleaning.Start();
             main_window main = new main_window();
             main.Show();
