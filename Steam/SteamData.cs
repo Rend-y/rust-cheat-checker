@@ -11,18 +11,19 @@ namespace RCC.Steam
 {
     public class steam_data
     {
-        public readonly string username;
-        public readonly long steam_id;
-        public readonly int account_level;
-        private readonly BitmapSource avatar;
-        public readonly string avatar_url;
-        public bool is_hide_account;
+        public string Username { get; }
+        public readonly long SteamId;
+        public readonly int AccountLevel;
+        private readonly BitmapSource _avatar;
+        public readonly string AvatarUrl;
+        public readonly bool IsHideAccount;
+        public bool IsDeleted;
         public steam_data() { }
-        public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account)
+        public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account, bool isDeleted = false)
         {
-            this.username = username;
-            this.steam_id = stem_id;
-            this.account_level = account_level;
+            this.Username = username;
+            this.SteamId = stem_id;
+            this.AccountLevel = account_level;
             WebClient client = new WebClient();
             if (avatar_url == string.Empty)
                 avatar_url = "https://avatars.cloudflare.steamstatic.com/a8c5d92192f114f5ed05a03a86e53facc7d22a27_full.jpg";
@@ -31,16 +32,18 @@ namespace RCC.Steam
             {
                 Bitmap bitmap = new Bitmap(stream);
                 stream.Close();
-                this.avatar_url = avatar_url;
-                this.avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                this.AvatarUrl = avatar_url;
+                this._avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
-            this.is_hide_account = is_hide_account;
+            this.IsHideAccount = is_hide_account;
+            this.IsDeleted = isDeleted;
         }
 
-        public ImageSource get_account_avatar => this.avatar;
-        public string get_account_level => this.account_level.ToString();
-        public string get_username => $"Username : {this.username}";
-        public string get_steam_id => $"Steam Id : {this.steam_id}";
-        public Visibility get_is_hide_for_window => this.is_hide_account ? Visibility.Visible : Visibility.Hidden;
+        public ImageSource GetAccountAvatar => this._avatar;
+        public string GetAccountLevel => this.AccountLevel.ToString();
+        public string GetUsername => $"Username : {this.Username}";
+        public string GetSteamId => $"Steam Id : {this.SteamId}";
+        public Visibility GetIsHideForWindow => this.IsHideAccount ? Visibility.Visible : Visibility.Hidden;
+        public Visibility GetIsDeleted => this.IsHideAccount ? Visibility.Visible : Visibility.Hidden;
     }
 }
