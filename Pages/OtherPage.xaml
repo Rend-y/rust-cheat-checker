@@ -46,7 +46,7 @@
                         <ControlTemplate>
                             <DockPanel>
                                 <Grid DockPanel.Dock="Top" Height="65">
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="307">Список подазрительных приложений</Label>
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="307">Список подозрительных приложений</Label>
                                     <Rectangle Height="2" Margin="20,53,20,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                 </Grid>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
