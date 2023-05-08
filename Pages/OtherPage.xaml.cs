@@ -38,7 +38,7 @@ namespace RCC.Pages
                 if (rustProcesses.MainModule == null) return;
                 List<string> pathArray = rustProcesses.MainModule.FileName.Split('\\').ToList();
                 pathArray.RemoveAt(pathArray.Count - 1);
-                string pathToKeys = $"{string.Join("\\", pathArray)}/cfg/keys.cfg";
+                string pathToKeys = $"{string.Join("\\", pathArray)}\\cfg\\keys.cfg";
                 string[] fileContent = File.ReadAllLines(pathToKeys);
                 fileContent.ToList().ForEach(item => this.ListAllKeyBind.Items.Add(new KeyBind(item)));
             }
