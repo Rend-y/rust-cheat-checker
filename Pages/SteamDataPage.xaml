@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:RCC.Pages"
+      xmlns:steam="clr-namespace:RCC.Steam"
       mc:Ignorable="d"
       Title="SteamDataPage" 
       Height="479"
@@ -58,21 +59,23 @@
                         </ControlTemplate>
                     </ListBox.Template>
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="{x:Type steam:steam_data}">
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid Background="Transparent" Height="62" Width="625">
                                     <Ellipse Margin="20,6,555,6">
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{Binding get_account_avatar}"/>
+                                            <ImageBrush ImageSource="{Binding GetAccountAvatar}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
-                                    <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_username}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
-                                    <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding get_steam_id}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
+                                    <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding GetUsername}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFF9FAFB" Margin="75,6,0,0" FontSize="15"/>
+                                    <Label Grid.ColumnSpan="1" Padding="0,0,0,0" Content="{Binding GetSteamId}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#C6717790" Margin="75,41,0,0" Grid.RowSpan="1" FontSize="12" Height="15"/>
                                     <Rectangle Fill="#3F717790" Margin="0,61,0,0" />
                                     <Ellipse Height="50" Stroke="#FF717790" Margin="555,6,20,6"/>
-                                    <Label Content="{Binding get_account_level}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <Ellipse Height="50" Visibility="{Binding get_is_hide_for_window}" Stroke="#FF717790" Margin="500,6,75,6"/>
-                                    <Label Content="" Visibility="{Binding get_is_hide_for_window}"  FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeRegular}" />
+                                    <Label Content="{Binding GetAccountLevel}" FontSize="22" Margin="555,6,20,6" Foreground="#C6717790" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Ellipse Height="50" Visibility="{Binding GetIsHideForWindow}" Stroke="#FF717790" Margin="500,6,75,6"/>
+                                    <Label Content="" Visibility="{Binding GetIsHideForWindow}" FontSize="20" Margin="508,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeRegular}" />
+                                    <Ellipse Height="50" Visibility="{Binding GetIsDeleted}" Stroke="#FF717790" Margin="450,6,130,6"/>
+                                    <Label Content="" Visibility="{Binding GetIsDeleted}" FontSize="20" Margin="458,0,0,0" Foreground="#C6717790" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeRegular}" />
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>

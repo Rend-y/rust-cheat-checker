@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,21 +20,43 @@ namespace RCC.Pages
             if (steam == null)
                 return;
             
-            ListOtherAccounts.Items.Add(new steam_data(steam.username, steam.steam_id, steam.account_level, steam.avatar_url, steam.is_hide_account));
+            ListOtherAccounts.Items.Add(new steam_data(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount));
         }
         
         void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
         {
             string steamPathToLoginUser = LocalInfo.GetPathToLoginUser;
-            if (!File.Exists(steamPathToLoginUser))
+            string steamPathToConfig = LocalInfo.GetPathToConfig;
+            
+            if (!File.Exists(steamPathToLoginUser) && !File.Exists(steamPathToConfig))
                 return;
-            string fileData = File.ReadAllText(steamPathToLoginUser);
-            List<string> getSteamIdData = LocalInfo.GetSteamIsFromContent(fileData);
+
+            
+            string loginUserFileData = File.ReadAllText(steamPathToLoginUser);
+            string configFileData = File.ReadAllText(steamPathToConfig);
+            List<string> getLoginUserSteamId = LocalInfo.GetSteamIsFromContent(loginUserFileData);
+            List<string> getConfigSteamId = LocalInfo.GetSteamIsFromContent(configFileData);
+            List<string> getCoPlaySteamId = LocalInfo.GetSteamIdFromCoPlay();
+
+            List<string> isDeletedAccount = new List<string>();
+            List<string> normalAccount = new List<string>();
+            normalAccount.AddRange(getLoginUserSteamId);
+            normalAccount.AddRange(getLoginUserSteamId.Intersect(getConfigSteamId).ToList());
+            isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
+            normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
+            isDeletedAccount.AddRange(getLoginUserSteamId.Except(getCoPlaySteamId).ToList());
+            isDeletedAccount = new HashSet<string>(isDeletedAccount).ToList();
+            normalAccount = new HashSet<string>(normalAccount).ToList();
 
             int i = 0;
-            getSteamIdData.ForEach(steam_id =>
+            normalAccount.ForEach(steam_id =>
             {
                 backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id)));
+                i++;
+            });
+            isDeletedAccount.ForEach(steam_id =>
+            {
+                backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id), true));
                 i++;
             });
         }
@@ -52,8 +75,8 @@ namespace RCC.Pages
             
             steam_data lastAccountInfo = LocalInfo.GetLastAccountInfo();
 
-            LabelSteamAccountSteamId.Content = lastAccountInfo.get_steam_id;
-            LabelSteamAccountUsername.Content = lastAccountInfo.get_username;
+            LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
+            LabelSteamAccountUsername.Content = lastAccountInfo.GetUsername;
             LabelCpuType.Content = GetSystemInfo.GetCpuName;
             LabelGpuType.Content = GetSystemInfo.GetGpuName;
             LabelScreenSize.Content = GetSystemInfo.GetScreenSize;
@@ -64,13 +87,13 @@ namespace RCC.Pages
             
             ImageBrush myBrush = new ImageBrush
             {
-                ImageSource = lastAccountInfo.get_account_avatar
+                ImageSource = lastAccountInfo.GetAccountAvatar
             };
             RectangleLocalProfileImage.Fill = myBrush;
         }
 
         private void ListOtherAccounts_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => 
-            Process.Start($"https://steamcommunity.com/profiles/{((steam_data)ListOtherAccounts.SelectedItem).steam_id}");
+            Process.Start($"https://steamcommunity.com/profiles/{((steam_data)ListOtherAccounts.SelectedItem).SteamId}");
 
         private void ButtonOpenSteamPath_OnClick(object sender, RoutedEventArgs e) => Process.Start(LabelFullPathToSteam.Content.ToString());
     }

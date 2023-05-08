@@ -74,14 +74,15 @@ namespace RCC
         private void DetectClearSteamAccount()
         {
             string fileDataFromConfig = File.ReadAllText(Steam.LocalInfo.GetPathToConfig);
-            List<string> getSteamIdDataFromConfig = Steam.LocalInfo.GetSteamIsFromContent(fileDataFromConfig);
             string fileDataFromLoginUser = File.ReadAllText(Steam.LocalInfo.GetPathToLoginUser);
+            List<string> getSteamIdDataFromConfig = Steam.LocalInfo.GetSteamIsFromContent(fileDataFromConfig);
             List<string> getSteamIdDataFromLoginUser = Steam.LocalInfo.GetSteamIsFromContent(fileDataFromLoginUser);
-            if (getSteamIdDataFromConfig.Count == getSteamIdDataFromLoginUser.Count)
+            List<string> getSteamIdFromCoPlay = Steam.LocalInfo.GetSteamIdFromCoPlay();
+            int calculate = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count -
+                            getSteamIdFromCoPlay.Count;
+            if (getSteamIdDataFromConfig.Count == Math.Abs(calculate))
                 return;
-
-            int accountDetect = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count;
-            _allLogsDetectedCleaning.Add($"Обнаружено {Math.Abs(accountDetect)} удалённых аккаунтов");
+            _allLogsDetectedCleaning.Add($"Обнаружены удаленные аккаунты");
         }
 
         private void SearchAll()
