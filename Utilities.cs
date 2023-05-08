@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace RCC
 {
