@@ -55,7 +55,7 @@ namespace RCC.Steam
         /// <param name="steamId">steam id in steam</param>
         /// <param name="isDeleted">steam account has been cleaned</param>
         /// <returns>steam data (avatar, username, is hide account, account level)</returns>
-        public static steam_data PeParseFromSteam(long steamId, bool isDeleted = false)
+        public static steam_data PeParseFromSteam(long steamId, bool isDeleted)
         {
             string url = $"https://steamcommunity.com/profiles/{steamId}";
             string username = "", avatarUrl = "";
@@ -124,9 +124,9 @@ namespace RCC.Steam
             for (int i = 0; i < isLastAccount.Count; i++)
             {
                 if (isLastAccount[i] == true.ToString())
-                    return PeParseFromSteam(long.Parse(getLoginUserSteamId[i]));
+                    return PeParseFromSteam(long.Parse(getLoginUserSteamId[i]), false);
             }
-            return PeParseFromSteam(long.Parse(getLoginUserSteamId[0]));
+            return PeParseFromSteam(long.Parse(getLoginUserSteamId[0]), false);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace RCC.Pages
             if (steam == null)
                 return;
             
-            ListOtherAccounts.Items.Add(new steam_data(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount));
+            ListOtherAccounts.Items.Add(new steam_data(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
         }
         
         void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
@@ -40,7 +40,6 @@ namespace RCC.Pages
 
             List<string> isDeletedAccount = new List<string>();
             List<string> normalAccount = new List<string>();
-            normalAccount.AddRange(getLoginUserSteamId);
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getConfigSteamId).ToList());
             isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
@@ -51,7 +50,7 @@ namespace RCC.Pages
             int i = 0;
             normalAccount.ForEach(steam_id =>
             {
-                backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id)));
+                backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id), false));
                 i++;
             });
             isDeletedAccount.ForEach(steam_id =>

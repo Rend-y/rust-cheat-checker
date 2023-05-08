@@ -19,7 +19,7 @@ namespace RCC.Steam
         public readonly bool IsHideAccount;
         public bool IsDeleted;
         public steam_data() { }
-        public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account, bool isDeleted = false)
+        public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account, bool isDeleted)
         {
             this.Username = username;
             this.SteamId = stem_id;
@@ -44,6 +44,6 @@ namespace RCC.Steam
         public string GetUsername => $"Username : {this.Username}";
         public string GetSteamId => $"Steam Id : {this.SteamId}";
         public Visibility GetIsHideForWindow => this.IsHideAccount ? Visibility.Visible : Visibility.Hidden;
-        public Visibility GetIsDeleted => this.IsHideAccount ? Visibility.Visible : Visibility.Hidden;
+        public Visibility GetIsDeleted => this.IsDeleted ? Visibility.Visible : Visibility.Hidden;
     }
 }
