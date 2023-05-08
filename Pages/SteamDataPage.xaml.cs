@@ -38,14 +38,32 @@ namespace RCC.Pages
             List<string> getConfigSteamId = LocalInfo.GetSteamIsFromContent(configFileData);
             List<string> getCoPlaySteamId = LocalInfo.GetSteamIdFromCoPlay();
 
+            List<string> groupListSteamId = new List<string>();
+            groupListSteamId.AddRange(getLoginUserSteamId);
+            groupListSteamId.AddRange(getConfigSteamId);
+            groupListSteamId.AddRange(getCoPlaySteamId);
+            groupListSteamId.Sort();
+
             List<string> isDeletedAccount = new List<string>();
             List<string> normalAccount = new List<string>();
+
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getConfigSteamId).ToList());
             isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
             isDeletedAccount.AddRange(getLoginUserSteamId.Except(getCoPlaySteamId).ToList());
-            isDeletedAccount = new HashSet<string>(isDeletedAccount).ToList();
-            normalAccount = new HashSet<string>(normalAccount).ToList();
+            
+            normalAccount.AddRange(getConfigSteamId.Intersect(getLoginUserSteamId).ToList());
+            isDeletedAccount.AddRange(getConfigSteamId.Except(getLoginUserSteamId).ToList());
+            normalAccount.AddRange(getConfigSteamId.Intersect(getCoPlaySteamId).ToList());
+            isDeletedAccount.AddRange(getConfigSteamId.Except(getCoPlaySteamId).ToList());
+            
+            normalAccount.AddRange(getCoPlaySteamId.Intersect(getConfigSteamId).ToList());
+            isDeletedAccount.AddRange(getCoPlaySteamId.Except(getConfigSteamId).ToList());
+            normalAccount.AddRange(getCoPlaySteamId.Intersect(getLoginUserSteamId).ToList());
+            isDeletedAccount.AddRange(getCoPlaySteamId.Except(getLoginUserSteamId).ToList());
+            
+            isDeletedAccount = isDeletedAccount.Distinct().ToList();
+            normalAccount = normalAccount.Except(isDeletedAccount).Distinct().ToList();
 
             int i = 0;
             normalAccount.ForEach(steam_id =>
