@@ -3,14 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:RCC.Components"
              mc:Ignorable="d"
-             d:DesignHeight="{Binding Height}"
              Background="Transparent"
+             d:DesignHeight="{Binding Height}"
              d:DesignWidth="{Binding Width}"
-             Height="{Binding Height}"
-             Width="{Binding Width}"
-             Loaded="Button_OnLoaded"
              >
     <Grid Background="Transparent">
         <Border Background="#1E59F1" CornerRadius="10">
@@ -21,8 +17,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="LabelIcon" Grid.Column="1" VerticalContentAlignment="Center" FontSize="14" Padding="0 0 4 0" Content="{Binding Icon}" Foreground="#FFFFFF" FontFamily="Font Awesome 6 Free Solid" />
-                <Label x:Name="LabelText" Grid.Column="2" VerticalContentAlignment="Center" FontSize="14" Padding="4 0 0 0" Content="{Binding Text}" Foreground="#FFFFFF" />
+                <Label Grid.Column="2" VerticalContentAlignment="Center" FontSize="14" Padding="4 0 0 0" Content="{Binding Text}" Foreground="#FFFFFF" />
             </Grid>
         </Border>
     </Grid>

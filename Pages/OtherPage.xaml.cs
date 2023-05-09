@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using RCC.QuickCheck;
@@ -49,8 +48,14 @@ namespace RCC.Pages
             }
         }
         
-        private void ButtonStartKeyBoardSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => new KeyboardCheck();
+        private void ButtonStartKeyBoardSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            KeyboardCheck keyboardCheck = new KeyboardCheck();
+        }
 
-        private void ButtonStartConsoleCommandSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => new ConsoleCommand();
+        private void ButtonStartConsoleCommandSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ConsoleCommand consoleCommand = new ConsoleCommand();
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace RCC
                     else if (totalMinutes < 360)
                         _allLogsDetectedCleaning.Add($"Самый первый файл в {folder.FolderName} был создан {totalMinutes} минут назад");
                 }
-                catch (UnauthorizedAccessException e)
+                catch (UnauthorizedAccessException)
                 {
                     MessageBox.Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
                     return;
