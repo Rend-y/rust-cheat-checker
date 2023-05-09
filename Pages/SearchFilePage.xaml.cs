@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml.Linq;
 using MessageBox = RCC.windows.MessageBox;
@@ -14,9 +15,8 @@ namespace RCC.Pages
 {
     public partial class SearchFilePage : Page
     {
-        private bool isStartSearch = false;
-        private readonly BackgroundWorker backgroundWorkerFindAllFiles = new BackgroundWorker();
-
+        private bool _isStartSearch = false;
+        private readonly BackgroundWorker _backgroundWorkerFindAllFiles = new BackgroundWorker();
 
         void BackgroundWorkerFindAllFilesProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -25,13 +25,13 @@ namespace RCC.Pages
             if (information == null) 
                 return;
             
-            list_all_file_search.Items.Add(new file_information(information.file_name, information.create_date,
+            ListAllFileSearch.Items.Add(new file_information(information.file_name, information.create_date,
                 information.directory, information.size));
         }
         
         void BackgroundWorkerFindAllFilesDoWork(object sender, DoWorkEventArgs e)
         {
-            while (!isStartSearch)
+            while (!_isStartSearch)
             {
                 Thread.Sleep(100);
             }
@@ -88,7 +88,7 @@ namespace RCC.Pages
                     }
                     searchList.ForEach(search => search.find_files.ForEach(file =>
                     {
-                        backgroundWorkerFindAllFiles.ReportProgress(counter, file);
+                        _backgroundWorkerFindAllFiles.ReportProgress(counter, file);
                         XElement rootClass = new XElement("file");
                         XElement filename = new XElement("filename", file.file_name);
                         XElement createDate = new XElement("create-data", file.create_date);
@@ -108,7 +108,7 @@ namespace RCC.Pages
                 List<file_information> localFile = ls.search_files(directory); // Search for files only in the root directory
                 localFile.ForEach(file =>
                 {
-                    backgroundWorkerFindAllFiles.ReportProgress(counter, file);
+                    _backgroundWorkerFindAllFiles.ReportProgress(counter, file);
                     XElement rootClass = new XElement("file");
                     XElement filename = new XElement("filename", file.file_name);
                     XElement createDate = new XElement("create-data", file.create_date);
@@ -129,17 +129,29 @@ namespace RCC.Pages
         public SearchFilePage()
         {
             InitializeComponent();
-            backgroundWorkerFindAllFiles.DoWork += BackgroundWorkerFindAllFilesDoWork;
-            backgroundWorkerFindAllFiles.ProgressChanged += BackgroundWorkerFindAllFilesProgressChanged;
-            backgroundWorkerFindAllFiles.WorkerReportsProgress = true;
-            backgroundWorkerFindAllFiles.RunWorkerAsync();
+            _backgroundWorkerFindAllFiles.DoWork += BackgroundWorkerFindAllFilesDoWork;
+            _backgroundWorkerFindAllFiles.ProgressChanged += BackgroundWorkerFindAllFilesProgressChanged;
+            _backgroundWorkerFindAllFiles.WorkerReportsProgress = true;
+            _backgroundWorkerFindAllFiles.RunWorkerAsync();
+            ListAllFileSearch.Items.Filter = CustomFilter;
         }
 
         private void ButtonRunCheck_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             this.GridStartSearching.Visibility = Visibility.Hidden;
             this.GridSearching.Visibility = Visibility.Visible;
-            isStartSearch = true;
+            _isStartSearch = true;
+        }
+        private bool CustomFilter(object obj)   
+        {  
+            if (string.IsNullOrEmpty(SearchFileTextBoxFilter.Text))
+                return true;
+            return ((file_information)obj).file_name.IndexOf(SearchFileTextBoxFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+        } 
+        private void SearchFileTextBoxFilter_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ListAllFileSearch.Items.Filter = CustomFilter;
+            ListAllFileSearch.Items.Refresh();
         }
     }
 }
