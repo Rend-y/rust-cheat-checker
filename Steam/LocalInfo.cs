@@ -28,7 +28,7 @@ namespace RCC.Steam
                 result = getBaseRegDir.OpenSubKey(isX64OperationSystem ? steamPathX64 : steamPathX32, isX64OperationSystem)
                     ?.GetValue(isX64OperationSystem ? "InstallPath" : "SourceModInstallPath")?.ToString();
             }
-            catch (Exception exception) { MessageBox.Show(exception.Message); }
+            catch (Exception exception) { new MessageBox().Show(exception.Message); }
             return result;
         }
 
@@ -55,7 +55,7 @@ namespace RCC.Steam
         /// <param name="steamId">steam id in steam</param>
         /// <param name="isDeleted">steam account has been cleaned</param>
         /// <returns>steam data (avatar, username, is hide account, account level)</returns>
-        public static steam_data PeParseFromSteam(long steamId, bool isDeleted)
+        public static SteamData PeParseFromSteam(long steamId, bool isDeleted)
         {
             string url = $"https://steamcommunity.com/profiles/{steamId}";
             string username = "", avatarUrl = "";
@@ -85,8 +85,8 @@ namespace RCC.Steam
                     
                 }
             }
-            catch (Exception exception) { MessageBox.Show(exception.Message); };
-            return new steam_data(username, steamId, level, avatarUrl, isHideProfile, isDeleted);
+            catch (Exception exception) { new MessageBox().Show(exception.Message); };
+            return new SteamData(username, steamId, level, avatarUrl, isHideProfile, isDeleted);
 
         }
 
@@ -95,7 +95,7 @@ namespace RCC.Steam
         /// use this to get last account
         /// </summary>
         /// <returns>Steam Data for current user (avatar, username, is hide account, account level)</returns>
-        public static steam_data GetLastAccountInfo()
+        public static SteamData GetLastAccountInfo()
         {
             string steamPathToLoginUser = GetPathToLoginUser;
             string steamPathToConfig = GetPathToConfig;

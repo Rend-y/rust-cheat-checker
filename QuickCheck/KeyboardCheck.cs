@@ -127,14 +127,14 @@ namespace RCC.QuickCheck
 
         public KeyboardCheck()
         {
-            MessageBox.Show("Проверка клавиатуры успешно запушенна\nначнётся через 10 секунд");
+            new MessageBox().Show("Проверка клавиатуры успешно запушенна\nначнётся через 10 секунд");
             Thread.Sleep(10000); // Sleep ten seconds
             _checkList.ForEach(item =>
             {
                 Keyboard keyboard = new Keyboard(item);
-                keyboard.SendKeyEvent();
+                keyboard.SendEvent();
             });
-            MessageBox.Show("Проверка клавиатуры успешно завершена");
+            new MessageBox().Show("Проверка клавиатуры успешно завершена");
         }
     }
 }

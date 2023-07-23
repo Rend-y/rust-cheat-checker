@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace RCC.Steam
 {
-    public class steam_data
+    public class SteamData
     {
         public string Username { get; }
         public readonly long SteamId;
@@ -17,25 +17,24 @@ namespace RCC.Steam
         private readonly BitmapSource _avatar;
         public readonly string AvatarUrl;
         public readonly bool IsHideAccount;
-        public bool IsDeleted;
-        public steam_data() { }
-        public steam_data(string username, long stem_id, int account_level, string avatar_url, bool is_hide_account, bool isDeleted)
+        public readonly bool IsDeleted;
+        public SteamData(string username, long steamId, int accountLevel, string avatarUrl, bool isHideAccount, bool isDeleted)
         {
             this.Username = username;
-            this.SteamId = stem_id;
-            this.AccountLevel = account_level;
+            this.SteamId = steamId;
+            this.AccountLevel = accountLevel;
             WebClient client = new WebClient();
-            if (avatar_url == string.Empty)
-                avatar_url = "https://avatars.cloudflare.steamstatic.com/a8c5d92192f114f5ed05a03a86e53facc7d22a27_full.jpg";
-            Stream stream = client.OpenRead(avatar_url);
+            if (avatarUrl == string.Empty)
+                avatarUrl = "https://avatars.cloudflare.steamstatic.com/a8c5d92192f114f5ed05a03a86e53facc7d22a27_full.jpg";
+            Stream stream = client.OpenRead(avatarUrl);
             if (stream != null)
             {
                 Bitmap bitmap = new Bitmap(stream);
                 stream.Close();
-                this.AvatarUrl = avatar_url;
+                this.AvatarUrl = avatarUrl;
                 this._avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
-            this.IsHideAccount = is_hide_account;
+            this.IsHideAccount = isHideAccount;
             this.IsDeleted = isDeleted;
         }
 

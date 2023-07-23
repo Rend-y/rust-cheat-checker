@@ -59,7 +59,7 @@
                         </ControlTemplate>
                     </ListBox.Template>
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type steam:steam_data}">
+                        <DataTemplate DataType="{x:Type steam:SteamData}">
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid Background="Transparent" Height="62" Width="625">
                                     <Ellipse Margin="20,6,555,6">

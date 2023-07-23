@@ -57,12 +57,12 @@ namespace RCC
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    MessageBox.Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
+                    new MessageBox().Show($"Не удалось получить доступ к папке {folder.FolderName}\nПерезапустите программу от имени администратора");
                     return;
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show($"Неизвестная ошибка\n" +
+                    new MessageBox().Show($"Неизвестная ошибка\n" +
                                     $"При попытке получить доступ к папке {folder.FolderName}\n" + 
                                     "Пожалуйста сообщите об этой ошибке разработчику\n" +
                                     $"Приложите скриншот этого окна\n" +
@@ -93,7 +93,7 @@ namespace RCC
                 return;
             string message = string.Empty;
             _allLogsDetectedCleaning.ForEach(messages => message += $"{messages}\n");
-            MessageBox.Show(message);
+            new MessageBox().Show(message);
         }
         public static void Start()
         {

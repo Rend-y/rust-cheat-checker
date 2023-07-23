@@ -17,21 +17,15 @@ namespace RCC.windows
         {
             this.Close();
         }
-        public static void Show(string message, string title = "Rust Cheat Checker")
+        public void Show(string message, string title = "Rust Cheat Checker")
         {
-            Thread thread = new Thread(() =>
-            {
-                using (var msg = new MessageBox())
-                {
-                    msg.LabelTitle.Content = title;
-                    msg.TextBlockMessage.Text = message;
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            using var msg = new MessageBox();
+            msg.LabelTitle.Content = title;
+            msg.TextBlockMessage.Text = message;
 
-                    msg.ButtonOk.Focus();
-                    msg.ShowDialog();
-                }
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            msg.ButtonOk.Focus();
+            msg.ShowDialog();
         }
         private void TitleBar_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => this.DragMove();
         private void MessageBox_OnLoaded(object sender, RoutedEventArgs e) => glass_effect.enable_blur(this);

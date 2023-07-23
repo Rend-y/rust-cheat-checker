@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using RCC.windows;
 using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
@@ -26,6 +27,7 @@ namespace RCC
             Utilities.CheckOnUpdate();
             Utilities.OpenDiscordServer();
 #endif
+            new Notify().Show("title","message");
             DetectingCleaning.Start();
             main_window main = new main_window();
             main.Show();

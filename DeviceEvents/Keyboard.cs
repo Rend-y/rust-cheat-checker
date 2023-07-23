@@ -119,28 +119,27 @@ namespace RCC.DeviceEvents
         NumLock		= 0x90,
         Scroll		= 0x91,
     }
-    public class Keyboard
-    {
-        private readonly List<KeyboardKeys> _keys;
-        private readonly int _interval;
 
+    public class Keyboard : IDeviceEvent<KeyboardKeys>
+    {
+        public List<KeyboardKeys> Keys { get; }
+        public int Interval { get; }
+        public void SendEvent()
+        {
+            Keys.ForEach(key => AllDllImport.keybd_event((byte)key, 0, 0, 0));
+            Thread.Sleep(Interval != 0 ? Interval : 100);
+            Keys.ForEach(key => AllDllImport.keybd_event((byte)key, 0, 0x2, 0));
+        }
         public Keyboard(KeyboardKeys key, int interval = 0)
         {
-            this._keys = new List<KeyboardKeys>() { key };
-            this._interval = interval;
+            this.Keys = new List<KeyboardKeys>() { key };
+            this.Interval = interval;
         }
         public Keyboard(List<KeyboardKeys> keysList, int interval = 0)
         {
-            this._keys = keysList;
-            this._interval = interval;
+            this.Keys = keysList;
+            this.Interval = interval;
         }
-        public void SendKeyEvent()
-        {
-            _keys.ForEach(key => AllDllImport.keybd_event((byte)key, 0, 0, 0));
-            Thread.Sleep(_interval != 0 ? _interval : 100);
-            _keys.ForEach(key => AllDllImport.keybd_event((byte)key, 0, 0x2, 0));
-        }
-
         public static Keyboard PasteEvent()
         {
             List<KeyboardKeys> eventList = new List<KeyboardKeys>()

@@ -15,7 +15,7 @@
         Height="100"
         Width="400"
         Background="Transparent"
-        Loaded="Notify_OnLoaded"
+        Loaded="Window_OnLoaded"
         >
     <Grid Background="Transparent">
         <Border CornerRadius="10" Background="#6610121B">
@@ -26,7 +26,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Border Background="#6610121B" Margin="5" CornerRadius="10" Grid.Column="0">
-                    <Label Foreground="#FFFFFF" Content="" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Font Awesome 6 Free Solid"/>
+                    <Label Foreground="#FFFFFF" Content="" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeSolid}"/>
                 </Border>
                 <Grid Grid.Column="1" Margin="0 5 10 5" >
                     <Border Background="#6610121B" CornerRadius="10">

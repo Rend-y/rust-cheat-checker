@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace RCC.DeviceEvents
@@ -17,24 +18,25 @@ namespace RCC.DeviceEvents
         XDown = 0x00000080,
         Xup = 0x00000100
     }
-    public class Mouse
+    public class Mouse : IDeviceEvent<MouseEventFlags>
     {
         private readonly int _posX;
         private readonly int _posY;
-        private readonly MouseEventFlags _eventFlags;
-        private readonly int _interval;
+        public List<MouseEventFlags> Keys { get; }
+        public int Interval { get; }
         Mouse(int posX, int posY, MouseEventFlags eventFlags, int interval = 0)
         {
             this._posX = posX;
             this._posY = posY;
-            this._eventFlags = eventFlags;
-            this._interval = interval;
+            this.Keys = new List<MouseEventFlags>() {eventFlags};
+            this.Interval = interval;
         }
-        public void SendMouseEvent()
+        public void SendEvent()
         {
-            AllDllImport.mouse_event((uint)_eventFlags, (uint)_posX, (uint)_posY, 0, 0);
-            Thread.Sleep(_interval != 0 ? _interval : 100);
-            AllDllImport.mouse_event((uint)_eventFlags, (uint)_posX, (uint)_posY, 0, 0);
+            if (Keys?[0] == null) throw new ArgumentException("Mouse key does not contains value by index zero");
+            AllDllImport.mouse_event((uint)Keys[0], (uint)_posX, (uint)_posY, 0, 0);
+            Thread.Sleep(Interval != 0 ? Interval : 100);
+            AllDllImport.mouse_event((uint)Keys[0], (uint)_posX, (uint)_posY, 0, 0);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace RCC
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
             if (key == null)
             {
-                MessageBox.Show("Пожалуйста запустите программу\nот имени администрартора");
+                new MessageBox().Show("Пожалуйста запустите программу\nот имени администрартора");
                 return;
             }
             foreach (string keyName in key.GetSubKeyNames())
@@ -48,7 +48,7 @@ namespace RCC
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show($"Пожалуйста перезапустите программу\nот имени админа.\nИли напишите нам в дискорд\nСообщение об ошибке:\n{e.Message}");
+                    new MessageBox().Show($"Пожалуйста перезапустите программу\nот имени админа.\nИли напишите нам в дискорд\nСообщение об ошибке:\n{e.Message}");
                     return;
                 }
             }

@@ -43,7 +43,7 @@ namespace RCC.Pages
             }
             catch (Exception e)
             {
-                MessageBox.Show("Проверьте состояние игры");
+                new MessageBox().Show("Проверьте состояние игры");
                 Console.WriteLine(e);
             }
         }

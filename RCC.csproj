@@ -30,6 +30,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -92,6 +93,7 @@
     </Compile>
     <Compile Include="DangerousApps.cs" />
     <Compile Include="DetectingCleaning.cs" />
+    <Compile Include="DeviceEvents\IDeviceEvent.cs" />
     <Compile Include="DeviceEvents\Keyboard.cs" />
     <Compile Include="DeviceEvents\Mouse.cs" />
     <Compile Include="GetSysthemInfo.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="windows\ICustomWindows.cs" />
     <Compile Include="windows\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>

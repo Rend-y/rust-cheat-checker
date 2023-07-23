@@ -15,12 +15,12 @@ namespace RCC.Pages
         #region Background Worker Functions
         void BackgroundWorkerFindSteamAccountProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            steam_data steam = e.UserState as steam_data;
+            SteamData steam = e.UserState as SteamData;
             
             if (steam == null)
                 return;
             
-            ListOtherAccounts.Items.Add(new steam_data(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
+            ListOtherAccounts.Items.Add(new SteamData(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
         }
         
         void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
@@ -90,7 +90,7 @@ namespace RCC.Pages
             
             LabelFullPathToSteam.Content = LocalInfo.GetSteamLocation();
             
-            steam_data lastAccountInfo = LocalInfo.GetLastAccountInfo();
+            SteamData lastAccountInfo = LocalInfo.GetLastAccountInfo();
 
             LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
             LabelSteamAccountUsername.Content = lastAccountInfo.GetUsername;
@@ -110,7 +110,7 @@ namespace RCC.Pages
         }
 
         private void ListOtherAccounts_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => 
-            Process.Start($"https://steamcommunity.com/profiles/{((steam_data)ListOtherAccounts.SelectedItem).SteamId}");
+            Process.Start($"https://steamcommunity.com/profiles/{((SteamData)ListOtherAccounts.SelectedItem).SteamId}");
 
         private void ButtonOpenSteamPath_OnClick(object sender, RoutedEventArgs e) => Process.Start(LabelFullPathToSteam.Content.ToString());
     }

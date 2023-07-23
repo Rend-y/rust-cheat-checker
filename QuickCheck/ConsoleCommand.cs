@@ -15,16 +15,16 @@ namespace RCC.QuickCheck
         };
         public ConsoleCommand()
         {
-            MessageBox.Show("Была запушенна проверка консольный комманд\nСтарт через 10 секунд");
+            new MessageBox().Show("Была запушенна проверка консольный комманд\nСтарт через 10 секунд");
             Thread.Sleep(10000);
             this._consoleCommandList.ForEach(element =>
             {
                 Clipboard.SetText(element);
-                Keyboard.PasteEvent().SendKeyEvent();
-                new Keyboard(KeyboardKeys.Return).SendKeyEvent();
+                Keyboard.PasteEvent().SendEvent();
+                new Keyboard(KeyboardKeys.Return).SendEvent();
                 Clipboard.Clear();
             });
-            MessageBox.Show("Проверка консольных команд успешно завершена");
+            new MessageBox().Show("Проверка консольных команд успешно завершена");
         }
     }
 }

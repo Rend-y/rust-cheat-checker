@@ -36,7 +36,7 @@ namespace RCC.Pages
                 Thread.Sleep(100);
             }
             
-            MessageBox.Show("Сканирование системы началось");
+            new MessageBox().Show("Сканирование системы началось");
             
             int counter = 0;
             
