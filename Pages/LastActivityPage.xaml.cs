@@ -5,24 +5,23 @@ using System.Xml.Linq;
 
 namespace RCC.Pages
 {
+    public class LastActivityInfo
+    {
+        public string action_time { get; set; }
+        public string description { get; set; }
+        public string filename { get; set; }
+        public string full_path { get; set; }
+
+        public LastActivityInfo(string action_time, string description, string filename, string full_path)
+        {
+            this.action_time = action_time;
+            this.description = description;
+            this.filename = filename;
+            this.full_path = full_path;
+        }
+    }
     public partial class LastActivityPage : Page
     {
-        public class LastActivityInfo
-        {
-            public string action_time { get; set; }
-            public string description { get; set; }
-            public string filename { get; set; }
-            public string full_path { get; set; }
-
-            public LastActivityInfo(string action_time, string description, string filename, string full_path)
-            {
-                this.action_time = action_time;
-                this.description = description;
-                this.filename = filename;
-                this.full_path = full_path;
-            }
-        }
-        
         void BackgroundWorkerFindLastActivityDoWork(object sender, DoWorkEventArgs e)
         {
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";

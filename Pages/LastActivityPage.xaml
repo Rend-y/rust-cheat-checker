@@ -33,7 +33,7 @@
                         </ControlTemplate>
                     </ListBox.Template>
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="{x:Type local:LastActivityPage}">
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid>
                                     <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243" Content="{Binding filename}"/>
