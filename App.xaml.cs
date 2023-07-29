@@ -1,11 +1,12 @@
-﻿using System.Threading;
-using System.Windows;
-using System.Collections.Generic;
+﻿#nullable enable
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
+using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RCC.windows;
+using NLog;
+using NLog.Extensions.Logging;
 using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
@@ -15,13 +16,29 @@ namespace RCC
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private static IHost? AppHost { get; set; }
+        public App()
         {
+            AppHost = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, collection) =>
+                {
+                    collection.AddLogging(builder =>
+                    {
+                        builder.AddNLog();
+                    });
+                }).Build();
+        }
+
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            await AppHost!.StartAsync();
+            AppHost.Services.GetService<ILogger<App>>()!.LogDebug("dsadsadas");
 #if !DEBUG
             bool isAdmin = Utilities.IsAdminStartup();
             if (!isAdmin)
             {
-                MessageBox.Show("Please run it's program from admin");
+                new MessageBox().Show("Please run it's program from admin");
                 Environment.Exit(Environment.ExitCode);
             } 
             Utilities.CheckOnUpdate();
@@ -31,6 +48,12 @@ namespace RCC
             DetectingCleaning.Start();
             main_window main = new main_window();
             main.Show();
+        }
+
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            await AppHost!.StopAsync();
+            base.OnExit(e);
         }
     }
 }

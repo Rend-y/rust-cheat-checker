@@ -34,7 +34,6 @@ namespace RCC.windows
             Result = MessageBoxResult.Cancel;
             Close();
         }
-
         private void ButtonOk_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Result = MessageBoxResult.OK;
