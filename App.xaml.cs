@@ -44,7 +44,7 @@ namespace RCC
             Utilities.CheckOnUpdate();
             Utilities.OpenDiscordServer();
 #endif
-            new Notify().Show("title","message");
+            new Notify("title","message").Show();
             DetectingCleaning.Start();
             main_window main = new main_window();
             main.Show();

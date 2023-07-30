@@ -1,32 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace RCC.windows
 {
-    [Flags]
-    public enum NotifyTypes
+    public partial class Notify : ICustomWindow<EWindowsType>
     {
-        [Description("")]
-        Warning,
-        [Description("")]
-        Error,
-        [Description("")]
-        Success,
-        [Description("")]
-        Any,
-    }
-    public partial class Notify : ICustomWindow<NotifyTypes>
-    {
-        public Notify()
+        public EWindowsType WindowType { get; set; }
+        public Notify(in string title,in string message = "",in EWindowsType messageType = EWindowsType.Any)
         {
+            if (title == null) throw new ArgumentNullException($"{nameof(title)} can't be nulleble");
             InitializeComponent();
-            this.LabelMessage.Text = null;
+            LabelMessage.Text = message;
+            LabelTitle.Content = title;
+            WindowType = messageType;
             glass_effect.enable_blur(this);
         }
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -41,13 +28,9 @@ namespace RCC.windows
             }
             this.Close();
         }
-        public void Dispose()
+        protected override async void OnInitialized(EventArgs e)
         {
-            this.Close();
-        }
-
-        public async void Window_OnLoaded(object sender, RoutedEventArgs e)
-        {
+            base.OnInitialized(e);
             if (this.LabelMessage.Text == null)
                 this.LabelMessage.Visibility = Visibility.Collapsed;
             // make me this window on lock button position
@@ -60,18 +43,10 @@ namespace RCC.windows
                 await Task.Delay(TimeSpan.FromMilliseconds(1));
             }
             var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0,0,0,3);
             dispatcherTimer.Start();
-            this.Topmost = true;  
-        }
-        public void Show(string title, string message = null, NotifyTypes messageType = NotifyTypes.Any)
-        {
-            using var notify = new Notify();
-            notify.LabelTitle.Content = title;
-            if (message != null)
-                notify.LabelMessage.Text = message;
-            notify.ShowDialog();
+            this.Topmost = true;
         }
     }
 }

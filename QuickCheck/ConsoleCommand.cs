@@ -15,7 +15,7 @@ namespace RCC.QuickCheck
         };
         public ConsoleCommand()
         {
-            new MessageBox().Show("Была запушенна проверка консольный комманд\nСтарт через 10 секунд");
+            new MessageBox("Была запушенна проверка консольный комманд\nСтарт через 10 секунд").Show();
             Thread.Sleep(10000);
             this._consoleCommandList.ForEach(element =>
             {
@@ -24,7 +24,7 @@ namespace RCC.QuickCheck
                 new Keyboard(KeyboardKeys.Return).SendEvent();
                 Clipboard.Clear();
             });
-            new MessageBox().Show("Проверка консольных команд успешно завершена");
+            new MessageBox("Проверка консольных команд успешно завершена").Show();
         }
     }
 }

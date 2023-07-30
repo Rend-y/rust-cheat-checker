@@ -28,7 +28,7 @@ namespace RCC.Steam
                 result = getBaseRegDir.OpenSubKey(isX64OperationSystem ? steamPathX64 : steamPathX32, isX64OperationSystem)
                     ?.GetValue(isX64OperationSystem ? "InstallPath" : "SourceModInstallPath")?.ToString();
             }
-            catch (Exception exception) { new MessageBox().Show(exception.Message); }
+            catch (Exception exception) { new MessageBox(exception.Message).Show(); }
             return result;
         }
 
@@ -85,7 +85,7 @@ namespace RCC.Steam
                     
                 }
             }
-            catch (Exception exception) { new MessageBox().Show(exception.Message); };
+            catch (Exception exception) { new MessageBox(exception.Message).Show(); };
             return new SteamData(username, steamId, level, avatarUrl, isHideProfile, isDeleted);
 
         }

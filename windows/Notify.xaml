@@ -15,7 +15,6 @@
         Height="100"
         Width="400"
         Background="Transparent"
-        Loaded="Window_OnLoaded"
         >
     <Grid Background="Transparent">
         <Border CornerRadius="10" Background="#6610121B">
