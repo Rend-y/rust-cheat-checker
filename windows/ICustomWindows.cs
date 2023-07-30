@@ -3,9 +3,8 @@ using System.Windows;
 
 namespace RCC.windows
 {
-    public interface ICustomWindow<T> : IDisposable
+    public interface ICustomWindow<T>
     {
-        void Show(string title, string message = default, T messageType = default);
-        void Window_OnLoaded(object sender, RoutedEventArgs e);
+        public T WindowType { get; set; }
     }
 }
