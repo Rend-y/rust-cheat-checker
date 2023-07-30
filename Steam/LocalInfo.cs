@@ -12,10 +12,6 @@ namespace RCC.Steam
 {
     public static class LocalInfo
     {
-        /// <summary>
-        /// Use this function for get path to folder (steam)
-        /// </summary>
-        /// <returns>full path to steam</returns>
         public static string GetSteamLocation()
         {
             const string steamPathX64 = @"SOFTWARE\Wow6432Node\Valve\Steam";
@@ -31,11 +27,6 @@ namespace RCC.Steam
             catch (Exception exception) { new MessageBox(exception.Message).Show(); }
             return result;
         }
-
-        /// <summary>
-        /// use this for get full path to file which keeps all accounts data
-        /// </summary>
-        /// <returns>full path to file which keeps all accounts data</returns>
         public static readonly string GetPathToLoginUser = $"{GetSteamLocation()}\\config\\loginusers.vdf";
         public static readonly string GetPathToConfig = $"{GetSteamLocation()}\\config\\config.vdf";
         public static List<string> GetSteamIsFromContent(string contentData) => Regex.Matches(contentData, "\\\"7656(.*?)\\\"").Cast<Match>().Select(x => "7656" + x.Groups[1].Value).ToList();
@@ -48,13 +39,6 @@ namespace RCC.Steam
             return result;
         }
 
-        /// <summary>
-        /// Use this to get steam data (avatar, username, is hide account, account level)
-        /// if user account is hide. Then we return the level -1
-        /// </summary>
-        /// <param name="steamId">steam id in steam</param>
-        /// <param name="isDeleted">steam account has been cleaned</param>
-        /// <returns>steam data (avatar, username, is hide account, account level)</returns>
         public static SteamData PeParseFromSteam(long steamId, bool isDeleted)
         {
             string url = $"https://steamcommunity.com/profiles/{steamId}";
@@ -90,11 +74,6 @@ namespace RCC.Steam
 
         }
 
-        // TODO: this function return incorrect value
-        /// <summary>
-        /// use this to get last account
-        /// </summary>
-        /// <returns>Steam Data for current user (avatar, username, is hide account, account level)</returns>
         public static SteamData GetLastAccountInfo()
         {
             string steamPathToLoginUser = GetPathToLoginUser;

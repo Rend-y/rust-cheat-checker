@@ -245,8 +245,10 @@
     <Compile Include="QuickCheck\ConsoleCommand.cs" />
     <Compile Include="QuickCheck\KeyboardCheck.cs" />
     <Compile Include="SearchFile.cs" />
+    <Compile Include="Steam\ISteamInformation.cs" />
     <Compile Include="Steam\LocalInfo.cs" />
     <Compile Include="Steam\SteamData.cs" />
+    <Compile Include="Steam\SteamInformation.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="windows\EWindowsType.cs" />
     <Compile Include="windows\ICustomWindows.cs" />
@@ -303,6 +305,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="nLog.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
