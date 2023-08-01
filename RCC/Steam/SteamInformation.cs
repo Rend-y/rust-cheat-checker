@@ -28,11 +28,9 @@ public class SteamInformation : ISteamInformation<SteamData>
         catch (Exception exception) { new MessageBox(exception.Message).Show(); }
         return result;
     }
-
     public List<string> GetSteamIdFromContent(string content) => Regex.Matches(content, "\\\"7656(.*?)\\\"")
         .Cast<Match>()
         .Select(x => "7656" + x.Groups[1].Value).ToList();
-
     public List<string> GetSteamIdFromCoPlayData()
     {
         List<string> files = Directory.GetFiles($"{GetSteamLocation()}\\config\\", "*.vdf")
@@ -40,9 +38,7 @@ public class SteamInformation : ISteamInformation<SteamData>
         var result = files.ConvertAll(item => Regex.Matches(item, @"_7656(.*?).vdf").Cast<Match>().Select(x => "7656" + x.Groups[1].Value).ToList()[0]);
         return result;
     }
-
     public SteamData GetSteamData(in long steamId, in bool isDeleted = false) => new(steamId, isDeleted);
-
     public SteamData GetLastSteamAccountInfo()
     {
         string steamPathToLoginUser = PathToLoginData;

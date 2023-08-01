@@ -65,8 +65,7 @@ namespace RCC.Steam
             AvatarUrl = correctAvatarUrl;
             GetSteamAccountAvatar(correctAvatarUrl, out _avatar);
         }
-
-        public void GetSteamAccountAvatar(in string avatarUrl, out BitmapSource avatar)
+        private void GetSteamAccountAvatar(in string avatarUrl, out BitmapSource avatar)
         {
             using (WebClient client = new WebClient())
             {
@@ -78,6 +77,8 @@ namespace RCC.Steam
                 }
             }
         }
+
+        public static bool IsSteamId(in long steamId) => steamId.ToString().Length == 17;
         public ImageSource GetAccountAvatar => this._avatar;
         public string GetAccountLevel => this.AccountLevel.ToString();
         public string GetUsername => $"Username : {this.Username}";
