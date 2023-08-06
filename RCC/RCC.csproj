@@ -210,13 +210,20 @@
     <Compile Include="Components\TabButton.xaml.cs">
       <DependentUpon>TabButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DangerousApps.cs" />
-    <Compile Include="DetectingCleaning.cs" />
     <Compile Include="DeviceEvents\IDeviceEvent.cs" />
     <Compile Include="DeviceEvents\Keyboard.cs" />
     <Compile Include="DeviceEvents\Mouse.cs" />
     <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
+    <Compile Include="Modules\DangerousApp\DangerousAppService.cs"/>
+    <Compile Include="Modules\DangerousApp\IDangerousApp.cs"/>
+    <Compile Include="Modules\DangerousApp\SDangerousApplication.cs"/>
+    <Compile Include="Modules\DetectClean\DetectingCleaningService.cs"/>
+    <Compile Include="Modules\DetectClean\IDetectingCleaning.cs"/>
+    <Compile Include="Modules\DetectClean\SDetectCleanData.cs"/>
+    <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
+    <Compile Include="Modules\SteamInformation\SteamData.cs"/>
+    <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
     <Compile Include="Pages\GreetingPage.xaml.cs">
       <DependentUpon>GreetingPage.xaml</DependentUpon>
     </Compile>
@@ -246,10 +253,6 @@
     <Compile Include="QuickCheck\ConsoleCommand.cs" />
     <Compile Include="QuickCheck\KeyboardCheck.cs" />
     <Compile Include="SearchFile.cs" />
-    <Compile Include="Steam\ISteamInformation.cs" />
-    <Compile Include="Steam\LocalInfo.cs" />
-    <Compile Include="Steam\SteamData.cs" />
-    <Compile Include="Steam\SteamInformation.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="windows\EWindowsType.cs" />
     <Compile Include="windows\ICustomWindows.cs" />
@@ -335,6 +338,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interface\"/>
+    <Folder Include="Modules\"/>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

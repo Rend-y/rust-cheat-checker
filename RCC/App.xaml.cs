@@ -1,13 +1,14 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Extensions.Configuration;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using NLog.Extensions.Logging;
+using RCC.Modules.DangerousApp;
+using RCC.Modules.DetectClean;
+using RCC.Modules.SteamInformation;
+using RCC.Pages;
 using RCC.windows;
-using MessageBox = RCC.windows.MessageBox;
 
 namespace RCC
 {
@@ -16,7 +17,6 @@ namespace RCC
     /// </summary>
     public partial class App : Application
     {
-        private static IHost? AppHost { get; set; }
         public App()
         {
             AppHost = Host.CreateDefaultBuilder()
@@ -31,8 +31,22 @@ namespace RCC
                         builder.AddConfiguration();
                         builder.SetMinimumLevel(LogLevel.Debug);
                     });
+                    collection.AddSingleton<ISteamInformation<SteamData>, SteamInformationService>();
+                    collection.AddSingleton<IDetectingCleaning<SDetectCleanData>, DetectingCleaningService>();
+                    collection.AddSingleton<IDangerousApp<SDangerousApplication>, DangerousAppService>();
+                    collection.AddSingleton<MainWindow>();
+                    collection.AddSingleton<GreetingPage>();
+                    collection.AddSingleton<LastActivityPage>();
+                    collection.AddSingleton<MouseLoggerPage>();
+                    collection.AddSingleton<OtherPage>();
+                    collection.AddSingleton<SearchFilePage>();
+                    collection.AddSingleton<SteamDataPage>();
+                    collection.AddSingleton<UsbDevicePage>();
                 }).Build();
         }
+
+        private static IHost? AppHost { get; set; }
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -47,12 +61,11 @@ namespace RCC
             Utilities.CheckOnUpdate();
             Utilities.OpenDiscordServer();
 #endif
-            
+
             // AppHost.Services.GetService<Notify>()!.Show();
-            new Notify("title","message").Show();
-            DetectingCleaning.Start();
-            main_window main = new main_window();
-            main.Show();
+            new Notify("title", "message").Show();
+            // DetectingCleaning.Start();
+            AppHost.Services.GetService<MainWindow>()?.Show();
         }
 
         protected override async void OnExit(ExitEventArgs e)

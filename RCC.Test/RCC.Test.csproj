@@ -51,6 +51,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="DangerousApp.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SteamInformation.cs" />
     </ItemGroup>

@@ -5,27 +5,32 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using RCC.Modules.DangerousApp;
 using RCC.QuickCheck;
-using MessageBox = RCC.windows.MessageBox;
+using RCC.windows;
 
 namespace RCC.Pages
 {
     public class KeyBind
     {
-        public string Bind { get; set; }
-
         public KeyBind(string bind)
         {
             this.Bind = bind;
         }
+
+        public string Bind { get; set; }
     }
+
     public partial class OtherPage : Page
     {
-        private readonly DangerousApps _dangerousApps = new DangerousApps();
-        public OtherPage()
+        private readonly IDangerousApp<SDangerousApplication> _dangerousApps;
+
+        public OtherPage(IDangerousApp<SDangerousApplication> dangerousApp,
+            IDangerousApp<SDangerousApplication> dangerousApps)
         {
+            _dangerousApps = dangerousApps;
             InitializeComponent();
-            _dangerousApps.AllFindDangerousApplications().ForEach(item => ListAllDangerousApps.Items.Add(item));
+            _dangerousApps.ListFindDangerousApplications.ForEach(item => ListAllDangerousApps.Items.Add(item));
             this.GetAllKeyBind();
         }
 
@@ -47,7 +52,7 @@ namespace RCC.Pages
                 Console.WriteLine(e);
             }
         }
-        
+
         private void ButtonStartKeyBoardSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             KeyboardCheck keyboardCheck = new KeyboardCheck();

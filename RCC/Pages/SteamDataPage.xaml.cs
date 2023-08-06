@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -6,37 +7,75 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using RCC.Steam;
+using RCC.Modules.SteamInformation;
 
 namespace RCC.Pages
 {
     public partial class SteamDataPage : Page
     {
+        private readonly BackgroundWorker _backgroundWorkerFindSteamAccount = new();
+        private readonly ISteamInformation<SteamData> _steamInformation;
+
+        public SteamDataPage(ISteamInformation<SteamData> steamInformation)
+        {
+            InitializeComponent();
+
+            _steamInformation = steamInformation;
+            LabelFullPathToSteam.Content = _steamInformation.GetSteamLocation();
+
+            _backgroundWorkerFindSteamAccount.DoWork += BackgroundWorkerFindSteamAccountDoWork;
+            _backgroundWorkerFindSteamAccount.ProgressChanged += BackgroundWorkerFindSteamAccountProgressChanged;
+            _backgroundWorkerFindSteamAccount.WorkerReportsProgress = true;
+            _backgroundWorkerFindSteamAccount.RunWorkerAsync();
+
+            var lastAccountInfo = _steamInformation.GetLastSteamAccountInfo();
+
+            LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
+            LabelSteamAccountUsername.Content = lastAccountInfo.GetUsername;
+            LabelCpuType.Content = GetSystemInfo.GetCpuName;
+            LabelGpuType.Content = GetSystemInfo.GetGpuName;
+            LabelScreenSize.Content = GetSystemInfo.GetScreenSize;
+            LabelWindowsType.Content = GetSystemInfo.GetOsType;
+            LabelMemorySize.Content = GetSystemInfo.GetRamSize;
+            LabelStartUpTime.Content = GetSystemInfo.GetSystemStartUp;
+            LabelUserIp.Content = GetSystemInfo.get_user_external_ip();
+
+            ImageBrush myBrush = new ImageBrush
+            {
+                ImageSource = lastAccountInfo.GetAccountAvatar
+            };
+            RectangleLocalProfileImage.Fill = myBrush;
+        }
+
+        private void ListOtherAccounts_OnSelectionChanged(object sender, SelectionChangedEventArgs e) =>
+            Process.Start($"https://steamcommunity.com/profiles/{((SteamData)ListOtherAccounts.SelectedItem).SteamId}");
+
+        private void ButtonOpenSteamPath_OnClick(object sender, RoutedEventArgs e) =>
+            Process.Start(LabelFullPathToSteam.Content.ToString());
+
         #region Background Worker Functions
+
         void BackgroundWorkerFindSteamAccountProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SteamData steam = e.UserState as SteamData;
-            
-            if (steam == null)
-                return;
-            
-            ListOtherAccounts.Items.Add(new SteamData(steam.Username, steam.SteamId, steam.AccountLevel, steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
+            var steam = e.UserState as SteamData ?? throw new InvalidOperationException("SteamData is null");
+            ListOtherAccounts.Items.Add(new SteamData(steam.Username, steam.SteamId, steam.AccountLevel,
+                steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
         }
-        
+
         void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
         {
-            string steamPathToLoginUser = LocalInfo.GetPathToLoginUser;
-            string steamPathToConfig = LocalInfo.GetPathToConfig;
-            
+            var steamPathToLoginUser = _steamInformation.PathToLoginData;
+            var steamPathToConfig = _steamInformation.PathToSteamConfig;
+
             if (!File.Exists(steamPathToLoginUser) && !File.Exists(steamPathToConfig))
                 return;
 
-            
+
             string loginUserFileData = File.ReadAllText(steamPathToLoginUser);
             string configFileData = File.ReadAllText(steamPathToConfig);
-            List<string> getLoginUserSteamId = LocalInfo.GetSteamIsFromContent(loginUserFileData);
-            List<string> getConfigSteamId = LocalInfo.GetSteamIsFromContent(configFileData);
-            List<string> getCoPlaySteamId = LocalInfo.GetSteamIdFromCoPlay();
+            var getLoginUserSteamId = _steamInformation.GetSteamIdFromContent(loginUserFileData);
+            var getConfigSteamId = _steamInformation.GetSteamIdFromContent(configFileData);
+            var getCoPlaySteamId = _steamInformation.GetSteamIdFromCoPlayData();
 
             List<string> groupListSteamId = new List<string>();
             groupListSteamId.AddRange(getLoginUserSteamId);
@@ -51,67 +90,35 @@ namespace RCC.Pages
             isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
             isDeletedAccount.AddRange(getLoginUserSteamId.Except(getCoPlaySteamId).ToList());
-            
+
             normalAccount.AddRange(getConfigSteamId.Intersect(getLoginUserSteamId).ToList());
             isDeletedAccount.AddRange(getConfigSteamId.Except(getLoginUserSteamId).ToList());
             normalAccount.AddRange(getConfigSteamId.Intersect(getCoPlaySteamId).ToList());
             isDeletedAccount.AddRange(getConfigSteamId.Except(getCoPlaySteamId).ToList());
-            
+
             normalAccount.AddRange(getCoPlaySteamId.Intersect(getConfigSteamId).ToList());
             isDeletedAccount.AddRange(getCoPlaySteamId.Except(getConfigSteamId).ToList());
             normalAccount.AddRange(getCoPlaySteamId.Intersect(getLoginUserSteamId).ToList());
             isDeletedAccount.AddRange(getCoPlaySteamId.Except(getLoginUserSteamId).ToList());
-            
+
             isDeletedAccount = isDeletedAccount.Distinct().ToList();
             normalAccount = normalAccount.Except(isDeletedAccount).Distinct().ToList();
 
             int i = 0;
-            normalAccount.ForEach(steam_id =>
+            normalAccount.ForEach(steamId =>
             {
-                backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id), false));
+                _backgroundWorkerFindSteamAccount.ReportProgress(i,
+                    _steamInformation.GetSteamData(long.Parse(steamId)));
                 i++;
             });
-            isDeletedAccount.ForEach(steam_id =>
+            isDeletedAccount.ForEach(steamId =>
             {
-                backgroundWorkerFindSteamAccount.ReportProgress(i, LocalInfo.PeParseFromSteam(long.Parse(steam_id), true));
+                _backgroundWorkerFindSteamAccount.ReportProgress(i,
+                    _steamInformation.GetSteamData(long.Parse(steamId), true));
                 i++;
             });
         }
+
         #endregion
-
-        private readonly BackgroundWorker backgroundWorkerFindSteamAccount = new BackgroundWorker();
-        public SteamDataPage()
-        {
-            backgroundWorkerFindSteamAccount.DoWork += BackgroundWorkerFindSteamAccountDoWork;
-            backgroundWorkerFindSteamAccount.ProgressChanged += BackgroundWorkerFindSteamAccountProgressChanged;
-            backgroundWorkerFindSteamAccount.WorkerReportsProgress = true;
-            backgroundWorkerFindSteamAccount.RunWorkerAsync();
-            InitializeComponent();
-            
-            LabelFullPathToSteam.Content = LocalInfo.GetSteamLocation();
-            
-            SteamData lastAccountInfo = LocalInfo.GetLastAccountInfo();
-
-            LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
-            LabelSteamAccountUsername.Content = lastAccountInfo.GetUsername;
-            LabelCpuType.Content = GetSystemInfo.GetCpuName;
-            LabelGpuType.Content = GetSystemInfo.GetGpuName;
-            LabelScreenSize.Content = GetSystemInfo.GetScreenSize;
-            LabelWindowsType.Content = GetSystemInfo.GetOsType;
-            LabelMemorySize.Content = GetSystemInfo.GetRamSize;
-            LabelStartUpTime.Content = GetSystemInfo.GetSystemStartUp;
-            LabelUserIp.Content = GetSystemInfo.get_user_external_ip();
-            
-            ImageBrush myBrush = new ImageBrush
-            {
-                ImageSource = lastAccountInfo.GetAccountAvatar
-            };
-            RectangleLocalProfileImage.Fill = myBrush;
-        }
-
-        private void ListOtherAccounts_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => 
-            Process.Start($"https://steamcommunity.com/profiles/{((SteamData)ListOtherAccounts.SelectedItem).SteamId}");
-
-        private void ButtonOpenSteamPath_OnClick(object sender, RoutedEventArgs e) => Process.Start(LabelFullPathToSteam.Content.ToString());
     }
 }

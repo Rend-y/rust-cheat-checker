@@ -3,8 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:RCC.Pages"
-      xmlns:steam="clr-namespace:RCC.Steam"
+      xmlns:steam="clr-namespace:RCC.Modules.SteamInformation"
       mc:Ignorable="d"
       Title="SteamDataPage" 
       Height="479"
@@ -53,7 +52,7 @@
                         <ControlTemplate>
                             <DockPanel>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                    <ItemsPresenter></ItemsPresenter>
+                                    <ItemsPresenter />
                                 </ScrollViewer>
                             </DockPanel>
                         </ControlTemplate>
