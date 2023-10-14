@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using RCC.Modules.SteamInformation;
+using RCC.Modules.SystemInfo;
 
 namespace RCC.Pages
 {
@@ -16,7 +17,7 @@ namespace RCC.Pages
         private readonly BackgroundWorker _backgroundWorkerFindSteamAccount = new();
         private readonly ISteamInformation<SteamData> _steamInformation;
 
-        public SteamDataPage(ISteamInformation<SteamData> steamInformation)
+        public SteamDataPage(ISteamInformation<SteamData> steamInformation, ISystemInfo systemInfo)
         {
             InitializeComponent();
 
@@ -32,13 +33,13 @@ namespace RCC.Pages
 
             LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
             LabelSteamAccountUsername.Content = lastAccountInfo.GetUsername;
-            LabelCpuType.Content = GetSystemInfo.GetCpuName;
-            LabelGpuType.Content = GetSystemInfo.GetGpuName;
-            LabelScreenSize.Content = GetSystemInfo.GetScreenSize;
-            LabelWindowsType.Content = GetSystemInfo.GetOsType;
-            LabelMemorySize.Content = GetSystemInfo.GetRamSize;
-            LabelStartUpTime.Content = GetSystemInfo.GetSystemStartUp;
-            LabelUserIp.Content = GetSystemInfo.get_user_external_ip();
+            LabelCpuType.Content = systemInfo.CpuName;
+            LabelGpuType.Content = systemInfo.GpuName;
+            LabelScreenSize.Content = systemInfo.ScreenSize;
+            LabelWindowsType.Content = systemInfo.OsType;
+            LabelMemorySize.Content = systemInfo.RamSize;
+            LabelStartUpTime.Content = systemInfo.SystemStartUpTime;
+            LabelUserIp.Content = systemInfo.ExternalIpAddress;
 
             ImageBrush myBrush = new ImageBrush
             {

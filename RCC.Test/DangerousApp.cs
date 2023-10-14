@@ -24,6 +24,13 @@ namespace RCC.Test
         }
 
         [Theory]
+        [InlineData(null)]
+        public void Test_FindAllApplicationInRegistry_With_Null_String(string registryKey)
+        {
+            Assert.Throws<ArgumentNullException>(() => _dangerousApp.FindAllApplicationInRegistry(registryKey));
+        }
+
+        [Theory]
         [InlineData(data: @"test\Microsoft\Windows\CurrentVersion\Uninstall")]
         public void Test_FindAllApplicationInRegistry_With_Incorrect_Registry_Key(string registryKey)
         {

@@ -17,7 +17,12 @@ public class DetectingCleaningService : IDetectingCleaning<SDetectCleanData>
     }
 
     public List<string> AllLogsDetectedCleaning { get; } = new();
-    public List<SDetectCleanData> FolderAndFileForClear { get; } = new();
+
+    public List<SDetectCleanData> FolderAndFileForClear { get; } = new()
+    {
+        new SDetectCleanData($"C:\\Users\\{Environment.UserName}\\Recent", "", "Recent"),
+        new SDetectCleanData("C:\\Windows\\Prefetch\\Prefetch", "", "Prefetch")
+    };
 
     public List<string> DetectClearInFolder()
     {

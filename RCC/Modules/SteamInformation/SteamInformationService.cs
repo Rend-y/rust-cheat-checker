@@ -40,9 +40,12 @@ public class SteamInformationService : ISteamInformation<SteamData>
         return result;
     }
 
-    public List<string> GetSteamIdFromContent(string content) => Regex.Matches(content, "\\\"7656(.*?)\\\"")
-        .Cast<Match>()
-        .Select(x => "7656" + x.Groups[1].Value).ToList();
+    public List<string> GetSteamIdFromContent(string content)
+    {
+        return Regex.Matches(content ?? "", "\\\"7656(.*?)\\\"")
+            .Cast<Match>()
+            .Select(x => "7656" + x.Groups[1].Value).ToList();
+    }
 
     public List<string> GetSteamIdFromCoPlayData()
     {

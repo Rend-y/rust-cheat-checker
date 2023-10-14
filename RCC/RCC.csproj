@@ -213,7 +213,6 @@
     <Compile Include="DeviceEvents\IDeviceEvent.cs" />
     <Compile Include="DeviceEvents\Keyboard.cs" />
     <Compile Include="DeviceEvents\Mouse.cs" />
-    <Compile Include="GetSysthemInfo.cs" />
     <Compile Include="GlassEffect.cs" />
     <Compile Include="Modules\DangerousApp\DangerousAppService.cs"/>
     <Compile Include="Modules\DangerousApp\IDangerousApp.cs"/>
@@ -224,6 +223,8 @@
     <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
     <Compile Include="Modules\SteamInformation\SteamData.cs"/>
     <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
+    <Compile Include="Modules\SystemInfo\ISystemInfo.cs"/>
+    <Compile Include="Modules\SystemInfo\SystemInfoService.cs"/>
     <Compile Include="Pages\GreetingPage.xaml.cs">
       <DependentUpon>GreetingPage.xaml</DependentUpon>
     </Compile>
@@ -341,7 +342,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\"/>
-    <Folder Include="Modules\"/>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

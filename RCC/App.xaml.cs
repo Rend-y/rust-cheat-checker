@@ -7,6 +7,7 @@ using NLog.Extensions.Logging;
 using RCC.Modules.DangerousApp;
 using RCC.Modules.DetectClean;
 using RCC.Modules.SteamInformation;
+using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.windows;
 
@@ -34,6 +35,7 @@ namespace RCC
                     collection.AddSingleton<ISteamInformation<SteamData>, SteamInformationService>();
                     collection.AddSingleton<IDetectingCleaning<SDetectCleanData>, DetectingCleaningService>();
                     collection.AddSingleton<IDangerousApp<SDangerousApplication>, DangerousAppService>();
+                    collection.AddSingleton<ISystemInfo, SystemInfoService>();
                     collection.AddSingleton<MainWindow>();
                     collection.AddSingleton<GreetingPage>();
                     collection.AddSingleton<LastActivityPage>();

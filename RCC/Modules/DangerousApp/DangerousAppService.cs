@@ -23,6 +23,7 @@ public class DangerousAppService : IDangerousApp<SDangerousApplication>
 
     public List<SDangerousApplication> FindAllApplicationInRegistry(in string registryKey)
     {
+        if (registryKey == null) throw new ArgumentNullException(nameof(registryKey));
         List<SDangerousApplication> dangerousApplications = new();
         if (registryKey == string.Empty) throw new ArgumentException("RegistryKey is empty");
         var key = Registry.LocalMachine.OpenSubKey(registryKey) ??

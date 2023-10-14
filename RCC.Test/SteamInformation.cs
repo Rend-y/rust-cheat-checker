@@ -38,5 +38,21 @@ namespace RCC.Test
             Assert.NotEqual(steamId.Count, 4);
             Assert.All(steamId, s => Assert.False(SteamData.IsSteamId(Convert.ToInt64(s))));
         }
+
+        [Theory]
+        [InlineData("")]
+        public void Test_GetSteamIsFromContent_with_empty_content(in string content)
+        {
+            var steamId = _steamInformation.GetSteamIdFromContent(content);
+            Assert.Equal(steamId.Count, 0);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        public void Test_GetSteamIsFromContent_with_null_content(in string content)
+        {
+            var steamId = _steamInformation.GetSteamIdFromContent(content);
+            Assert.Equal(steamId.Count, 0);
+        }
     }
 }
