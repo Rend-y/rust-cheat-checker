@@ -33,6 +33,19 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Вот это самое главное -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- Это чтобы тащить за собой рантайм До .NET 6 будут рядом лежать нативные библиотеки jit-а и сборщика мусора-->
+    <SelfContained>true</SelfContained>
+    <!-- Это необходимо, чтобы сборщик понимал, для какой ОС нужен экзешник -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- Это чтобы ускорить запуск -->
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <!-- Эти две строки, чтобы уменьшить размер бинарника -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -210,16 +223,21 @@
     <Compile Include="Components\TabButton.xaml.cs">
       <DependentUpon>TabButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceEvents\IDeviceEvent.cs" />
-    <Compile Include="DeviceEvents\Keyboard.cs" />
-    <Compile Include="DeviceEvents\Mouse.cs" />
     <Compile Include="GlassEffect.cs" />
+    <Compile Include="Modules\AutoCheck\ConsoleCommand\ConsoleCommand.cs"/>
+    <Compile Include="Modules\AutoCheck\ConsoleCommand\IConsoleCommand.cs"/>
+    <Compile Include="Modules\AutoCheck\KeyboardCheck\IKeyboardCheck.cs"/>
+    <Compile Include="Modules\AutoCheck\KeyboardCheck\KeyboardCheck.cs"/>
     <Compile Include="Modules\DangerousApp\DangerousAppService.cs"/>
     <Compile Include="Modules\DangerousApp\IDangerousApp.cs"/>
     <Compile Include="Modules\DangerousApp\SDangerousApplication.cs"/>
     <Compile Include="Modules\DetectClean\DetectingCleaningService.cs"/>
     <Compile Include="Modules\DetectClean\IDetectingCleaning.cs"/>
     <Compile Include="Modules\DetectClean\SDetectCleanData.cs"/>
+    <Compile Include="Modules\Device\KeyboardEvent\IKeyboardEvent.cs"/>
+    <Compile Include="Modules\Device\KeyboardEvent\KeyboardEvent.cs"/>
+    <Compile Include="Modules\Device\MouseEvent\IMouseEvent.cs"/>
+    <Compile Include="Modules\Device\MouseEvent\MouseEvent.cs"/>
     <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
     <Compile Include="Modules\SteamInformation\SteamData.cs"/>
     <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
@@ -251,16 +269,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
-    <Compile Include="QuickCheck\ConsoleCommand.cs" />
-    <Compile Include="QuickCheck\KeyboardCheck.cs" />
     <Compile Include="SearchFile.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="windows\EWindowsType.cs" />
-    <Compile Include="windows\ICustomWindows.cs" />
-    <Compile Include="windows\MessageBox.xaml.cs">
+    <Compile Include="Windows\EWindowsType.cs"/>
+    <Compile Include="Windows\ICustomWindows.cs"/>
+    <Compile Include="Windows\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\Notify.xaml.cs">
+    <Compile Include="Windows\Notify.xaml.cs">
       <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
     <Page Include="Components\Button.xaml" />
@@ -284,8 +300,8 @@
     <Page Include="Pages\SearchFilePage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
     <Page Include="Pages\UsbDevicePage.xaml" />
-    <Page Include="windows\MessageBox.xaml" />
-    <Page Include="windows\Notify.xaml" />
+    <Page Include="Windows\MessageBox.xaml"/>
+    <Page Include="Windows\Notify.xaml"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -339,9 +355,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\"/>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

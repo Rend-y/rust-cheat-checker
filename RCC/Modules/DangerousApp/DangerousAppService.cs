@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Win32;
-using RCC.windows;
+using RCC.Windows;
 
 namespace RCC.Modules.DangerousApp;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using RCC.Modules.SteamInformation;
-using RCC.windows;
+using RCC.Windows;
 
 namespace RCC.Modules.DetectClean;
 

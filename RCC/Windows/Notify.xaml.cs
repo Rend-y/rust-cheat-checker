@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
-namespace RCC.windows
+namespace RCC.Windows
 {
     public partial class Notify : ICustomWindow<EWindowsType>
     {
-        public EWindowsType WindowType { get; set; }
-        public Notify(in string title,in string message = "",in EWindowsType messageType = EWindowsType.Any)
+        public Notify(in string title, in string message = "", in EWindowsType messageType = EWindowsType.Any)
         {
             if (title == null) throw new ArgumentNullException($"{nameof(title)} can't be nulleble");
             InitializeComponent();
@@ -16,6 +16,9 @@ namespace RCC.windows
             WindowType = messageType;
             glass_effect.enable_blur(this);
         }
+
+        public EWindowsType WindowType { get; set; }
+
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             double screenHeight = SystemParameters.FullPrimaryScreenHeight;
@@ -26,8 +29,10 @@ namespace RCC.windows
                 this.Left = screenWidth - this.Width + (this.Width / 100 * i) - 10;
                 await Task.Delay(TimeSpan.FromMilliseconds(1));
             }
+
             this.Close();
         }
+
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -42,9 +47,10 @@ namespace RCC.windows
                 this.Left = screenWidth - this.Width + (this.Width / 100 * i) - 10;
                 await Task.Delay(TimeSpan.FromMilliseconds(1));
             }
-            var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+
+            var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0,0,0,3);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 3);
             dispatcherTimer.Start();
             this.Topmost = true;
         }

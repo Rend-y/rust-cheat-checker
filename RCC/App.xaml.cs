@@ -4,12 +4,16 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using NLog.Extensions.Logging;
+using RCC.Modules.AutoCheck.ConsoleCommand;
+using RCC.Modules.AutoCheck.KeyboardCheck;
 using RCC.Modules.DangerousApp;
 using RCC.Modules.DetectClean;
+using RCC.Modules.Device.KeyboardEvent;
+using RCC.Modules.Device.MouseEvent;
 using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
-using RCC.windows;
+using RCC.Windows;
 
 namespace RCC
 {
@@ -32,10 +36,8 @@ namespace RCC
                         builder.AddConfiguration();
                         builder.SetMinimumLevel(LogLevel.Debug);
                     });
-                    collection.AddSingleton<ISteamInformation<SteamData>, SteamInformationService>();
-                    collection.AddSingleton<IDetectingCleaning<SDetectCleanData>, DetectingCleaningService>();
-                    collection.AddSingleton<IDangerousApp<SDangerousApplication>, DangerousAppService>();
-                    collection.AddSingleton<ISystemInfo, SystemInfoService>();
+
+                    // Interface
                     collection.AddSingleton<MainWindow>();
                     collection.AddSingleton<GreetingPage>();
                     collection.AddSingleton<LastActivityPage>();
@@ -44,6 +46,17 @@ namespace RCC
                     collection.AddSingleton<SearchFilePage>();
                     collection.AddSingleton<SteamDataPage>();
                     collection.AddSingleton<UsbDevicePage>();
+                    // Modules
+                    collection.AddSingleton<ISteamInformation<SteamData>, SteamInformationService>();
+                    collection.AddSingleton<IDetectingCleaning<SDetectCleanData>, DetectingCleaningService>();
+                    collection.AddSingleton<IDangerousApp<SDangerousApplication>, DangerousAppService>();
+                    collection.AddSingleton<ISystemInfo, SystemInfoService>();
+                    collection.AddSingleton<IConsoleCommand, ConsoleCommand>();
+                    collection.AddSingleton<IKeyboardCheck, KeyboardCheck>();
+                    // Utils
+                    collection.AddSingleton<IKeyboardEvent<KeyboardKeys>, KeyboardEvent>();
+                    collection.AddSingleton<IMouseEvent<MouseEventFlags>, MouseEvent>();
+                    // Other
                 }).Build();
         }
 
@@ -57,7 +70,7 @@ namespace RCC
             bool isAdmin = Utilities.IsAdminStartup();
             if (!isAdmin)
             {
-                new MessageBox().Show("Please run it's program from admin");
+                new RCC.Windows.MessageBox("Please run it's program from admin").Show();
                 Environment.Exit(Environment.ExitCode);
             } 
             Utilities.CheckOnUpdate();

@@ -5,9 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using RCC.Modules.AutoCheck.ConsoleCommand;
+using RCC.Modules.AutoCheck.KeyboardCheck;
 using RCC.Modules.DangerousApp;
-using RCC.QuickCheck;
-using RCC.windows;
+using RCC.Windows;
 
 namespace RCC.Pages
 {
@@ -23,14 +24,16 @@ namespace RCC.Pages
 
     public partial class OtherPage : Page
     {
-        private readonly IDangerousApp<SDangerousApplication> _dangerousApps;
+        private readonly IConsoleCommand _consoleCommand;
+        private readonly IKeyboardCheck _keyboardCheck;
 
-        public OtherPage(IDangerousApp<SDangerousApplication> dangerousApp,
-            IDangerousApp<SDangerousApplication> dangerousApps)
+        public OtherPage(IDangerousApp<SDangerousApplication> dangerousApps, IKeyboardCheck keyboardCheck,
+            IConsoleCommand consoleCommand)
         {
-            _dangerousApps = dangerousApps;
             InitializeComponent();
-            _dangerousApps.ListFindDangerousApplications.ForEach(item => ListAllDangerousApps.Items.Add(item));
+            _keyboardCheck = keyboardCheck;
+            _consoleCommand = consoleCommand;
+            dangerousApps.ListFindDangerousApplications.ForEach(item => ListAllDangerousApps.Items.Add(item));
             this.GetAllKeyBind();
         }
 
@@ -55,12 +58,12 @@ namespace RCC.Pages
 
         private void ButtonStartKeyBoardSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            KeyboardCheck keyboardCheck = new KeyboardCheck();
+            _keyboardCheck.Run();
         }
 
         private void ButtonStartConsoleCommandSearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ConsoleCommand consoleCommand = new ConsoleCommand();
+            _consoleCommand.Run();
         }
     }
 }

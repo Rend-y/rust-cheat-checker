@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -7,26 +8,45 @@ namespace RCC.Pages
 {
     public class LastActivityInfo
     {
-        public string action_time { get; set; }
-        public string description { get; set; }
-        public string filename { get; set; }
-        public string full_path { get; set; }
-
         public LastActivityInfo(string action_time, string description, string filename, string full_path)
         {
-            this.action_time = action_time;
-            this.description = description;
-            this.filename = filename;
-            this.full_path = full_path;
+            ActionTime = action_time;
+            Description = description;
+            Filename = filename;
+            FullPath = full_path;
         }
+
+        public LastActivityInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ActionTime { get; set; }
+        public string Description { get; set; }
+        public string Filename { get; set; }
+        public string FullPath { get; set; }
     }
+
     public partial class LastActivityPage : Page
     {
+        private readonly BackgroundWorker backgroundWorkerFindLastActivity = new BackgroundWorker();
+
+        public LastActivityPage()
+        {
+            InitializeComponent();
+            backgroundWorkerFindLastActivity.DoWork += BackgroundWorkerFindLastActivityDoWork;
+            backgroundWorkerFindLastActivity.ProgressChanged += BackgroundWorkerFindLastActivityProgressChanged;
+            backgroundWorkerFindLastActivity.WorkerReportsProgress = true;
+            backgroundWorkerFindLastActivity.RunWorkerAsync();
+        }
+
         void BackgroundWorkerFindLastActivityDoWork(object sender, DoWorkEventArgs e)
         {
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\last_activity_view.xml";
-            var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile, "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/LastActivityView.exe?raw=true", pathToSaveUsbList);
+            var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
+                "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/LastActivityView.exe?raw=true",
+                pathToSaveUsbList);
 
             int i = 0;
             foreach (XElement element in loadXmlDocument)
@@ -47,26 +67,16 @@ namespace RCC.Pages
                 i++;
             }
         }
-        
+
         void BackgroundWorkerFindLastActivityProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             LastActivityInfo lastActivityInfo = e.UserState as LastActivityInfo;
-            
+
             if (lastActivityInfo == null)
                 return;
-            
-            ListAllLastActivity.Items.Add(new LastActivityInfo(lastActivityInfo.action_time, lastActivityInfo.description, lastActivityInfo.filename, lastActivityInfo.full_path));
-        }
-        
-        private readonly BackgroundWorker backgroundWorkerFindLastActivity = new BackgroundWorker();
 
-        public LastActivityPage()
-        {
-            InitializeComponent();
-            backgroundWorkerFindLastActivity.DoWork += BackgroundWorkerFindLastActivityDoWork;
-            backgroundWorkerFindLastActivity.ProgressChanged += BackgroundWorkerFindLastActivityProgressChanged;
-            backgroundWorkerFindLastActivity.WorkerReportsProgress = true;
-            backgroundWorkerFindLastActivity.RunWorkerAsync();
+            ListAllLastActivity.Items.Add(new LastActivityInfo(lastActivityInfo.ActionTime,
+                lastActivityInfo.Description, lastActivityInfo.Filename, lastActivityInfo.FullPath));
         }
     }
 }

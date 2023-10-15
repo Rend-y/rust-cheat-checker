@@ -4,3 +4,5 @@ obj/*
 RCC.csproj.user
 RCC.sln.DotSettings.user
 .idea/*
+
+.fake

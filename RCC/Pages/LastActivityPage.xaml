@@ -27,19 +27,27 @@
                                     <Rectangle Width="1068" HorizontalAlignment="Center" Height="2" Margin="0,63,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
                                 </Grid>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                    <ItemsPresenter></ItemsPresenter>
+                                    <ItemsPresenter />
                                 </ScrollViewer>
                             </DockPanel>
                         </ControlTemplate>
                     </ListBox.Template>
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:LastActivityPage}">
+                        <DataTemplate DataType="{x:Type local:LastActivityInfo}">
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243" Content="{Binding filename}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB" Margin="245,0,0,0" Content="{Binding description}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="388,0,0,0" Content="{Binding action_time}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB" Margin="576,0,0,0" Content="{Binding full_path}"/>
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243"
+                                           Content="{Binding ActionTime}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB"
+                                           Margin="245,0,0,0" Content="{Binding Description}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB"
+                                           Margin="388,0,0,0" Content="{Binding ActionTime}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB"
+                                           Margin="576,0,0,0" Content="{Binding FullPath}" />
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="46" Margin="243,-18,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="386,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="574,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>

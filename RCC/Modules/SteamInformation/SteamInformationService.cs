@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-using RCC.windows;
+using RCC.Windows;
 
 namespace RCC.Modules.SteamInformation;
 

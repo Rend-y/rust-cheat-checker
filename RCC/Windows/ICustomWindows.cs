@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows;
-
-namespace RCC.windows
+﻿namespace RCC.Windows
 {
     public interface ICustomWindow<T>
     {
