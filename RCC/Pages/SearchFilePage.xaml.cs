@@ -8,13 +8,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
-using MessageBox = RCC.Windows.MessageBox;
+using RCC.Modules.FileSearcher;
 
 namespace RCC.Pages
 {
     public partial class SearchFilePage : Page
     {
-        private readonly BackgroundWorker _backgroundWorkerFindAllFiles = new BackgroundWorker();
+        private readonly BackgroundWorker _backgroundWorkerFindAllFiles = new();
         private bool _isStartSearch = false;
 
         public SearchFilePage()
@@ -29,13 +29,16 @@ namespace RCC.Pages
 
         void BackgroundWorkerFindAllFilesProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            file_information information = e.UserState as file_information;
-
+            var information = e.UserState as FileInformation;
             if (information == null)
                 return;
-
-            ListAllFileSearch.Items.Add(new file_information(information.file_name, information.create_date,
-                information.directory, information.size));
+            ListAllFileSearch.Items.Add(new FileInformation(
+                    information.FileName,
+                    information.CreateDate,
+                    information.Directory,
+                    information.Size
+                )
+            );
         }
 
         void BackgroundWorkerFindAllFilesDoWork(object sender, DoWorkEventArgs e)
@@ -45,7 +48,8 @@ namespace RCC.Pages
                 Thread.Sleep(100);
             }
 
-            new MessageBox("Сканирование системы началось").Show();
+            // TODO: is not STA thread 
+            // new MessageBox("Сканирование системы началось").Show();
 
             int counter = 0;
 
@@ -69,17 +73,18 @@ namespace RCC.Pages
                 if (getSubdirectories.Count != 0)
                 {
                     // create new search list
-                    List<SearcherFiles> searchList = new List<SearcherFiles>();
+                    var searchList = new List<FileSearcher>();
                     // create new thread list
                     List<Thread> threadList = new List<Thread>();
 
                     // for each folder in the root directory. Creating a class search and thread
-                    getSubdirectories.ForEach(sub_directory =>
+                    getSubdirectories.ForEach(subDirectory =>
                     {
-                        SearcherFiles s1 = new SearcherFiles(sub_directory, "*.*", DateTime.MinValue, DateTime.MaxValue,
-                            0, Int32.MaxValue);
+                        var s1 = new FileSearcher(subDirectory, DateTime.MinValue, DateTime.MaxValue,
+                            "*.*", 0, int.MaxValue);
                         searchList.Add(s1);
-                        Thread t1 = new Thread(s1.start_search);
+                        var t1 = new Thread(s1.Run);
+                        t1.SetApartmentState(ApartmentState.STA);
                         threadList.Add(t1);
                     });
 
@@ -97,14 +102,14 @@ namespace RCC.Pages
                         if (endCount == 0) break;
                     }
 
-                    searchList.ForEach(search => search.find_files.ForEach(file =>
+                    searchList.ForEach(search => search.FindFileList.ForEach(file =>
                     {
                         _backgroundWorkerFindAllFiles.ReportProgress(counter, file);
                         XElement rootClass = new XElement("file");
-                        XElement filename = new XElement("filename", file.file_name);
-                        XElement createDate = new XElement("create-data", file.create_date);
-                        XElement directories = new XElement("directory", file.directory);
-                        XElement fileSize = new XElement("file-size", file.size);
+                        var filename = new XElement("filename", file.FileName);
+                        var createDate = new XElement("create-data", file.CreateDate);
+                        var directories = new XElement("directory", file.Directory);
+                        var fileSize = new XElement("file-size", file.Size);
                         rootClass.Add(filename);
                         rootClass.Add(createDate);
                         rootClass.Add(directories);
@@ -115,18 +120,18 @@ namespace RCC.Pages
                 }
 
                 // creating a new searches for find all files in the root directory
-                SearcherFiles ls = new SearcherFiles(directory, "*.*", DateTime.MinValue, DateTime.MaxValue, 0,
+                var ls = new FileSearcher(directory, DateTime.MinValue, DateTime.MaxValue, "*.*", 0,
                     Int32.MaxValue);
-                List<file_information>
-                    localFile = ls.search_files(directory); // Search for files only in the root directory
+                var
+                    localFile = ls.SearchFile(directory); // Search for files only in the root directory
                 localFile.ForEach(file =>
                 {
                     _backgroundWorkerFindAllFiles.ReportProgress(counter, file);
                     XElement rootClass = new XElement("file");
-                    XElement filename = new XElement("filename", file.file_name);
-                    XElement createDate = new XElement("create-data", file.create_date);
-                    XElement directories = new XElement("directory", file.directory);
-                    XElement fileSize = new XElement("file-size", file.size);
+                    var filename = new XElement("filename", file.FileName);
+                    var createDate = new XElement("create-data", file.CreateDate);
+                    var directories = new XElement("directory", file.Directory);
+                    var fileSize = new XElement("file-size", file.Size);
                     rootClass.Add(filename);
                     rootClass.Add(createDate);
                     rootClass.Add(directories);
@@ -151,7 +156,7 @@ namespace RCC.Pages
         {
             if (string.IsNullOrEmpty(SearchFileTextBoxFilter.Text))
                 return true;
-            return ((file_information)obj).file_name.IndexOf(SearchFileTextBoxFilter.Text,
+            return ((FileInformation)obj).FileName.IndexOf(SearchFileTextBoxFilter.Text,
                 StringComparison.OrdinalIgnoreCase) >= 0;
         }
 

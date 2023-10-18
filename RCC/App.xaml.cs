@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.Windows;
+using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC
 {
@@ -53,6 +55,7 @@ namespace RCC
                     collection.AddSingleton<ISystemInfo, SystemInfoService>();
                     collection.AddSingleton<IConsoleCommand, ConsoleCommand>();
                     collection.AddSingleton<IKeyboardCheck, KeyboardCheck>();
+                    // collection.AddSingleton<IFileSearcher<FileInformation>, FileSearcher>();
                     // Utils
                     collection.AddSingleton<IKeyboardEvent<KeyboardKeys>, KeyboardEvent>();
                     collection.AddSingleton<IMouseEvent<MouseEventFlags>, MouseEvent>();
@@ -70,9 +73,10 @@ namespace RCC
             bool isAdmin = Utilities.IsAdminStartup();
             if (!isAdmin)
             {
-                new RCC.Windows.MessageBox("Please run it's program from admin").Show();
+                new MessageBox("Please run it's program from admin").Show();
                 Environment.Exit(Environment.ExitCode);
-            } 
+            }
+
             Utilities.CheckOnUpdate();
             Utilities.OpenDiscordServer();
 #endif

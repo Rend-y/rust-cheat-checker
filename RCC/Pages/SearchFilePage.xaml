@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:RCC.Pages"
+      xmlns:fileSearcher="clr-namespace:RCC.Modules.FileSearcher"
       mc:Ignorable="d"
       Title="SearchFilePage"
       Width="1122" 
@@ -45,19 +45,27 @@
                                     <Rectangle Width="1068" HorizontalAlignment="Center" Height="2" Margin="0,63,0,0" VerticalAlignment="Top" Fill="#3F717790" RenderTransformOrigin="0.5,0.5"/>
                                 </Grid>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                    <ItemsPresenter></ItemsPresenter>
+                                    <ItemsPresenter />
                                 </ScrollViewer>
                             </DockPanel>
                         </ControlTemplate>
                     </ListBox.Template>
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="{x:Type fileSearcher:FileInformation}">
                             <StackPanel Background="Transparent" Orientation="Horizontal">
                                 <Grid>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243" Content="{Binding file_name}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB" Margin="245,0,0,0" Content="{Binding size}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB" Margin="388,0,0,0" Content="{Binding create_date}"/>
-                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB" Margin="576,0,0,0" Content="{Binding directory}"/>
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Foreground="#F9FAFB" Width="243"
+                                           Content="{Binding FileName}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="141" Foreground="#F9FAFB"
+                                           Margin="245,0,0,0" Content="{Binding Size}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="186" Foreground="#F9FAFB"
+                                           Margin="388,0,0,0" Content="{Binding CreateDate}" />
+                                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Center" Width="485" Foreground="#F9FAFB"
+                                           Margin="576,0,0,0" Content="{Binding Directory}" />
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="46" Margin="243,-18,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="386,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
                                     <Rectangle Width="2" HorizontalAlignment="Left" Height="30" Margin="574,-2,0,0" VerticalAlignment="Top" Fill="#3F717790"/>
