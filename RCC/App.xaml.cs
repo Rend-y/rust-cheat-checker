@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,11 +10,11 @@ using RCC.Modules.DangerousApp;
 using RCC.Modules.DetectClean;
 using RCC.Modules.Device.KeyboardEvent;
 using RCC.Modules.Device.MouseEvent;
+using RCC.Modules.FileSearcher;
 using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.Windows;
-using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC
 {
@@ -55,6 +54,7 @@ namespace RCC
                     collection.AddSingleton<ISystemInfo, SystemInfoService>();
                     collection.AddSingleton<IConsoleCommand, ConsoleCommand>();
                     collection.AddSingleton<IKeyboardCheck, KeyboardCheck>();
+                    collection.AddSingleton<IFileSearcher<FileInformation>, FileSearcher>();
                     // collection.AddSingleton<IFileSearcher<FileInformation>, FileSearcher>();
                     // Utils
                     collection.AddSingleton<IKeyboardEvent<KeyboardKeys>, KeyboardEvent>();

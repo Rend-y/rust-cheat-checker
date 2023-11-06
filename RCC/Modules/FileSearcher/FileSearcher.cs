@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 
 namespace RCC.Modules.FileSearcher;
 
@@ -26,83 +24,38 @@ public class FileInformation
 
 public class FileSearcher : IFileSearcher<FileInformation>
 {
-    public FileSearcher(DirectoryInfo directoryInfo, DateTime dateTimeStart, DateTime dateTimeEnd, string searchPattern,
-        double minFileSize, double maxFileSize)
-    {
-        DirectoryInfo = directoryInfo;
-        DateTimeStart = dateTimeStart;
-        DateTimeEnd = dateTimeEnd;
-        SearchPattern = searchPattern;
-        MinFileSize = minFileSize;
-        MaxFileSize = maxFileSize;
-    }
-
-    public DirectoryInfo DirectoryInfo { get; }
-    public DateTime DateTimeStart { get; }
-    public DateTime DateTimeEnd { get; }
-    public string SearchPattern { get; }
-    public double MinFileSize { get; }
-    public double MaxFileSize { get; }
     public List<FileInformation> FindFileList { get; } = new();
 
-    public List<FileInformation> SearchFile(in DirectoryInfo directoryInfo)
-    {
-        var result = new List<FileInformation>();
-        directoryInfo.GetFiles(SearchPattern, SearchOption.TopDirectoryOnly).ToList().ForEach(
-            file => // get all files at directory
-            {
-                try
-                {
-                    if (file.CreationTime.Date > DateTimeEnd ||
-                        file.CreationTime.Date < DateTimeStart) return;
-                    if ((double)file.Length / 1000 > MaxFileSize ||
-                        (double)file.Length / 1000 < MinFileSize) return;
-
-                    try
-                    {
-                        result.Add(new FileInformation(
-                                file.Name,
-                                file.CreationTime.ToString(CultureInfo.InvariantCulture),
-                                file.DirectoryName ?? "Directory error",
-                                (file.Length / 1024).ToString()
-                            )
-                        );
-                    } // adding to result array new file
-                    catch (Exception exception)
-                    {
-                        Debug.Fail(exception.Message, exception.StackTrace);
-                        Thread.Sleep(1);
-                    } // if this file gives an error
-                }
-                catch (Exception exception)
-                {
-                    Debug.Fail(exception.Message, exception.StackTrace);
-                    Thread.Sleep(1);
-                } // if this file gives an error.
-            });
-
-        return result;
-    }
-
-    public void Run()
+    public void Run(DirectoryInfo directoryInfo, DateTime dateTimeStart, DateTime dateTimeEnd, string searchPattern,
+        double minFileSize, double maxFileSize)
     {
         try
         {
-            List<DirectoryInfo> getAllDirectoryInfos = DirectoryInfo.GetDirectories().ToList();
-            if (getAllDirectoryInfos.Count != 0)
-                getAllDirectoryInfos.ForEach(directory => // For each directory, we launch a new search
-                {
-                    var second = new FileSearcher(directory, DateTimeStart, DateTimeEnd, SearchPattern,
-                        MinFileSize, MaxFileSize);
-                    second.Run(); // Start search in subdirectory
-                    FindFileList.AddRange(second.FindFileList); // Get list of all files which statisfy all conditions
-                });
-
-            FindFileList.AddRange(SearchFile(DirectoryInfo)); // Find all files in current directory
+            var workDirectoryInfo = directoryInfo;
+            List<DirectoryInfo> allDirectory = workDirectoryInfo.GetDirectories().ToList();
+            allDirectory.ForEach(directory =>
+            {
+                var filesList = directory.GetFiles(searchPattern, SearchOption.AllDirectories)
+                    .Where(file =>
+                    {
+                        if (file.CreationTime.Date > dateTimeEnd ||
+                            file.CreationTime.Date < dateTimeStart) return false;
+                        if ((double)file.Length / 1000 > maxFileSize ||
+                            (double)file.Length / 1000 < minFileSize) return false;
+                        return true;
+                    })
+                    .Select<FileInfo, FileInformation>(file => new FileInformation(
+                        file.Name,
+                        file.CreationTime.ToString(CultureInfo.InvariantCulture),
+                        file.DirectoryName ?? "Directory not found",
+                        (file.Length / 1024).ToString()))
+                    .ToList();
+                FindFileList.AddRange(filesList);
+            });
         }
         catch (Exception exception)
         {
-            Debug.Fail(exception.Message, exception.StackTrace);
+            // Debug.Fail(exception.Message, exception.StackTrace);
         }
     }
 }
