@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.Windows;
+using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC
 {
@@ -78,12 +80,9 @@ namespace RCC
             }
 
             Utilities.CheckOnUpdate();
-            Utilities.OpenDiscordServer();
 #endif
 
-            // AppHost.Services.GetService<Notify>()!.Show();
             new Notify("title", "message").Show();
-            // DetectingCleaning.Start();
             AppHost.Services.GetService<MainWindow>()?.Show();
         }
 
