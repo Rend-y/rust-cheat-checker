@@ -45,7 +45,7 @@ namespace RCC.Pages
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\last_activity_view.xml";
             var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
-                "https://github.com/Midoruya/rust-cheat-checker/blob/main/Resources/LastActivityView.exe?raw=true",
+                "https://github.com/Midoruya/rust-cheat-checker/blob/main/RCC/Resources/LastActivityView.exe?raw=true",
                 pathToSaveUsbList);
 
             int i = 0;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,11 +11,11 @@ using RCC.Modules.DetectClean;
 using RCC.Modules.Device.KeyboardEvent;
 using RCC.Modules.Device.MouseEvent;
 using RCC.Modules.FileSearcher;
+using RCC.Modules.Server;
 using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.Windows;
-using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC
 {
@@ -50,6 +49,7 @@ namespace RCC
                     collection.AddSingleton<SteamDataPage>();
                     collection.AddSingleton<UsbDevicePage>();
                     // Modules
+                    collection.AddSingleton<IServerService, ServerService>();
                     collection.AddSingleton<ISteamInformation<SteamData>, SteamInformationService>();
                     collection.AddSingleton<IDetectingCleaning<SDetectCleanData>, DetectingCleaningService>();
                     collection.AddSingleton<IDangerousApp<SDangerousApplication>, DangerousAppService>();
@@ -78,9 +78,8 @@ namespace RCC
                 new MessageBox("Please run it's program from admin").Show();
                 Environment.Exit(Environment.ExitCode);
             }
-
-            Utilities.CheckOnUpdate();
 #endif
+            AppHost.Services.GetService<IServerService>()?.CheckOnUpdate();
 
             new Notify("title", "message").Show();
             AppHost.Services.GetService<MainWindow>()?.Show();

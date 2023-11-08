@@ -351,11 +351,13 @@
     <Compile Include="Modules\Device\MouseEvent\MouseEvent.cs"/>
       <Compile Include="Modules\FileSearcher\FileSearcher.cs"/>
       <Compile Include="Modules\FileSearcher\IFileSearcher.cs"/>
-      <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
-      <Compile Include="Modules\SteamInformation\SteamData.cs"/>
-      <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
-      <Compile Include="Modules\SystemInfo\ISystemInfo.cs"/>
-      <Compile Include="Modules\SystemInfo\SystemInfoService.cs"/>
+    <Compile Include="Modules\Server\IServerService.cs"/>
+    <Compile Include="Modules\Server\ServerService.cs"/>
+    <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
+    <Compile Include="Modules\SteamInformation\SteamData.cs"/>
+    <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
+    <Compile Include="Modules\SystemInfo\ISystemInfo.cs"/>
+    <Compile Include="Modules\SystemInfo\SystemInfoService.cs"/>
     <Compile Include="Pages\GreetingPage.xaml.cs">
       <DependentUpon>GreetingPage.xaml</DependentUpon>
     </Compile>
@@ -383,8 +385,8 @@
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-      <Compile Include="Windows\EWindowsType.cs"/>
-      <Compile Include="Windows\ICustomWindows.cs"/>
+    <Compile Include="Windows\EWindowsType.cs"/>
+    <Compile Include="Windows\ICustomWindows.cs"/>
     <Compile Include="Windows\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
@@ -412,8 +414,8 @@
     <Page Include="Pages\SearchFilePage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
     <Page Include="Pages\UsbDevicePage.xaml" />
-      <Page Include="Windows\MessageBox.xaml"/>
-      <Page Include="Windows\Notify.xaml"/>
+    <Page Include="Windows\MessageBox.xaml"/>
+    <Page Include="Windows\Notify.xaml"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

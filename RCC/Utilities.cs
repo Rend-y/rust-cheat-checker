@@ -8,7 +8,6 @@ using System.Net;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
-using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace RCC
@@ -49,43 +48,6 @@ namespace RCC
             deleteThread.Start(new[] { pathToExe, pathToSaveXml });
 
             return XDocument.Load(pathToSaveXml).Descendants("item");
-        }
-
-        public static void CheckOnUpdate()
-        {
-            string getFileVersionFromGit =
-                new WebClient().DownloadString(
-                    "https://raw.githubusercontent.com/Midoruya/rust-cheat-checker/main/version.ini");
-            var getFileVersionFromAssembly = Assembly.GetEntryAssembly()?.GetName().Version.ToString() ??
-                                             throw new InvalidOperationException(
-                                                 "Get file version from assembly is null");
-            if (getFileVersionFromGit.Equals(getFileVersionFromAssembly) == false)
-            {
-                DialogResult buttonPressed = MessageBox.Show(
-                    "Вышла новая версия вы желаете обновится ?",
-                    "Обновление",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-                if (buttonPressed == DialogResult.Yes)
-                {
-                    new WebClient().DownloadFile(
-                        $"https://github.com/Midoruya/rust-cheat-checker/releases/download/{getFileVersionFromGit}/RCC.exe",
-                        "Updated.exe");
-                    ProcessStartInfo startInfo = new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments =
-                            "/C timeout 5 & del RCC.exe & move Updated.exe RCC.exe & del Updated.exe & runas RCC.exe",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    };
-                    Process.Start(startInfo);
-                    Environment.Exit(Environment.ExitCode);
-                }
-            }
         }
 
         public static bool IsAdminStartup()
