@@ -1,0 +1,44 @@
+﻿<Window x:Class="RCC.Windows.Notify"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Title="Notify"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual"
+        Top="0"
+        Left="0"
+        Height="100"
+        Width="400"
+        Background="Transparent"
+>
+    <Grid Background="Transparent">
+        <Border CornerRadius="10" Background="#6610121B">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Background="#6610121B" Margin="5" CornerRadius="10" Grid.Column="0">
+                    <Label Foreground="#FFFFFF" Content="" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{StaticResource FontAwesomeFreeSolid}"/>
+                </Border>
+                <Grid Grid.Column="1" Margin="0 5 10 5" >
+                    <Border Background="#6610121B" CornerRadius="10">
+                        <Grid Margin="5 10 5  10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="LabelTitle" Content="Title" Foreground="#FFFFFF" Grid.Row="0" Padding="0" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="LabelMessage" Text="Message" Grid.Row="1" Foreground="#F9FAFB" Padding="0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

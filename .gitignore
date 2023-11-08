@@ -1,6 +1,11 @@
-bin/*
-obj/*
 .vs/*
 RCC.csproj.user
 RCC.sln.DotSettings.user
 .idea/*
+RCC/bin/*
+RCC/obj/*
+RCC.Test/bin/*
+RCC.Test/obj/*
+.fake
+.vscode
+.history
