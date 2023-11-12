@@ -22,7 +22,7 @@ public interface ISteamInformation<out TSteamData>
     /// use this for get full path to file which keeps all accounts data
     /// </summary>
     /// <returns>full path to file which keeps all accounts data</returns>
-    List<string> GetSteamIdFromContent(string content);
+    List<string> GetSteamIdFromContent(in string content);
 
     List<string> GetSteamIdFromCoPlayData();
 

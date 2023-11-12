@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC.Modules.SteamInformation
 {
@@ -21,42 +21,41 @@ namespace RCC.Modules.SteamInformation
         {
             SteamId = steamId;
             IsDeleted = isDeleted;
-            string url = "https://steamcommunity.com/profiles/" + steamId;
+            var url = $"https://steamcommunity.com/profiles/{steamId}";
+
             try
             {
-                using (WebClient client = new WebClient())
-                {
-                    byte[] data = client.DownloadData(url); // download full markup a frontend
-                    string text = Encoding.UTF8.GetString(data); // parse it's to utf 8 encode
+                using var client = new HttpClient();
+                var taskGetHtml = client.GetStringAsync(url);
+                taskGetHtml.Wait();
+                var content = taskGetHtml.Result;
 
-                    IsHideAccount = Regex.Match(text, @"<div\s+class=""profile_private_info"">([^"">]+)</div>")
-                        .Groups[1].Length > 0; // parse is hide profile
-                    Username = Regex.Match(text, @"<span class=""actual_persona_name"">([^"">]+)</span>").Groups[1]
-                        .Value; // parse username
-                    if (IsHideAccount) AccountLevel = -1;
-                    else
-                        AccountLevel = int.Parse(Regex
-                            .Match(text, @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>").Groups[1]
-                            .Value); // parse level
-                    var avatarUrlArray = Regex.Matches(text, @"<img src=""([^"">]+)"">").Cast<Match>()
-                        .Select(x => x.Groups[1].Value).ToList(); // parse avatar
-                    foreach (string img in avatarUrlArray)
-                    {
-                        if (img.Contains("_full"))
-                        {
-                            AvatarUrl = img;
-                            GetSteamAccountAvatar(img, out _avatar);
-                            break;
-                        }
-                    }
+
+                IsHideAccount = Regex.Match(content, @"<div class=""profile_private_info"">([^"">]+)</div>")
+                    .Groups[1].Length > 0; // parse is hide profile
+
+                Username = Regex.Match(content, @"<span class=""actual_persona_name"">([^"">]+)</span>").Groups[1]
+                    .Value; // parse username
+
+                AccountLevel = IsHideAccount ? -1 :
+                    int.TryParse(
+                        Regex.Match(content, @"<span class=""friendPlayerLevelNum"">([^"">]+)</span>").Groups[1].Value,
+                        out var level) ? level : -1;
+
+                var avatarUrlArray = Regex.Matches(content, @"<img src=""([^"">]+)"">").Cast<Match>()
+                    .Select(x => x.Groups[1].Value)
+                    .FirstOrDefault(img => img.Contains("_full"));
+
+                if (!string.IsNullOrEmpty(avatarUrlArray))
+                {
+                    AvatarUrl = avatarUrlArray;
+                    GetSteamAccountAvatar(avatarUrlArray, out _avatar);
                 }
             }
             catch (Exception exception)
             {
-                new MessageBox(exception.Message).Show();
+                Debug.Fail(exception.Message, exception.StackTrace);
             }
-
-            ;
         }
 
         public SteamData(in string username, in long steamId, in int accountLevel, in string avatarUrl,
@@ -74,18 +73,18 @@ namespace RCC.Modules.SteamInformation
             GetSteamAccountAvatar(correctAvatarUrl, out _avatar);
         }
 
-        public string Username { get; private set; }
-        public long SteamId { get; private set; }
-        public int AccountLevel { get; private set; }
+        public string Username { get; }
+        public long SteamId { get; }
+        public int AccountLevel { get; }
         public string AvatarUrl { get; private set; }
-        public bool IsHideAccount { get; private set; }
-        public bool IsDeleted { get; private set; }
-        public ImageSource GetAccountAvatar => this._avatar;
-        public string GetAccountLevel => this.AccountLevel.ToString();
-        public string GetUsername => $"Username : {this.Username}";
-        public string GetSteamId => $"Steam Id : {this.SteamId}";
-        public Visibility GetIsHideForWindow => this.IsHideAccount ? Visibility.Visible : Visibility.Hidden;
-        public Visibility GetIsDeleted => this.IsDeleted ? Visibility.Visible : Visibility.Hidden;
+        public bool IsHideAccount { get; }
+        public bool IsDeleted { get; }
+        public ImageSource GetAccountAvatar => _avatar;
+        public string GetAccountLevel => AccountLevel.ToString();
+        public string GetUsername => $"Username : {Username}";
+        public string GetSteamId => $"Steam Id : {SteamId}";
+        public Visibility GetIsHideForWindow => IsHideAccount ? Visibility.Visible : Visibility.Hidden;
+        public Visibility GetIsDeleted => IsDeleted ? Visibility.Visible : Visibility.Hidden;
 
         private void GetSteamAccountAvatar(in string avatarUrl, out BitmapSource avatar)
         {

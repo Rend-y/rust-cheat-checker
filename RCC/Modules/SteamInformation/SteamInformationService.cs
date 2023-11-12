@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-using RCC.Windows;
 
 namespace RCC.Modules.SteamInformation;
 
@@ -20,31 +20,54 @@ public class SteamInformationService : ISteamInformation<SteamData>
     {
         const string steamPathX64 = @"SOFTWARE\Wow6432Node\Valve\Steam";
         const string steamPathX32 = @"Software\Valve\Steam";
-        string result = string.Empty;
+
         try
         {
             bool isX64OperationSystem = Environment.Is64BitOperatingSystem;
-            RegistryKey getBaseRegDir = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
+            using var baseRegDir = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                 isX64OperationSystem ? RegistryView.Registry64 : RegistryView.Registry32);
-            RegistryKey getSubKey =
-                getBaseRegDir.OpenSubKey(isX64OperationSystem ? steamPathX64 : steamPathX32, isX64OperationSystem) ??
-                throw new Exception("Steam sub key of registry not found");
-            result = getSubKey.GetValue(isX64OperationSystem ? "InstallPath" : "SourceModInstallPath")?.ToString() ??
-                     throw new Exception("Steam key of registry doesn't contains value");
+            using var subKey =
+                baseRegDir.OpenSubKey(isX64OperationSystem ? steamPathX64 : steamPathX32, isX64OperationSystem)
+                ?? throw new Exception("Steam sub key of registry not found");
+
+            var valueName = isX64OperationSystem ? "InstallPath" : "SourceModInstallPath";
+            return subKey.GetValue(valueName)?.ToString() ??
+                   throw new Exception($"Steam key '{valueName}' of registry doesn't contain a value");
         }
         catch (Exception exception)
         {
-            new MessageBox(exception.Message).Show();
+            Debug.Fail(exception.Message, exception.StackTrace);
+            return string.Empty;
         }
-
-        return result;
     }
 
-    public List<string> GetSteamIdFromContent(string content)
+    public List<string> GetSteamIdFromContent(in string content)
     {
-        return Regex.Matches(content ?? "", "\\\"7656(.*?)\\\"")
-            .Cast<Match>()
-            .Select(x => "7656" + x.Groups[1].Value).ToList();
+        const string steamIdPrefix = "7656";
+        var steamIdsHashSet = new HashSet<string>();
+
+        if (string.IsNullOrEmpty(content))
+            return new List<string>();
+
+        for (var startIndex = 0; startIndex < content.Length;)
+        {
+            var prefixIndex = content.IndexOf(steamIdPrefix, startIndex, StringComparison.Ordinal);
+
+            if (prefixIndex == -1)
+                break;
+
+            var endIndex = prefixIndex + steamIdPrefix.Length;
+
+            while (endIndex < content.Length && char.IsDigit(content[endIndex]))
+                endIndex++;
+
+            if (endIndex > prefixIndex + steamIdPrefix.Length)
+                steamIdsHashSet.Add(content.Substring(prefixIndex, endIndex - prefixIndex));
+
+            startIndex = endIndex;
+        }
+
+        return steamIdsHashSet.ToList();
     }
 
     public List<string> GetSteamIdFromCoPlayData()
@@ -60,38 +83,35 @@ public class SteamInformationService : ISteamInformation<SteamData>
 
     public SteamData GetLastSteamAccountInfo()
     {
-        string steamPathToLoginUser = PathToLoginData;
-        string steamPathToConfig = PathToSteamConfig;
+        var loginUserDataPath = PathToLoginData;
+        var configDataPath = PathToSteamConfig;
 
-        if (!File.Exists(steamPathToLoginUser) && !File.Exists(steamPathToConfig))
+        if (!File.Exists(loginUserDataPath) && !File.Exists(configDataPath))
             throw new FileNotFoundException("Steam files were not found");
 
+        var loginUserData = File.ReadAllText(loginUserDataPath);
+        var configData = File.ReadAllText(configDataPath);
 
-        string loginUserFileData = File.ReadAllText(steamPathToLoginUser);
-        string configFileData = File.ReadAllText(steamPathToConfig);
-        List<string> getLoginUserSteamId = GetSteamIdFromContent(loginUserFileData);
-        List<string> getConfigSteamId = GetSteamIdFromContent(configFileData);
-        List<string> getCoPlaySteamId = GetSteamIdFromCoPlayData();
-        List<string> isLastAccount = Regex.Matches(loginUserFileData, "\\\"mostrecent\\\"		\\\"(.*?)\\\"").Cast<Match>()
-            .Select(x => x.Groups[1].Value).ToList();
+        var loginUserSteamIds = GetSteamIdFromContent(loginUserData);
+        var configSteamIds = GetSteamIdFromContent(configData);
+        var coPlaySteamIds = GetSteamIdFromCoPlayData();
 
-        // List<string> isDeletedAccount = new List<string>();
-        // List<string> normalAccount = new List<string>();
-        // normalAccount.AddRange(getLoginUserSteamId);
-        // normalAccount.AddRange(getLoginUserSteamId.Intersect(getConfigSteamId).ToList());
-        // isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
-        // normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
-        // isDeletedAccount.AddRange(getLoginUserSteamId.Except(getCoPlaySteamId).ToList());
-        // isDeletedAccount = new HashSet<string>(isDeletedAccount).ToList();
-        // normalAccount = new HashSet<string>(normalAccount).ToList();
+        var lastAccounts = loginUserData
+            .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => line.Trim())
+            .Where(line => line.StartsWith("\"mostrecent\""))
+            .Select(line => line.Split('\"')[3])
+            .ToList();
 
-        for (int i = 0; i < isLastAccount.Count; i++)
-        {
-            if (isLastAccount[i] == true.ToString())
-                return GetSteamData(long.Parse(getLoginUserSteamId[i]));
-        }
+        for (var i = 0; i < lastAccounts.Count; i++)
+            if (bool.TryParse(lastAccounts[i], out var isLastAccount) && isLastAccount)
+                if (long.TryParse(loginUserSteamIds.ElementAtOrDefault(i), out var steamId))
+                    return GetSteamData(steamId);
 
-        return GetSteamData(long.Parse(getLoginUserSteamId[0]));
+        if (long.TryParse(loginUserSteamIds.FirstOrDefault(), out var defaultSteamId))
+            return GetSteamData(defaultSteamId);
+
+        return null;
     }
 
     public string PathToLoginData { get; }

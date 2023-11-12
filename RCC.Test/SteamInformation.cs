@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using RCC.Modules.SteamInformation;
 using Xunit;
 using Xunit.Abstractions;
@@ -10,6 +8,7 @@ namespace RCC.Test
     [ExcludeFromCodeCoverage]
     public class SteamInformation
     {
+        private readonly string _privateSteamIdAccount;
         private readonly ISteamInformation<SteamData> _steamInformation;
         private readonly ITestOutputHelper _testOutputHelper;
 
@@ -17,42 +16,31 @@ namespace RCC.Test
         {
             _testOutputHelper = testOutputHelper;
             _steamInformation = new SteamInformationService();
+            _privateSteamIdAccount = "76561199006134220";
         }
 
         [Theory]
-        [InlineData(
-            "\"SteamID\"	\"76561199169433522\" \"SteamID\"	\"76561199169433532\" \"SteamID\"	\"76561199169433543\" \"SteamID\"	\"76561199169433542\"")]
-        public void Test_GetSteamIsFromContent_on_valid_steamId_data(in string content)
+        [InlineData("Some text 76561198012345678 and more text", new[] { "76561198012345678" })]
+        [InlineData("76561198012345678 and 76561198098765432 are Steam IDs",
+            new[] { "76561198012345678", "76561198098765432" })]
+        [InlineData("76561198012345678 and 76561198012345678 are overlapping Steam IDs", new[] { "76561198012345678" })]
+        [InlineData("Some text 1234567890123456 and more text", new string[0])]
+        [InlineData("Steam ID: 765611980123 and more text", new[] { "765611980123" })]
+        [InlineData("Text 76561198012345678 MoreText 76561198098765432",
+            new[] { "76561198012345678", "76561198098765432" })]
+        [InlineData("Text 76561198012345678 moreText 76561198098765432",
+            new[] { "76561198012345678", "76561198098765432" })]
+        [InlineData("Steam ID: 76561198012345678 and [SteamID:76561198098765432]",
+            new[] { "76561198012345678", "76561198098765432" })]
+        [InlineData(null, new string[0])]
+        [InlineData("", new string[0])]
+        [InlineData("NoSteamIdsHere", new string[0])]
+        [InlineData("76561198012345678, 76561198098765432, 76561198012345678",
+            new[] { "76561198012345678", "76561198098765432" })]
+        public void GetSteamIdFromContent_ShouldReturnCorrectSteamIds(string content, params string[] expectedSteamIds)
         {
-            List<string> steamId = _steamInformation.GetSteamIdFromContent(content);
-            Assert.Equal(steamId.Count, 4);
-            Assert.All(steamId, s => Assert.True(SteamData.IsSteamId(Convert.ToInt64(s))));
-        }
-
-        [Theory]
-        [InlineData(
-            "\"SteamID\"	\"765611991694343522\" \"SteamID\"	\"323\" \"SteamID\"	\"765611994216\" \"SteamID\"	\"7656\"")]
-        public void Test_GetSteamIsFromContent_on_not_valid_steamId_data(in string content)
-        {
-            List<string> steamId = _steamInformation.GetSteamIdFromContent(content);
-            Assert.NotEqual(steamId.Count, 4);
-            Assert.All(steamId, s => Assert.False(SteamData.IsSteamId(Convert.ToInt64(s))));
-        }
-
-        [Theory]
-        [InlineData("")]
-        public void Test_GetSteamIsFromContent_with_empty_content(in string content)
-        {
-            var steamId = _steamInformation.GetSteamIdFromContent(content);
-            Assert.Equal(steamId.Count, 0);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_GetSteamIsFromContent_with_null_content(in string content)
-        {
-            var steamId = _steamInformation.GetSteamIdFromContent(content);
-            Assert.Equal(steamId.Count, 0);
+            var result = _steamInformation.GetSteamIdFromContent(content);
+            Assert.Equal(expectedSteamIds, result);
         }
     }
 }
