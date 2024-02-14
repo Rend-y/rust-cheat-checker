@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -26,10 +25,10 @@ namespace RCC.Pages
             ListAllFileSearch.Items.Filter = CustomFilter;
         }
 
-        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender)
         {
-            base.BackgroundWorkerProgressChanged(sender, e);
-            var information = e.UserState as FileInformation;
+            base.BackgroundWorkerProgressChanged(sender);
+            var information = sender as FileInformation;
             if (information == null)
                 return;
             ListAllFileSearch.Items.Add(new FileInformation(
@@ -60,9 +59,9 @@ namespace RCC.Pages
             });
         }
 
-        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork()
         {
-            base.BackgroundWorkerDoWork(sender, e);
+            base.BackgroundWorkerDoWork();
             Start();
         }
 

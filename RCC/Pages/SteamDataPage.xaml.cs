@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -51,12 +50,12 @@ namespace RCC.Pages
 
         #region Background Worker Functions
 
-        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender)
         {
-            base.BackgroundWorkerProgressChanged(sender, e);
+            base.BackgroundWorkerProgressChanged(sender);
             try
             {
-                var steam = e.UserState as Tuple<long, bool> ?? throw new InvalidOperationException("SteamData is null");
+                var steam = sender as Tuple<long, bool> ?? throw new InvalidOperationException("SteamData is null");
                 Logger.LogInformation("Background worker find steam account get new value: {SteamId}", steam.Item1);
                 ListOtherAccounts.Items.Add(new SteamData(steam.Item1, steam.Item2));
             }
@@ -66,9 +65,9 @@ namespace RCC.Pages
             }
         }
 
-        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork()
         {
-            base.BackgroundWorkerDoWork(sender, e);
+            base.BackgroundWorkerDoWork();
             var steamPathToLoginUser = _steamInformation.PathToLoginData;
             var steamPathToConfig = _steamInformation.PathToSteamConfig;
             if (!File.Exists(steamPathToLoginUser) && !File.Exists(steamPathToConfig))

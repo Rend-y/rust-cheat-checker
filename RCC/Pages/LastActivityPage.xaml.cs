@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
@@ -35,9 +34,9 @@ namespace RCC.Pages
             RunBackgroundWorker();
         }
 
-        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork()
         {
-            base.BackgroundWorkerDoWork(sender, e);
+            base.BackgroundWorkerDoWork();
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\last_activity_view.xml";
             var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
@@ -62,16 +61,19 @@ namespace RCC.Pages
             }
         }
 
-        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override async void BackgroundWorkerProgressChanged(object sender)
         {
-            base.BackgroundWorkerProgressChanged(sender, e);
-            LastActivityInfo lastActivityInfo = e.UserState as LastActivityInfo;
+            base.BackgroundWorkerProgressChanged(sender);
+            var lastActivityInfo = sender as LastActivityInfo;
 
             if (lastActivityInfo == null)
                 return;
 
-            ListAllLastActivity.Items.Add(new LastActivityInfo(lastActivityInfo.ActionTime,
-                lastActivityInfo.Description, lastActivityInfo.Filename, lastActivityInfo.FullPath));
+            ListAllLastActivity.Dispatcher.Invoke(() =>
+            {
+                ListAllLastActivity.Items.Add(new LastActivityInfo(lastActivityInfo.ActionTime,
+                    lastActivityInfo.Description, lastActivityInfo.Filename, lastActivityInfo.FullPath));
+            });
         }
     }
 }

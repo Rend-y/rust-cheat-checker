@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
 
 namespace RCC.Pages
@@ -12,9 +11,9 @@ namespace RCC.Pages
             RunBackgroundWorker();
         }
 
-        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork()
         {
-            base.BackgroundWorkerDoWork(sender, e);
+            base.BackgroundWorkerDoWork();
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\USBDeview.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\usb_info.xml";
             var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
@@ -35,10 +34,10 @@ namespace RCC.Pages
             }
         }
 
-        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender)
         {
-            base.BackgroundWorkerProgressChanged(sender, e);
-            UsbDeviceInfo usbData = e.UserState as UsbDeviceInfo;
+            base.BackgroundWorkerProgressChanged(sender);
+            var usbData = sender as UsbDeviceInfo;
 
             if (usbData == null)
                 return;
