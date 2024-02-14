@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -13,13 +11,16 @@ using System.Windows.Media.Imaging;
 
 namespace RCC.Modules.SteamInformation
 {
-    public class SteamData
+    public class SteamData : ISteamData
     {
         private readonly BitmapSource _avatar;
 
         public SteamData(in long steamId, in bool isDeleted = false)
         {
             SteamId = steamId;
+            _avatar = null!;
+            Username = "";
+            AvatarUrl = "";
             IsDeleted = isDeleted;
             var url = $"https://steamcommunity.com/profiles/{steamId}";
 
@@ -49,7 +50,7 @@ namespace RCC.Modules.SteamInformation
                 if (!string.IsNullOrEmpty(avatarUrlArray))
                 {
                     AvatarUrl = avatarUrlArray;
-                    GetSteamAccountAvatar(avatarUrlArray, out _avatar);
+                    _avatar = GetSteamAccountAvatar(avatarUrlArray) ?? throw new Exception("Failed get user avatar");
                 }
             }
             catch (Exception exception)
@@ -58,25 +59,10 @@ namespace RCC.Modules.SteamInformation
             }
         }
 
-        public SteamData(in string username, in long steamId, in int accountLevel, in string avatarUrl,
-            in bool isHideAccount, in bool isDeleted)
-        {
-            Username = username;
-            SteamId = steamId;
-            AccountLevel = accountLevel;
-            IsHideAccount = isHideAccount;
-            IsDeleted = isDeleted;
-            string correctAvatarUrl = avatarUrl == string.Empty
-                ? "https://avatars.cloudflare.steamstatic.com/a8c5d92192f114f5ed05a03a86e53facc7d22a27_full.jpg"
-                : avatarUrl;
-            AvatarUrl = correctAvatarUrl;
-            GetSteamAccountAvatar(correctAvatarUrl, out _avatar);
-        }
-
         public string Username { get; }
         public long SteamId { get; }
         public int AccountLevel { get; }
-        public string AvatarUrl { get; private set; }
+        public string AvatarUrl { get; }
         public bool IsHideAccount { get; }
         public bool IsDeleted { get; }
         public ImageSource GetAccountAvatar => _avatar;
@@ -86,17 +72,24 @@ namespace RCC.Modules.SteamInformation
         public Visibility GetIsHideForWindow => IsHideAccount ? Visibility.Visible : Visibility.Hidden;
         public Visibility GetIsDeleted => IsDeleted ? Visibility.Visible : Visibility.Hidden;
 
-        private void GetSteamAccountAvatar(in string avatarUrl, out BitmapSource avatar)
+        private BitmapSource? GetSteamAccountAvatar(string avatarUrl)
         {
-            using (WebClient client = new WebClient())
+            try
             {
-                using (Stream stream = client.OpenRead(avatarUrl)!)
-                {
-                    Bitmap bitmap = new Bitmap(stream);
-                    stream.Close();
-                    avatar = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
-                        BitmapSizeOptions.FromEmptyOptions());
-                }
+                using var client = new HttpClient();
+                using var stream = client.GetStreamAsync(avatarUrl).GetAwaiter().GetResult();
+                using var bitmap = new Bitmap(stream);
+                return Imaging.CreateBitmapSourceFromHBitmap(
+                    bitmap.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                );
+            }
+            catch (Exception exception)
+            {
+                Debug.Fail(exception.Message, exception.StackTrace);
+                return null;
             }
         }
 

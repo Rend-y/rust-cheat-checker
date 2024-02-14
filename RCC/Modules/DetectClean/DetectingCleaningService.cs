@@ -77,9 +77,7 @@ public class DetectingCleaningService : IDetectingCleaning<SDetectCleanData>
         var fileDataFromLoginUser = File.ReadAllText(_steamInformation.PathToLoginData);
         var getSteamIdDataFromConfig = _steamInformation.GetSteamIdFromContent(fileDataFromConfig);
         var getSteamIdDataFromLoginUser = _steamInformation.GetSteamIdFromContent(fileDataFromLoginUser);
-        var getSteamIdFromCoPlay = _steamInformation.GetSteamIdFromCoPlayData();
-        var calculate = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count -
-                        getSteamIdFromCoPlay.Count;
+        var calculate = getSteamIdDataFromConfig.Count - getSteamIdDataFromLoginUser.Count;
         if (getSteamIdDataFromConfig.Count == Math.Abs(calculate))
             return result;
         result.Add("Обнаружены удаленные аккаунты");

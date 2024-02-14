@@ -7,28 +7,23 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Extensions.Logging;
 using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 
 namespace RCC.Pages
 {
-    public partial class SteamDataPage : Page
+    public partial class SteamDataPage : APage
     {
-        private readonly BackgroundWorker _backgroundWorkerFindSteamAccount = new();
         private readonly ISteamInformation<SteamData> _steamInformation;
 
-        public SteamDataPage(ISteamInformation<SteamData> steamInformation, ISystemInfo systemInfo)
+        public SteamDataPage(ILogger<SteamDataPage> logger, ISteamInformation<SteamData> steamInformation, ISystemInfo systemInfo) :
+            base(logger)
         {
             InitializeComponent();
-
+            RunBackgroundWorker();
             _steamInformation = steamInformation;
             LabelFullPathToSteam.Content = _steamInformation.GetSteamLocation();
-
-            _backgroundWorkerFindSteamAccount.DoWork += BackgroundWorkerFindSteamAccountDoWork;
-            _backgroundWorkerFindSteamAccount.ProgressChanged += BackgroundWorkerFindSteamAccountProgressChanged;
-            _backgroundWorkerFindSteamAccount.WorkerReportsProgress = true;
-            _backgroundWorkerFindSteamAccount.RunWorkerAsync();
-
             var lastAccountInfo = _steamInformation.GetLastSteamAccountInfo();
 
             LabelSteamAccountSteamId.Content = lastAccountInfo.GetSteamId;
@@ -56,68 +51,51 @@ namespace RCC.Pages
 
         #region Background Worker Functions
 
-        void BackgroundWorkerFindSteamAccountProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            var steam = e.UserState as SteamData ?? throw new InvalidOperationException("SteamData is null");
-            ListOtherAccounts.Items.Add(new SteamData(steam.Username, steam.SteamId, steam.AccountLevel,
-                steam.AvatarUrl, steam.IsHideAccount, steam.IsDeleted));
+            base.BackgroundWorkerProgressChanged(sender, e);
+            try
+            {
+                var steam = e.UserState as Tuple<long, bool> ?? throw new InvalidOperationException("SteamData is null");
+                Logger.LogInformation("Background worker find steam account get new value: {SteamId}", steam.Item1);
+                ListOtherAccounts.Items.Add(new SteamData(steam.Item1, steam.Item2));
+            }
+            catch (Exception exception)
+            {
+                Logger.LogTrace(exception, "BackgroundWorkerFindSteamAccountProgressChanged");
+            }
         }
 
-        void BackgroundWorkerFindSteamAccountDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
+            base.BackgroundWorkerDoWork(sender, e);
             var steamPathToLoginUser = _steamInformation.PathToLoginData;
             var steamPathToConfig = _steamInformation.PathToSteamConfig;
-
             if (!File.Exists(steamPathToLoginUser) && !File.Exists(steamPathToConfig))
+            {
+                Logger.LogError("steam paths not exist");
                 return;
-
-
+            }
             string loginUserFileData = File.ReadAllText(steamPathToLoginUser);
             string configFileData = File.ReadAllText(steamPathToConfig);
             var getLoginUserSteamId = _steamInformation.GetSteamIdFromContent(loginUserFileData);
             var getConfigSteamId = _steamInformation.GetSteamIdFromContent(configFileData);
-            var getCoPlaySteamId = _steamInformation.GetSteamIdFromCoPlayData();
-
-            List<string> groupListSteamId = new List<string>();
-            groupListSteamId.AddRange(getLoginUserSteamId);
-            groupListSteamId.AddRange(getConfigSteamId);
-            groupListSteamId.AddRange(getCoPlaySteamId);
-            groupListSteamId.Sort();
-
-            List<string> isDeletedAccount = new List<string>();
+            var deletedAccount = new List<string>();
             List<string> normalAccount = new List<string>();
 
+            normalAccount.AddRange(getConfigSteamId);
+            normalAccount.AddRange(getLoginUserSteamId);
             normalAccount.AddRange(getLoginUserSteamId.Intersect(getConfigSteamId).ToList());
-            isDeletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
-            normalAccount.AddRange(getLoginUserSteamId.Intersect(getCoPlaySteamId).ToList());
-            isDeletedAccount.AddRange(getLoginUserSteamId.Except(getCoPlaySteamId).ToList());
+            deletedAccount.AddRange(getLoginUserSteamId.Except(getConfigSteamId).ToList());
 
             normalAccount.AddRange(getConfigSteamId.Intersect(getLoginUserSteamId).ToList());
-            isDeletedAccount.AddRange(getConfigSteamId.Except(getLoginUserSteamId).ToList());
-            normalAccount.AddRange(getConfigSteamId.Intersect(getCoPlaySteamId).ToList());
-            isDeletedAccount.AddRange(getConfigSteamId.Except(getCoPlaySteamId).ToList());
+            deletedAccount.AddRange(getConfigSteamId.Except(getLoginUserSteamId).ToList());
 
-            normalAccount.AddRange(getCoPlaySteamId.Intersect(getConfigSteamId).ToList());
-            isDeletedAccount.AddRange(getCoPlaySteamId.Except(getConfigSteamId).ToList());
-            normalAccount.AddRange(getCoPlaySteamId.Intersect(getLoginUserSteamId).ToList());
-            isDeletedAccount.AddRange(getCoPlaySteamId.Except(getLoginUserSteamId).ToList());
+            deletedAccount = deletedAccount.Distinct().ToList();
+            normalAccount = normalAccount.Except(deletedAccount).Distinct().ToList();
 
-            isDeletedAccount = isDeletedAccount.Distinct().ToList();
-            normalAccount = normalAccount.Except(isDeletedAccount).Distinct().ToList();
-
-            int i = 0;
-            normalAccount.ForEach(steamId =>
-            {
-                _backgroundWorkerFindSteamAccount.ReportProgress(i,
-                    _steamInformation.GetSteamData(long.Parse(steamId)));
-                i++;
-            });
-            isDeletedAccount.ForEach(steamId =>
-            {
-                _backgroundWorkerFindSteamAccount.ReportProgress(i,
-                    _steamInformation.GetSteamData(long.Parse(steamId), true));
-                i++;
-            });
+            normalAccount.ForEach(steamId => { BackgroundWorkerSendProgress(new Tuple<long, bool>(long.Parse(steamId), false)); });
+            deletedAccount.ForEach(steamId => { BackgroundWorkerSendProgress(new Tuple<long, bool>(long.Parse(steamId), true)); });
         }
 
         #endregion

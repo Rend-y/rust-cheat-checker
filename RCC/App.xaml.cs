@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,6 @@ using RCC.Modules.SteamInformation;
 using RCC.Modules.SystemInfo;
 using RCC.Pages;
 using RCC.Windows;
-using MessageBox = RCC.Windows.MessageBox;
 
 namespace RCC
 {
@@ -59,16 +57,13 @@ namespace RCC
                     collection.AddSingleton<IConsoleCommand, ConsoleCommand>();
                     collection.AddSingleton<IKeyboardCheck, KeyboardCheck>();
                     collection.AddSingleton<IFileSearcher<FileInformation>, FileSearcher>();
-                    // collection.AddSingleton<IFileSearcher<FileInformation>, FileSearcher>();
                     // Utils
                     collection.AddSingleton<IKeyboardEvent<KeyboardKeys>, KeyboardEvent>();
                     collection.AddSingleton<IMouseEvent<MouseEventFlags>, MouseEvent>();
                     // Other
                 }).Build();
         }
-
         private static IHost? AppHost { get; set; }
-
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

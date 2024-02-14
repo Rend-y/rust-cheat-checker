@@ -8,29 +8,27 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using RCC.Modules.FileSearcher;
 
 namespace RCC.Pages
 {
-    public partial class SearchFilePage : Page
+    public partial class SearchFilePage : APage
     {
-        private readonly BackgroundWorker _backgroundWorkerFindAllFiles = new();
         private readonly IFileSearcher<FileInformation> _fileSearcher;
         private bool _isStartSearch = false;
 
-        public SearchFilePage(IFileSearcher<FileInformation> fileSearcher)
+        public SearchFilePage(IFileSearcher<FileInformation> fileSearcher, ILogger<SearchFilePage> logger) : base(logger)
         {
             InitializeComponent();
+            RunBackgroundWorker();
             _fileSearcher = fileSearcher;
-            _backgroundWorkerFindAllFiles.DoWork += BackgroundWorkerFindAllFilesDoWork;
-            _backgroundWorkerFindAllFiles.ProgressChanged += BackgroundWorkerFindAllFilesProgressChanged;
-            _backgroundWorkerFindAllFiles.WorkerReportsProgress = true;
-            _backgroundWorkerFindAllFiles.RunWorkerAsync();
             ListAllFileSearch.Items.Filter = CustomFilter;
         }
 
-        void BackgroundWorkerFindAllFilesProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            base.BackgroundWorkerProgressChanged(sender, e);
             var information = e.UserState as FileInformation;
             if (information == null)
                 return;
@@ -42,7 +40,6 @@ namespace RCC.Pages
                 )
             );
         }
-
         private void Start()
         {
             Debug.WriteLine("start searching file");
@@ -58,18 +55,14 @@ namespace RCC.Pages
             listAllDisc.ForEach(directory =>
             {
                 _fileSearcher.Run(directory, DateTime.MinValue, DateTime.MaxValue,
-                    "*.*", 0, int.MaxValue);
-                var i = 0;
-                _fileSearcher.FindFileList.ForEach(file =>
-                {
-                    _backgroundWorkerFindAllFiles.ReportProgress(i, file);
-                    i++;
-                });
+                    "*.*", int.MinValue, int.MaxValue);
+                _fileSearcher.FindFileList.ForEach(BackgroundWorkerSendProgress);
             });
         }
 
-        private void BackgroundWorkerFindAllFilesDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
+            base.BackgroundWorkerDoWork(sender, e);
             Start();
         }
 

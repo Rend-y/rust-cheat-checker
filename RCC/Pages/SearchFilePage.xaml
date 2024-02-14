@@ -1,14 +1,15 @@
-﻿<Page x:Class="RCC.Pages.SearchFilePage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:fileSearcher="clr-namespace:RCC.Modules.FileSearcher"
-      mc:Ignorable="d"
-      Title="SearchFilePage"
-      Width="1122" 
-      Height="479"
-      >
+﻿<pages:APage x:Class="RCC.Pages.SearchFilePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fileSearcher="clr-namespace:RCC.Modules.FileSearcher"
+             xmlns:pages="clr-namespace:RCC.Pages"
+             mc:Ignorable="d"
+             Title="SearchFilePage"
+             Width="1122" 
+             Height="479"
+>
     <Grid>
         <Grid Name="GridStartSearching" Visibility="Visible">
             <Border BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10,10,10,10" Width="500" Background="#219297B3" BorderBrush="#6610121B">
@@ -78,4 +79,4 @@
             </Border>
         </Grid>
     </Grid>
-</Page>
+</pages:APage>

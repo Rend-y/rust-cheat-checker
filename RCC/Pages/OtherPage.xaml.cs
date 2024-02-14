@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using RCC.Modules.AutoCheck.ConsoleCommand;
 using RCC.Modules.AutoCheck.KeyboardCheck;
 using RCC.Modules.DangerousApp;
@@ -22,13 +22,13 @@ namespace RCC.Pages
         public string Bind { get; set; }
     }
 
-    public partial class OtherPage : Page
+    public partial class OtherPage : APage
     {
         private readonly IConsoleCommand _consoleCommand;
         private readonly IKeyboardCheck _keyboardCheck;
 
         public OtherPage(IDangerousApp<SDangerousApplication> dangerousApps, IKeyboardCheck keyboardCheck,
-            IConsoleCommand consoleCommand)
+            IConsoleCommand consoleCommand, ILogger<OtherPage> logger) : base(logger)
         {
             InitializeComponent();
             _keyboardCheck = keyboardCheck;

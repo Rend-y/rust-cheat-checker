@@ -1,19 +1,14 @@
 ﻿using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
 
 namespace RCC.Pages
 {
-    public partial class GreetingPage : Page
+    public partial class GreetingPage : APage
     {
-        private readonly ILogger _logger;
-
-        public GreetingPage(ILogger<GreetingPage> logger)
+        public GreetingPage(ILogger<GreetingPage> logger) : base(logger)
         {
             InitializeComponent();
-            _logger = logger;
-            _logger.LogInformation("Greeting page loaded successfully");
         }
 
         private void ButtonToRedirectOnGit_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>

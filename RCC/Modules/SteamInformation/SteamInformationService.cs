@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace RCC.Modules.SteamInformation;
@@ -12,9 +11,12 @@ public class SteamInformationService : ISteamInformation<SteamData>
 {
     public SteamInformationService()
     {
-        PathToLoginData = $"{GetSteamLocation()}\\config\\loginusers.vdf";
-        PathToSteamConfig = $"{GetSteamLocation()}\\config\\config.vdf";
+        var getSteamLocation = GetSteamLocation();
+        PathToLoginData = $"{getSteamLocation}\\config\\loginusers.vdf";
+        PathToSteamConfig = $"{getSteamLocation}\\config\\config.vdf";
+        PathToSteamConfigFolder = $"{getSteamLocation}\\config\\";
     }
+    public string PathToSteamConfigFolder { get; }
 
     public string GetSteamLocation()
     {
@@ -70,16 +72,7 @@ public class SteamInformationService : ISteamInformation<SteamData>
         return steamIdsHashSet.ToList();
     }
 
-    public List<string> GetSteamIdFromCoPlayData()
-    {
-        List<string> files = Directory.GetFiles($"{GetSteamLocation()}\\config\\", "*.vdf")
-            .Where(path => Regex.IsMatch(path, "\\d{17}")).Select(Path.GetFileName).ToList();
-        var result = files.ConvertAll(item =>
-            Regex.Matches(item, @"_7656(.*?).vdf").Cast<Match>().Select(x => "7656" + x.Groups[1].Value).ToList()[0]);
-        return result;
-    }
-
-    public SteamData GetSteamData(in long steamId, in bool isDeleted = false) => new(steamId, isDeleted);
+    public SteamData GetSteamData(in long steamId, in bool isDeleted = false) => new SteamData(steamId, isDeleted);
 
     public SteamData GetLastSteamAccountInfo()
     {
@@ -90,14 +83,14 @@ public class SteamInformationService : ISteamInformation<SteamData>
             throw new FileNotFoundException("Steam files were not found");
 
         var loginUserData = File.ReadAllText(loginUserDataPath);
-        var configData = File.ReadAllText(configDataPath);
 
         var loginUserSteamIds = GetSteamIdFromContent(loginUserData);
-        var configSteamIds = GetSteamIdFromContent(configData);
-        var coPlaySteamIds = GetSteamIdFromCoPlayData();
 
         var lastAccounts = loginUserData
-            .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+            .Split(new[]
+            {
+                Environment.NewLine
+            }, StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             .Where(line => line.StartsWith("\"mostrecent\""))
             .Select(line => line.Split('\"')[3])
@@ -115,6 +108,19 @@ public class SteamInformationService : ISteamInformation<SteamData>
     }
 
     public string PathToLoginData { get; }
-
     public string PathToSteamConfig { get; }
+
+    public List<string> GetSteamIdFromCoPlayData()
+    {
+        var extractedNumbers = Directory.GetFiles(PathToSteamConfigFolder, "coplay_*.vdf", SearchOption.TopDirectoryOnly)
+            .Select(file =>
+            {
+                var startIndex = file.IndexOf("coplay_") + "coplay_".Length;
+                var endIndex = file.LastIndexOf(".vdf");
+                var extractedNumber = file.Substring(startIndex, endIndex - startIndex);
+                return extractedNumber;
+            })
+            .ToList();
+        return extractedNumbers;
+    }
 }

@@ -24,8 +24,6 @@ public interface ISteamInformation<out TSteamData>
     /// <returns>full path to file which keeps all accounts data</returns>
     List<string> GetSteamIdFromContent(in string content);
 
-    List<string> GetSteamIdFromCoPlayData();
-
     /// <summary>
     /// Use this to get steam data (avatar, username, is hide account, account level)
     /// if user account is hide. Then we return the level -1

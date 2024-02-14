@@ -1,21 +1,13 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Microsoft.Extensions.Logging;
 
 namespace RCC.Pages
 {
-    public partial class MouseLoggerPage : Page
+    public partial class MouseLoggerPage : APage
     {
-        public class MouseActivity {
-            public string Key { get; set; }
-            public MouseActivity(string key)
-            {
-                this.Key = key;
-            }
-        }
-        
-        public MouseLoggerPage()
+        public MouseLoggerPage(ILogger<MouseLoggerPage> logger) : base(logger)
         {
             InitializeComponent();
         }
@@ -66,6 +58,15 @@ namespace RCC.Pages
 
                 CanvasMouseDrawing.Children.Add(line);
             }
+        }
+
+        public class MouseActivity
+        {
+            public MouseActivity(string key)
+            {
+                this.Key = key;
+            }
+            public string Key { get; set; }
         }
     }
 }

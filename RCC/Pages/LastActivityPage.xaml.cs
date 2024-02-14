@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Windows.Controls;
 using System.Xml.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace RCC.Pages
 {
@@ -27,28 +27,23 @@ namespace RCC.Pages
         public string FullPath { get; set; }
     }
 
-    public partial class LastActivityPage : Page
+    public partial class LastActivityPage : APage
     {
-        private readonly BackgroundWorker backgroundWorkerFindLastActivity = new BackgroundWorker();
-
-        public LastActivityPage()
+        public LastActivityPage(ILogger<LastActivityPage> logger) : base(logger)
         {
             InitializeComponent();
-            backgroundWorkerFindLastActivity.DoWork += BackgroundWorkerFindLastActivityDoWork;
-            backgroundWorkerFindLastActivity.ProgressChanged += BackgroundWorkerFindLastActivityProgressChanged;
-            backgroundWorkerFindLastActivity.WorkerReportsProgress = true;
-            backgroundWorkerFindLastActivity.RunWorkerAsync();
+            RunBackgroundWorker();
         }
 
-        void BackgroundWorkerFindLastActivityDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
+            base.BackgroundWorkerDoWork(sender, e);
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\LastActivityView.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\last_activity_view.xml";
             var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
                 "https://github.com/Midoruya/rust-cheat-checker/blob/main/RCC/Resources/LastActivityView.exe?raw=true",
                 pathToSaveUsbList);
 
-            int i = 0;
             foreach (XElement element in loadXmlDocument)
             {
                 string actionTime = element.Element("action_time")?.Value;
@@ -63,13 +58,13 @@ namespace RCC.Pages
                     continue;
 
                 LastActivityInfo info = new LastActivityInfo(actionTime, description, filename, fullPath);
-                backgroundWorkerFindLastActivity.ReportProgress(i, info);
-                i++;
+                BackgroundWorkerSendProgress(info);
             }
         }
 
-        void BackgroundWorkerFindLastActivityProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            base.BackgroundWorkerProgressChanged(sender, e);
             LastActivityInfo lastActivityInfo = e.UserState as LastActivityInfo;
 
             if (lastActivityInfo == null)

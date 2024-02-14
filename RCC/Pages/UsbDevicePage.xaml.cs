@@ -1,31 +1,26 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 using System.Xml.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace RCC.Pages
 {
-    public partial class UsbDevicePage : Page
+    public partial class UsbDevicePage : APage
     {
-        private readonly BackgroundWorker backgroundWorkerFindUsbDevice = new BackgroundWorker();
-
-        public UsbDevicePage()
+        public UsbDevicePage(ILogger<UsbDevicePage> logger) : base(logger)
         {
             InitializeComponent();
-            backgroundWorkerFindUsbDevice.DoWork += BackgroundWorkerFindUsbDeviceDoWork;
-            backgroundWorkerFindUsbDevice.ProgressChanged += BackgroundWorkerFindUsbDeviceProgressChanged;
-            backgroundWorkerFindUsbDevice.WorkerReportsProgress = true;
-            backgroundWorkerFindUsbDevice.RunWorkerAsync();
+            RunBackgroundWorker();
         }
 
-        void BackgroundWorkerFindUsbDeviceDoWork(object sender, DoWorkEventArgs e)
+        protected override void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
+            base.BackgroundWorkerDoWork(sender, e);
             string localPathToFile = $"{Utilities.PathToLocalApplication}\\USBDeview.exe";
             string pathToSaveUsbList = $"{Utilities.PathToLocalApplication}\\usb_info.xml";
             var loadXmlDocument = Utilities.GetXmlDocumentFromWebProcess(localPathToFile,
                 "https://github.com/Midoruya/rust-cheat-checker/blob/main/RCC/Resources/USBDeview.exe?raw=true",
                 pathToSaveUsbList);
 
-            int i = 0;
             foreach (XElement element in loadXmlDocument)
             {
                 string deviceName = element.Element("device_name")?.Value;
@@ -36,13 +31,13 @@ namespace RCC.Pages
                 string creatingTime = element.Element("created_date")?.Value;
                 UsbDeviceInfo deviceInfo = new UsbDeviceInfo(deviceName, description, deviceType, isConnect,
                     timeLastUsed, creatingTime);
-                backgroundWorkerFindUsbDevice.ReportProgress(i, deviceInfo);
-                i++;
+                BackgroundWorkerSendProgress(deviceInfo);
             }
         }
 
-        void BackgroundWorkerFindUsbDeviceProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            base.BackgroundWorkerProgressChanged(sender, e);
             UsbDeviceInfo usbData = e.UserState as UsbDeviceInfo;
 
             if (usbData == null)
