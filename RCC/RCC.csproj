@@ -77,8 +77,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
-      <HintPath>Resources\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0-preview.6.23329.7\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -285,17 +286,19 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Encodings.Web">
-      <HintPath>Resources\System.Text.Encodings.Web.dll</HintPath>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Encodings.Web.8.0.0-preview.6.23329.7\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json">
-      <HintPath>Resources\System.Text.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Text.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Json.8.0.0-preview.6.23329.7\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>packages\System.Text.Json.8.0.4\lib\net462\System.Text.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
       <HintPath>Resources\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -335,29 +338,29 @@
       <DependentUpon>TabButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlassEffect.cs" />
-    <Compile Include="Modules\AutoCheck\ConsoleCommand\ConsoleCommand.cs"/>
-    <Compile Include="Modules\AutoCheck\ConsoleCommand\IConsoleCommand.cs"/>
-    <Compile Include="Modules\AutoCheck\KeyboardCheck\IKeyboardCheck.cs"/>
-    <Compile Include="Modules\AutoCheck\KeyboardCheck\KeyboardCheck.cs"/>
-    <Compile Include="Modules\DangerousApp\DangerousAppService.cs"/>
-    <Compile Include="Modules\DangerousApp\IDangerousApp.cs"/>
-    <Compile Include="Modules\DangerousApp\SDangerousApplication.cs"/>
-    <Compile Include="Modules\DetectClean\DetectingCleaningService.cs"/>
-    <Compile Include="Modules\DetectClean\IDetectingCleaning.cs"/>
-    <Compile Include="Modules\DetectClean\SDetectCleanData.cs"/>
-    <Compile Include="Modules\Device\KeyboardEvent\IKeyboardEvent.cs"/>
-    <Compile Include="Modules\Device\KeyboardEvent\KeyboardEvent.cs"/>
-    <Compile Include="Modules\Device\MouseEvent\IMouseEvent.cs"/>
-    <Compile Include="Modules\Device\MouseEvent\MouseEvent.cs"/>
-      <Compile Include="Modules\FileSearcher\FileSearcher.cs"/>
-      <Compile Include="Modules\FileSearcher\IFileSearcher.cs"/>
-    <Compile Include="Modules\Server\IServerService.cs"/>
-    <Compile Include="Modules\Server\ServerService.cs"/>
-    <Compile Include="Modules\SteamInformation\ISteamInformation.cs"/>
-    <Compile Include="Modules\SteamInformation\SteamData.cs"/>
-    <Compile Include="Modules\SteamInformation\SteamInformationService.cs"/>
-    <Compile Include="Modules\SystemInfo\ISystemInfo.cs"/>
-    <Compile Include="Modules\SystemInfo\SystemInfoService.cs"/>
+    <Compile Include="Modules\AutoCheck\ConsoleCommand\ConsoleCommand.cs" />
+    <Compile Include="Modules\AutoCheck\ConsoleCommand\IConsoleCommand.cs" />
+    <Compile Include="Modules\AutoCheck\KeyboardCheck\IKeyboardCheck.cs" />
+    <Compile Include="Modules\AutoCheck\KeyboardCheck\KeyboardCheck.cs" />
+    <Compile Include="Modules\DangerousApp\DangerousAppService.cs" />
+    <Compile Include="Modules\DangerousApp\IDangerousApp.cs" />
+    <Compile Include="Modules\DangerousApp\SDangerousApplication.cs" />
+    <Compile Include="Modules\DetectClean\DetectingCleaningService.cs" />
+    <Compile Include="Modules\DetectClean\IDetectingCleaning.cs" />
+    <Compile Include="Modules\DetectClean\SDetectCleanData.cs" />
+    <Compile Include="Modules\Device\KeyboardEvent\IKeyboardEvent.cs" />
+    <Compile Include="Modules\Device\KeyboardEvent\KeyboardEvent.cs" />
+    <Compile Include="Modules\Device\MouseEvent\IMouseEvent.cs" />
+    <Compile Include="Modules\Device\MouseEvent\MouseEvent.cs" />
+    <Compile Include="Modules\FileSearcher\FileSearcher.cs" />
+    <Compile Include="Modules\FileSearcher\IFileSearcher.cs" />
+    <Compile Include="Modules\Server\IServerService.cs" />
+    <Compile Include="Modules\Server\ServerService.cs" />
+    <Compile Include="Modules\SteamInformation\ISteamInformation.cs" />
+    <Compile Include="Modules\SteamInformation\SteamData.cs" />
+    <Compile Include="Modules\SteamInformation\SteamInformationService.cs" />
+    <Compile Include="Modules\SystemInfo\ISystemInfo.cs" />
+    <Compile Include="Modules\SystemInfo\SystemInfoService.cs" />
     <Compile Include="Pages\GreetingPage.xaml.cs">
       <DependentUpon>GreetingPage.xaml</DependentUpon>
     </Compile>
@@ -385,8 +388,8 @@
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-    <Compile Include="Windows\EWindowsType.cs"/>
-    <Compile Include="Windows\ICustomWindows.cs"/>
+    <Compile Include="Windows\EWindowsType.cs" />
+    <Compile Include="Windows\ICustomWindows.cs" />
     <Compile Include="Windows\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
@@ -414,8 +417,8 @@
     <Page Include="Pages\SearchFilePage.xaml" />
     <Page Include="Pages\SteamDataPage.xaml" />
     <Page Include="Pages\UsbDevicePage.xaml" />
-    <Page Include="Windows\MessageBox.xaml"/>
-    <Page Include="Windows\Notify.xaml"/>
+    <Page Include="Windows\MessageBox.xaml" />
+    <Page Include="Windows\Notify.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
